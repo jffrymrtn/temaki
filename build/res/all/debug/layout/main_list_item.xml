@@ -1,0 +1,15 @@
+<EditText
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_list_item"
+        android:minHeight="55dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#111"
+        android:background="@drawable/main_list_item_style" />
+<!-- From: file:/Users/jeff/Development/workspace/temaki/TemakiProject/Temaki/src/main/res/layout/main_list_item.xml -->

@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity"
+              android:background="#ffe0e0e0">
+
+    <ListView
+            android:id="@+id/mainListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp" />
+
+    <EditText
+            android:id="@+id/addItemEditText"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:hint="@string/add_new_item_edit_text_hint"
+            style="@style/NewItemEditText" />
+</LinearLayout>
+<!-- From: file:/Users/jeff/Development/workspace/temaki/TemakiProject/Temaki/src/main/res/layout/main_fragment.xml -->
