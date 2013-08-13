@@ -192,9 +192,6 @@ public class MainDrawerActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // First, save whatever's on the screen
-//            saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
-
             // Offset position by 1 because of the header (header @ index 0)
             if (--position < 0) {
                 createNewList();

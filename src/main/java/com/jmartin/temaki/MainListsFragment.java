@@ -74,20 +74,6 @@ public class MainListsFragment extends Fragment {
         this.listName = listName;
     }
 
-    /**
-     * @return the String listName that is currently selected.
-     */
-    public String getListName() {
-        return listName;
-    }
-
-    /**
-     * @return an ArrayList<String> containing the list items currently displayed.
-     */
-    public ArrayList<String> getListItems() {
-        return (ArrayList<String>) listItems.clone();
-    }
-
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
 
         @Override
