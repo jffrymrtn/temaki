@@ -16,9 +16,9 @@
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
         android:layout_gravity="start"
-        android:divider="@android:color/darker_gray"
+        android:divider="#ffbababa"
         android:dividerHeight="1dp"
-        android:background="#fff" >
+        android:background="#ff282828">
     </ListView>
 </android.support.v4.widget.DrawerLayout>
 <!-- From: file:/Users/jeff/Development/workspace/temaki/TemakiProject/Temaki/src/main/res/layout/main_drawer_layout.xml -->

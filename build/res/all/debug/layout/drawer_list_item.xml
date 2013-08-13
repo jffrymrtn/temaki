@@ -1,11 +1,15 @@
 <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_list_item"
+        android:minHeight="45dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textColor="#111"
-        />
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:textColor="#ffe9e9e9"
+        android:textAllCaps="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:maxLines="1" />
 <!-- From: file:/Users/jeff/Development/workspace/temaki/TemakiProject/Temaki/src/main/res/layout/drawer_list_item.xml -->

@@ -4,15 +4,15 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context=".MainActivity"
-              android:background="#ffe0e0e0">
+              android:background="#ffb4b4b4">
 
     <ListView
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="4dp" />
+            android:divider="#ffc7c7c7"
+            android:dividerHeight="1dp"/>
 
     <EditText
             android:id="@+id/addItemEditText"

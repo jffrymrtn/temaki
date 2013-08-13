@@ -18,12 +18,13 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int drawer_shadow=0x7f020000;
-        public static final int flat_light_edit_text_style=0x7f020001;
-        public static final int ic_drawer=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int ic_new_item=0x7f020004;
-        public static final int main_list_item_style=0x7f020005;
+        public static final int ab_style=0x7f020000;
+        public static final int drawer_shadow=0x7f020001;
+        public static final int flat_light_edit_text_style=0x7f020002;
+        public static final int ic_drawer=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int ic_new_item=0x7f020005;
+        public static final int main_list_item_style=0x7f020006;
     }
     public static final class id {
         public static final int action_settings=0x7f080008;
@@ -67,9 +68,8 @@ public final class R {
  API 11 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f060000;
-        /**  All customizations that are NOT specific to a particular API-level can go here. 
-         */
         public static final int AppTheme=0x7f060001;
         public static final int NewItemEditText=0x7f060002;
+        public static final int ab_theme=0x7f060003;
     }
 }

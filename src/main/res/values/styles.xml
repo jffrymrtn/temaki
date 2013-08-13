@@ -20,8 +20,13 @@
         <item name="android:paddingLeft">15dp</item>
     </style>
 
+    <style name="ab_theme" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_style</item>
+    </style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/ab_theme</item>
     </style>
 </resources>
