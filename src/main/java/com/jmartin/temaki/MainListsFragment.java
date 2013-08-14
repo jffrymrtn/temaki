@@ -1,13 +1,13 @@
 package com.jmartin.temaki;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,6 +26,11 @@ public class MainListsFragment extends Fragment {
     private String listName;
     private ArrayList<String> listItems;
     private MainDrawerActivity parentActivity;
+    private boolean deleted = false;
+
+    /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
+    * is not working in the clicklistener below.*/
+    private int selectedItemPos = -1;
 
     public MainListsFragment() {
         super();
@@ -34,6 +39,8 @@ public class MainListsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
+
+        getActivity().setTitle(listName);
 
         if (savedInstanceState != null) {
             listItems = savedInstanceState.getStringArrayList(parentActivity.LIST_ITEMS_BUNDLE_KEY);
@@ -44,6 +51,7 @@ public class MainListsFragment extends Fragment {
 
         itemsListAdapter = new ArrayAdapter<String>(parentActivity.getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
+        itemsListView.setOnItemClickListener(new ListItemClickListener());
 
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
 
@@ -56,14 +64,6 @@ public class MainListsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onPause() {
-        // Add the current list to the HashMap lists
-        parentActivity.saveList(listName, listItems);
-        parentActivity.saveListsToSharedPreferences();
-        super.onPause();
-    }
-
     /**
      * Initialize the class' parentActivity context.
      * @param parentActivity the parent Activity to use.
@@ -72,6 +72,18 @@ public class MainListsFragment extends Fragment {
         this.parentActivity = parentActivity;
         this.listItems = list;
         this.listName = listName;
+    }
+
+    public void notifyDeleted() {
+        this.deleted = true;
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public ArrayList<String> getListItems() {
+        return listItems;
     }
 
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
@@ -86,6 +98,19 @@ public class MainListsFragment extends Fragment {
                 return true;
             }
             return false;
+        }
+    }
+
+    private class ListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (selectedItemPos == position) {
+                view.setSelected(false);
+                selectedItemPos = -1;
+            } else {
+                view.setSelected(true);
+                selectedItemPos = position;
+            }
         }
     }
 }

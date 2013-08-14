@@ -4,20 +4,23 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context=".MainActivity"
-              android:background="#ffb4b4b4">
+              android:background="@color/main_background">
 
     <ListView
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:divider="#ffc7c7c7"
+            android:divider="@color/main_dark_list_divider"
             android:dividerHeight="1dp"/>
 
     <EditText
             android:id="@+id/addItemEditText"
             android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:singleLine="true"
             android:hint="@string/add_new_item_edit_text_hint"
-            style="@style/NewItemEditText" />
+            android:background="@drawable/edit_text_style_holo_light_blue"
+            android:textColor ="@color/main_dark_text_color"
+            android:paddingLeft ="15dp" />
 </LinearLayout>

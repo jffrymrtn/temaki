@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/dialog_layout"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@color/main_off_white_face">
+    <TextView
+        android:id="@+id/prompt_label"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/prompt_value_edittext"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:paddingLeft ="15dp"
+        android:textColor ="#333333"
+        style="@style/TemakiEditTextStyle" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="7dp">
+
+        <View
+            android:id="@+id/vert_divider"
+            android:layout_height="match_parent"
+            android:layout_width="1dip"
+            android:layout_marginBottom="4dip"
+            android:layout_marginTop="4dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="?android:attr/dividerVertical" />
+        <Button
+            android:id="@+id/cancel_dialog_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/vert_divider"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textAllCaps="true"
+            android:text="@string/cancel_dialog_button_text"
+            android:background="?android:attr/selectableItemBackground"
+            style="?android:attr/borderlessButtonStyle" />
+        <Button
+            android:id="@+id/ok_dialog_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/vert_divider"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textAllCaps="true"
+            android:text="@string/create_list_dialog_button_text"
+            android:background="?android:attr/selectableItemBackground"
+            style="?android:attr/borderlessButtonStyle" />
+    </RelativeLayout>
+</LinearLayout>

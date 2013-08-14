@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -12,21 +12,35 @@
         -->
     </style>
 
-®    <!-- Edit Text Style -->
-    <style name="NewItemEditText" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/flat_light_edit_text_style</item>
-        <item name="android:textColor">#333333</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:paddingLeft">15dp</item>
-    </style>
-
-    <style name="ab_theme" parent="android:Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_style</item>
-    </style>
-
-    <!-- Application theme. -->
+    <!-- Application theme - Holo Light. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:actionBarStyle">@style/ab_theme</item>
+        <item name="android:actionBarStyle">@style/TemakiActionBarStyle</item>
+        <item name="android:buttonStyle">@style/TemakiButtonStyle</item>
+        <item name="android:textViewStyle">@style/TemakiTextViewStyle</item>
+        <item name="android:editTextStyle">@style/TemakiEditTextStyle</item>
+    </style>
+
+    <!-- TextView Style -->
+    <style name="TemakiTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="TemakiButtonStyle" parent="android:Widget.Button">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <!-- EditText Style -->
+    <style name="TemakiEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <!-- ActionBar Style -->
+    <style name="TemakiActionBarStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_style_holo_light_blue</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 </resources>

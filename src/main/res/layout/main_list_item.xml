@@ -1,4 +1,4 @@
-<EditText
+<TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_list_item"
         android:minHeight="60dp"
@@ -7,7 +7,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:textColor="#ffe9e9e9"
-        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/main_dark_text_color"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:background="@drawable/main_list_item_style" />
+        android:fontFamily="sans-serif-light"
+        android:background="@drawable/main_list_item_style_holo_light_blue" />
