@@ -9,6 +9,6 @@
     <string name="done_dialog_button_text">Done</string>
     <string name="cancel_dialog_button_text">Cancel</string>
     <string name="confirm_delete_dialog_button_text">Yes, I\'m Sure</string>
-    <string name="context_menu_edit_item">Edit Item</string>
-    <string name="context_menu_delete_item">Delete Item</string>
+    <string name="context_menu_edit_item">Edit</string>
+    <string name="context_menu_delete_item">Delete</string>
 </resources>

@@ -30,11 +30,12 @@ import java.util.HashMap;
 public class MainDrawerActivity extends FragmentActivity
         implements GenericInputDialog.GenericInputDialogListener, GenericAlertDialog.GenericAlertDialogListener {
 
+    private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
+    private final String LIST_NAME_BUNDLE_KEY = "ListName";
     private final String NEW_LIST_DIALOG_TITLE = "Enter a name for the new list:";
-    public final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
+    public static final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
-    protected final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
 
     private DrawerLayout listsDrawerLayout;
     private ListView listsDrawerListView;
@@ -55,19 +56,29 @@ public class MainDrawerActivity extends FragmentActivity
 
         drawerItems = new ArrayList<String>();
 
+        String listsJson = "";
+        String loadedListName = null;
+        ArrayList<String> loadedList = null;
+
         if (savedInstanceState == null) {
             // Load from SharedPreferences
             SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
-            String listsJson = sharedPrefs.getString(LISTS_SP_KEY, "");
+            listsJson = sharedPrefs.getString(LISTS_SP_KEY, "");
+        } else {
+            // load from savedInstanceState
+            listsJson = savedInstanceState.getString(LISTS_SP_KEY, "");
+            loadedListName = savedInstanceState.getString(LIST_NAME_BUNDLE_KEY);
+            loadedList = savedInstanceState.getStringArrayList(LIST_ITEMS_BUNDLE_KEY);
+        }
 
-            Type listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
-            lists = new Gson().fromJson(listsJson, listsType);
+        // Initialize lists variable
+        Type listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
+        lists = new Gson().fromJson(listsJson, listsType);
 
-            if (lists != null && lists.size() > 0) {
-                drawerItems.addAll(lists.keySet());
-            } else if (lists == null) {
-                lists = new HashMap<String, ArrayList<String>>();
-            }
+        if (lists != null && lists.size() > 0) {
+            drawerItems.addAll(lists.keySet());
+        } else if (lists == null) {
+            lists = new HashMap<String, ArrayList<String>>();
         }
 
         // Set the Navigation Drawer up
@@ -105,7 +116,12 @@ public class MainDrawerActivity extends FragmentActivity
         getActionBar().setHomeButtonEnabled(true);
 
         // Load the main fragment with an empty list
-        loadList(null, null);
+        mainListsFragment = new MainListsFragment();
+        loadListIntoFragment(loadedListName, loadedList);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame_layout, mainListsFragment)
+                .commit();
 
         super.onCreate(savedInstanceState);
     }
@@ -128,6 +144,18 @@ public class MainDrawerActivity extends FragmentActivity
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         listsDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Store drawersList
+        Gson gson = new Gson();
+        String jsonLists = gson.toJson(lists);
+        outState.putString(LISTS_SP_KEY, jsonLists);
+
+        outState.putString(LIST_NAME_BUNDLE_KEY, mainListsFragment.getListName());
+        outState.putStringArrayList(LIST_ITEMS_BUNDLE_KEY, mainListsFragment.getListItems());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -155,7 +183,7 @@ public class MainDrawerActivity extends FragmentActivity
         drawerListAdapter.notifyDataSetChanged();
 
         // Reload
-        loadList(null, null);
+        loadListIntoFragment(null, null);
     }
 
     @Override
@@ -169,7 +197,7 @@ public class MainDrawerActivity extends FragmentActivity
             lists.put(newListName, new ArrayList<String>());
         }
 
-        loadList(newListName, lists.get(newListName));
+        loadListIntoFragment(newListName, lists.get(newListName));
     }
 
     @Override
@@ -192,18 +220,13 @@ public class MainDrawerActivity extends FragmentActivity
      * @param listName the name of the list to load.
      * @param list the list to load.
      */
-    public void loadList(String listName, ArrayList<String> list) {
+    public void loadListIntoFragment(String listName, ArrayList<String> list) {
         if (listName == null || list == null) {
             listName = getDefaultTitle();
             list = new ArrayList<String>();
         }
 
-        mainListsFragment = new MainListsFragment();
-        mainListsFragment.initFragment(this, listName, list);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame_layout, mainListsFragment)
-                .commit();
+        mainListsFragment.loadList(listName, list);
     }
 
     /**
@@ -264,6 +287,8 @@ public class MainDrawerActivity extends FragmentActivity
      * @param listItems the ArrayList to add or replace.
      */
     public void saveList(String listName, ArrayList<String> listItems) {
+        if (listName == null || listItems == null) return;
+
         if (listName.length() == 0) {
             listName = getDefaultTitle();
         }
@@ -294,7 +319,7 @@ public class MainDrawerActivity extends FragmentActivity
             } else {
                 // Load the list specified by position 'position' on the nav drawer
                 String listName = drawerItems.get(position);
-                loadList(listName, lists.get(listName));
+                loadListIntoFragment(listName, lists.get(listName));
             }
 
             // Keep track of the currently loaded list

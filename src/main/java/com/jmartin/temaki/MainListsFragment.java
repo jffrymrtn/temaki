@@ -40,8 +40,6 @@ public class MainListsFragment extends Fragment
 
     private String listName;
     private ArrayList<String> listItems;
-    private MainDrawerActivity parentActivity;
-
     private ActionMode actionMode;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
@@ -56,16 +54,16 @@ public class MainListsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
-        getActivity().setTitle(listName);
-
-        if (savedInstanceState != null) {
-            listItems = savedInstanceState.getStringArrayList(parentActivity.LIST_ITEMS_BUNDLE_KEY);
+        if (listName != null) {
+            getActivity().setTitle(listName);
         }
+
+        listItems = listItems == null ? new ArrayList<String>() : listItems;
 
         itemsListView = (ListView) view.findViewById(R.id.mainListView);
         addItemsEditText = (EditText) view.findViewById(R.id.addItemEditText);
 
-        itemsListAdapter = new ArrayAdapter<String>(parentActivity.getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
@@ -75,15 +73,9 @@ public class MainListsFragment extends Fragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putStringArrayList(parentActivity.LIST_ITEMS_BUNDLE_KEY, listItems);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onFinishAlertDialog() {
         listItems.remove(selectedItemPos);
-        itemsListAdapter.notifyDataSetChanged();
+        actionMode.finish();
         clearItemSelection();
     }
 
@@ -91,7 +83,8 @@ public class MainListsFragment extends Fragment
     public void onFinishDialog(String inputValue) {
         listItems.remove(selectedItemPos);
         listItems.add(selectedItemPos, inputValue);
-        itemsListAdapter.notifyDataSetChanged();
+        actionMode.finish();
+        clearItemSelection();
     }
 
     @Override
@@ -101,25 +94,32 @@ public class MainListsFragment extends Fragment
         } else if (resultCode == EDIT_ITEM_ID) {
             onFinishDialog(data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY));
         } else if (resultCode == CANCEL_RESULT_CODE) {
+            actionMode.finish();
             clearItemSelection();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void clearItemSelection() {
-        actionMode.finish();
         selectedItemPos = -1;
         itemsListAdapter.notifyDataSetChanged();
     }
 
     /**
-     * Initialize the class' parentActivity context.
-     * @param parentActivity the parent Activity to use.
+     * Load the initial list.
+     * @param listName the name of the initial list to load on this Fragment
+     * @param list the list to initially load on this Fragment
      */
-    public void initFragment(MainDrawerActivity parentActivity, String listName, ArrayList<String> list) {
-        this.parentActivity = parentActivity;
-        this.listItems = list;
+    public void loadList(String listName, ArrayList<String> list) {
+        if (this.listItems == null) this.listItems = new ArrayList<String>();
+
+        this.listItems.clear();
+        this.listItems.addAll(list);
         this.listName = listName;
+
+        if (itemsListAdapter != null) {
+            itemsListAdapter.notifyDataSetChanged();
+        }
     }
 
     public String getListName() {
@@ -127,7 +127,7 @@ public class MainListsFragment extends Fragment
     }
 
     public ArrayList<String> getListItems() {
-        return listItems;
+        return (ArrayList<String>) listItems.clone();
     }
 
     /**
@@ -150,7 +150,7 @@ public class MainListsFragment extends Fragment
         GenericAlertDialog dialog = new GenericAlertDialog();
 
         dialog.setTargetFragment(this, DELETE_ITEM_ID);
-        dialog.setTitle(parentActivity.CONFIRM_DELETE_DIALOG_TITLE);
+        dialog.setTitle(MainDrawerActivity.CONFIRM_DELETE_DIALOG_TITLE);
         dialog.show(fragManager, "generic_alert_dialog_fragment");
     }
 
@@ -174,13 +174,16 @@ public class MainListsFragment extends Fragment
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (selectedItemPos == position) {
                 view.setSelected(false);
+                actionMode.finish();
                 clearItemSelection();
             } else {
                 view.setSelected(true);
                 selectedItemPos = position;
 
                 // Show Contextual ActionBar
-                actionMode = parentActivity.startActionMode(actionModeCallback);
+                if (actionMode == null) {
+                    actionMode = getActivity().startActionMode(actionModeCallback);
+                }
             }
         }
     }
@@ -215,6 +218,7 @@ public class MainListsFragment extends Fragment
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             actionMode = null;
+            clearItemSelection();
         }
     };
 }
