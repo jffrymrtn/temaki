@@ -1,6 +1,7 @@
 package com.jmartin.temaki.dialog;
 
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
 
 /**
@@ -37,6 +39,11 @@ public class GenericAlertDialog extends DialogFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment frag = getTargetFragment();
+                if (frag != null) {
+                    frag.onActivityResult(getTargetRequestCode(),
+                            MainListsFragment.CANCEL_RESULT_CODE, null);
+                }
                 dismiss();
             }
         });
@@ -44,7 +51,14 @@ public class GenericAlertDialog extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishDialogWithResult();
+                Fragment frag = getTargetFragment();
+                if (frag == null) {
+                    finishDialogWithResult();
+                } else {
+                    frag.onActivityResult(getTargetRequestCode(),
+                                     ((MainListsFragment)frag).DELETE_ITEM_ID, null);
+                    dismiss();
+                }
             }
         });
         getDialog().setTitle(dialogTitle);

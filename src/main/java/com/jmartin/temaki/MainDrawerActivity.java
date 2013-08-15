@@ -18,7 +18,7 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.dialog.GenericAlertDialog;
-import com.jmartin.temaki.dialog.GenericNameDialog;
+import com.jmartin.temaki.dialog.GenericInputDialog;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ import java.util.HashMap;
  * Author: Jeff Martin, 2013
  */
 public class MainDrawerActivity extends FragmentActivity
-        implements GenericNameDialog.GenericNameDialogListener, GenericAlertDialog.GenericAlertDialogListener {
+        implements GenericInputDialog.GenericInputDialogListener, GenericAlertDialog.GenericAlertDialogListener {
 
     private final String NEW_LIST_DIALOG_TITLE = "Enter a name for the new list:";
-    private final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this list?";
+    public final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
     protected final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
@@ -154,9 +154,6 @@ public class MainDrawerActivity extends FragmentActivity
 
         drawerListAdapter.notifyDataSetChanged();
 
-        // Notify the list fragment that its loaded list is deleted, so it doesn't save onPause
-        mainListsFragment.notifyDeleted();
-
         // Reload
         loadList(null, null);
     }
@@ -234,7 +231,7 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showNewListDialog() {
         FragmentManager fragManager = getFragmentManager();
-        GenericNameDialog dialog = new GenericNameDialog();
+        GenericInputDialog dialog = new GenericInputDialog();
         dialog.setTitle(NEW_LIST_DIALOG_TITLE);
         dialog.show(fragManager, "generic_name_dialog_fragment");
     }

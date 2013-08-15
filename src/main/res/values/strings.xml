@@ -6,7 +6,9 @@
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="add_new_item_edit_text_hint">Add a new item&#8230;</string>
-    <string name="create_list_dialog_button_text">Create List</string>
+    <string name="done_dialog_button_text">Done</string>
     <string name="cancel_dialog_button_text">Cancel</string>
     <string name="confirm_delete_dialog_button_text">Yes, I\'m Sure</string>
+    <string name="context_menu_edit_item">Edit Item</string>
+    <string name="context_menu_delete_item">Delete Item</string>
 </resources>

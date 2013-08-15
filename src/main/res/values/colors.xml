@@ -6,7 +6,7 @@
     <color name="main_dark_text_color">#ff333333</color>
     <color name="main_light_text_color">#ffe9e9e9</color>
     <color name="drawer_background">#3c3c3d</color>
-    <color name="main_background">#ffe0e0e0</color>
-    <color name="main_dark_list_divider">#ff4c4c4c</color>
-    <color name="main_edittext_background">#ffc7c7c7</color>
+    <color name="main_background">#ffd2d2d2</color>
+    <color name="main_list_divider">#ff9b9b9b</color>
+    <color name="main_edittext_background">#fff4f4f4</color>
 </resources>

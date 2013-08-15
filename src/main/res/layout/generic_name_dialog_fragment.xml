@@ -59,7 +59,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:textAllCaps="true"
-            android:text="@string/create_list_dialog_button_text"
+            android:text="@string/done_dialog_button_text"
             android:background="?android:attr/selectableItemBackground"
             style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
