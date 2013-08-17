@@ -177,8 +177,6 @@ public class MainDrawerActivity extends FragmentActivity
             case R.id.action_delete_list:
                 deleteLoadedList();
                 return true;
-            case R.id.action_settings:
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

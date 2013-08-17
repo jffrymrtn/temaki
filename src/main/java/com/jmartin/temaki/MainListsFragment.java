@@ -2,6 +2,7 @@ package com.jmartin.temaki;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -69,7 +71,7 @@ public class MainListsFragment extends Fragment
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
-        addItemsEditText.setOnFocusChangeListener(new EditTextFocusChangeListener());
+        addItemsEditText.setOnClickListener(new EditTextClickListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
 
         return view;
@@ -178,6 +180,14 @@ public class MainListsFragment extends Fragment
         alertDialog.show(fragManager, "generic_alert_dialog_fragment");
     }
 
+    /**
+     * Hide the software keyboard.
+     */
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
 
         @Override
@@ -246,10 +256,10 @@ public class MainListsFragment extends Fragment
         }
     };
 
-    private class EditTextFocusChangeListener implements View.OnFocusChangeListener {
+    private class EditTextClickListener implements View.OnClickListener {
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus && actionMode != null) {
+        public void onClick(View v) {
+            if (actionMode != null) {
                 actionMode.finish();
                 clearItemSelection();
             }

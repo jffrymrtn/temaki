@@ -12,7 +12,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:divider="@color/main_list_divider"
-            android:dividerHeight="1dp"/>
+            android:dividerHeight="1dp"
+            android:focusable="true" />
 
     <EditText
             android:id="@+id/addItemEditText"
@@ -22,5 +23,6 @@
             android:hint="@string/add_new_item_edit_text_hint"
             android:background="@drawable/edit_text_style_holo_light_blue"
             android:textColor ="@color/main_dark_text_color"
-            android:paddingLeft ="15dp" />
+            android:paddingLeft ="15dp"
+            android:imeOptions="flagNoExtractUi" />
 </LinearLayout>
