@@ -1,6 +1,7 @@
 package com.jmartin.temaki;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,12 +32,18 @@ import java.util.HashMap;
 public class MainDrawerActivity extends FragmentActivity
         implements GenericInputDialog.GenericInputDialogListener, GenericAlertDialog.GenericAlertDialogListener {
 
+    private final String ALERT_DIALOG_TAG = "generic_alert_dialog_fragment";
+    private final String INPUT_DIALOG_TAG = "generic_name_dialog_fragment";
     private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
+
     private final String NEW_LIST_DIALOG_TITLE = "Enter a name for the new list:";
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
+
+    private GenericInputDialog inputDialog;
+    private GenericAlertDialog alertDialog;
 
     private DrawerLayout listsDrawerLayout;
     private ListView listsDrawerListView;
@@ -56,8 +64,8 @@ public class MainDrawerActivity extends FragmentActivity
 
         drawerItems = new ArrayList<String>();
 
-        String listsJson = "";
-        String loadedListName = null;
+        String listsJson;
+        String loadedListName = "";
         ArrayList<String> loadedList = null;
 
         if (savedInstanceState == null) {
@@ -67,7 +75,7 @@ public class MainDrawerActivity extends FragmentActivity
         } else {
             // load from savedInstanceState
             listsJson = savedInstanceState.getString(LISTS_SP_KEY, "");
-            loadedListName = savedInstanceState.getString(LIST_NAME_BUNDLE_KEY);
+            loadedListName = savedInstanceState.getString(LIST_NAME_BUNDLE_KEY, "");
             loadedList = savedInstanceState.getStringArrayList(LIST_ITEMS_BUNDLE_KEY);
         }
 
@@ -106,6 +114,7 @@ public class MainDrawerActivity extends FragmentActivity
             }
 
             public void onDrawerOpened(View view) {
+                hideKeyboard();
                 getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
             }
@@ -177,31 +186,37 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onFinishAlertDialog() {
-        lists.remove(drawerItems.get(selectedItemPos));
-        drawerItems.remove(selectedItemPos);
+        if (selectedItemPos != -1) {
+            lists.remove(drawerItems.get(selectedItemPos));
+            drawerItems.remove(selectedItemPos);
+            drawerListAdapter.notifyDataSetChanged();
 
-        drawerListAdapter.notifyDataSetChanged();
-
-        // Reload
-        loadListIntoFragment(null, null);
+            // Reload
+            loadListIntoFragment(null, null);
+        }
     }
 
     @Override
     public void onFinishDialog(String newListName) {
-        if (newListName.equalsIgnoreCase("")) {
+        if (newListName.trim().equalsIgnoreCase("")) {
             newListName = getDefaultTitle();
         }
 
         if (!lists.containsKey(newListName)) {
             updateDrawer(newListName);
             lists.put(newListName, new ArrayList<String>());
+            selectedItemPos = drawerItems.indexOf(newListName);
         }
 
-        loadListIntoFragment(newListName, lists.get(newListName));
+        loadListIntoFragment(newListName, new ArrayList<String>());
     }
 
     @Override
     public void onPause() {
+        // Make sure dialogs are closed (needed in order to maintain orientation change)
+        if (this.alertDialog != null) this.alertDialog.dismiss();
+        if (this.inputDialog != null) this.inputDialog.dismiss();
+
         // Add the current list to the HashMap lists
         saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
         saveListsToSharedPreferences();
@@ -230,6 +245,14 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     /**
+     * Hide the software keyboard.
+     */
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
      * Save the current list of lists to SharedPreferences.
      */
     public void saveListsToSharedPreferences() {
@@ -254,9 +277,9 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showNewListDialog() {
         FragmentManager fragManager = getFragmentManager();
-        GenericInputDialog dialog = new GenericInputDialog();
-        dialog.setTitle(NEW_LIST_DIALOG_TITLE);
-        dialog.show(fragManager, "generic_name_dialog_fragment");
+        inputDialog = new GenericInputDialog();
+        inputDialog.setTitle(NEW_LIST_DIALOG_TITLE);
+        inputDialog.show(fragManager, INPUT_DIALOG_TAG);
     }
 
     /**
@@ -264,9 +287,9 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showDeleteListConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
-        GenericAlertDialog dialog = new GenericAlertDialog();
-        dialog.setTitle(CONFIRM_DELETE_DIALOG_TITLE);
-        dialog.show(fragManager, "generic_alert_dialog_fragment");
+        alertDialog = new GenericAlertDialog();
+        alertDialog.setTitle(CONFIRM_DELETE_DIALOG_TITLE);
+        alertDialog.show(fragManager, ALERT_DIALOG_TAG);
     }
 
 

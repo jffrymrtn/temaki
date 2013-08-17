@@ -34,6 +34,10 @@ public class MainListsFragment extends Fragment
     public static final int CANCEL_RESULT_CODE = 0;
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
+
+    private GenericAlertDialog alertDialog;
+    private  GenericInputDialog inputDialog;
+
     private ListView itemsListView;
     private EditText addItemsEditText;
     private ArrayAdapter<String> itemsListAdapter;
@@ -43,7 +47,7 @@ public class MainListsFragment extends Fragment
     private ActionMode actionMode;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
-    * is not working in the clicklistener below.*/
+    * is not working in the click listener below.*/
     private int selectedItemPos = -1;
 
     public MainListsFragment() {
@@ -54,9 +58,7 @@ public class MainListsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
-        if (listName != null) {
-            getActivity().setTitle(listName);
-        }
+        setActionBarTitle();
 
         listItems = listItems == null ? new ArrayList<String>() : listItems;
 
@@ -67,9 +69,18 @@ public class MainListsFragment extends Fragment
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
+        addItemsEditText.setOnFocusChangeListener(new EditTextFocusChangeListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        // Make sure dialogs close with this Fragment
+        if (this.alertDialog != null) this.alertDialog.dismiss();
+        if (this.inputDialog != null) this.inputDialog.dismiss();
+        super.onPause();
     }
 
     @Override
@@ -107,18 +118,31 @@ public class MainListsFragment extends Fragment
 
     /**
      * Load the initial list.
-     * @param listName the name of the initial list to load on this Fragment
-     * @param list the list to initially load on this Fragment
+     * @param listName the name of the initial list to load on this Fragment.
+     * @param list the list to initially load on this Fragment.
      */
     public void loadList(String listName, ArrayList<String> list) {
         if (this.listItems == null) this.listItems = new ArrayList<String>();
 
         this.listItems.clear();
         this.listItems.addAll(list);
-        this.listName = listName;
+        this.listName = listName == null ? "" : listName;
 
+        setActionBarTitle();
+
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+
+        // Notify data set changed if we need to select an item (only happens on orientation change)
         if (itemsListAdapter != null) {
             itemsListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void setActionBarTitle() {
+        if ((getActivity() != null) && this.listName != null) {
+            getActivity().getActionBar().setSubtitle(this.listName);
         }
     }
 
@@ -135,11 +159,11 @@ public class MainListsFragment extends Fragment
      */
     private void showEditItemDialog() {
         FragmentManager fragManager = getFragmentManager();
-        GenericInputDialog dialog = new GenericInputDialog(listItems.get(selectedItemPos));
+        inputDialog = new GenericInputDialog(listItems.get(selectedItemPos));
 
-        dialog.setTargetFragment(this, EDIT_ITEM_ID);
-        dialog.setTitle(EDIT_ITEM_DIALOG_TITLE);
-        dialog.show(fragManager, "generic_name_dialog_fragment");
+        inputDialog.setTargetFragment(this, EDIT_ITEM_ID);
+        inputDialog.setTitle(EDIT_ITEM_DIALOG_TITLE);
+        inputDialog.show(fragManager, "generic_name_dialog_fragment");
     }
 
     /**
@@ -147,11 +171,11 @@ public class MainListsFragment extends Fragment
      */
     private void showDeleteItemConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
-        GenericAlertDialog dialog = new GenericAlertDialog();
+        alertDialog = new GenericAlertDialog();
 
-        dialog.setTargetFragment(this, DELETE_ITEM_ID);
-        dialog.setTitle(MainDrawerActivity.CONFIRM_DELETE_DIALOG_TITLE);
-        dialog.show(fragManager, "generic_alert_dialog_fragment");
+        alertDialog.setTargetFragment(this, DELETE_ITEM_ID);
+        alertDialog.setTitle(MainDrawerActivity.CONFIRM_DELETE_DIALOG_TITLE);
+        alertDialog.show(fragManager, "generic_alert_dialog_fragment");
     }
 
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
@@ -221,4 +245,14 @@ public class MainListsFragment extends Fragment
             clearItemSelection();
         }
     };
+
+    private class EditTextFocusChangeListener implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && actionMode != null) {
+                actionMode.finish();
+                clearItemSelection();
+            }
+        }
+    }
 }
