@@ -8,7 +8,6 @@
     <string name="add_new_item_edit_text_hint">Add a new item&#8230;</string>
     <string name="done_dialog_button_text">Done</string>
     <string name="cancel_dialog_button_text">Cancel</string>
-    <string name="confirm_delete_dialog_button_text">Yes, I\'m Sure</string>
     <string name="context_menu_edit_item">Edit</string>
-    <string name="context_menu_delete_item">Delete</string>
+    <string name="universal_delete_string">Delete</string>
 </resources>

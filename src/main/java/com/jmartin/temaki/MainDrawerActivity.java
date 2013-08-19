@@ -38,7 +38,7 @@ public class MainDrawerActivity extends FragmentActivity
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
 
     private final String NEW_LIST_DIALOG_TITLE = "Enter the new list's name:";
-    public static final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
+    public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
 
@@ -178,6 +178,7 @@ public class MainDrawerActivity extends FragmentActivity
                 deleteLoadedList();
                 return true;
             case R.id.action_new_list:
+                saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
                 createNewList();
                 return true;
             default:

@@ -48,7 +48,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:textAllCaps="true"
-            android:text="@string/confirm_delete_dialog_button_text"
+            android:text="@string/universal_delete_string"
             android:background="?android:attr/selectableItemBackground"
             style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
