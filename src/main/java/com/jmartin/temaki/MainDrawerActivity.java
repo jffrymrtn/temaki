@@ -37,7 +37,7 @@ public class MainDrawerActivity extends FragmentActivity
     private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
 
-    private final String NEW_LIST_DIALOG_TITLE = "Enter a name for the new list:";
+    private final String NEW_LIST_DIALOG_TITLE = "Enter the new list's name:";
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Are you sure you want to delete this?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
@@ -55,7 +55,7 @@ public class MainDrawerActivity extends FragmentActivity
     private MainListsFragment mainListsFragment;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
-    * is not working in the clicklistener below.*/
+    * is not working in the click listener below.*/
     private int selectedItemPos = -1;
 
     @Override
@@ -176,6 +176,9 @@ public class MainDrawerActivity extends FragmentActivity
         switch (item.getItemId()) {
             case R.id.action_delete_list:
                 deleteLoadedList();
+                return true;
+            case R.id.action_new_list:
+                createNewList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

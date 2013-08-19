@@ -4,6 +4,11 @@
           android:orderInCategory="99"
           android:showAsAction="never" />
 
+    <item android:id="@+id/action_new_list"
+          android:title="New List"
+          android:orderInCategory="98"
+          android:showAsAction="never" />
+
     <!-- <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
