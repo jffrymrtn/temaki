@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Author: Jeff Martin, 2013
  */
 public class MainListsFragment extends Fragment
-        implements GenericInputDialog.GenericInputDialogListener, GenericAlertDialog.GenericAlertDialogListener {
+        implements GenericAlertDialog.GenericAlertDialogListener {
 
     private final String EDIT_ITEM_DIALOG_TITLE = "Edit List Item:";
     public static final int CANCEL_RESULT_CODE = 0;
@@ -92,8 +92,7 @@ public class MainListsFragment extends Fragment
         clearItemSelection();
     }
 
-    @Override
-    public void onFinishDialog(String inputValue) {
+    private void renameListItem(String inputValue) {
         listItems.remove(selectedItemPos);
         listItems.add(selectedItemPos, inputValue);
         actionMode.finish();
@@ -105,7 +104,7 @@ public class MainListsFragment extends Fragment
         if (resultCode == DELETE_ITEM_ID) {
             onFinishAlertDialog();
         } else if (resultCode == EDIT_ITEM_ID) {
-            onFinishDialog(data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY));
+            renameListItem(data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY));
         } else if (resultCode == CANCEL_RESULT_CODE) {
             actionMode.finish();
             clearItemSelection();

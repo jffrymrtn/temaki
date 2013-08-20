@@ -13,22 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jmartin.temaki.MainDrawerActivity;
 import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
 
 /**
  * Author: Jeff Martin, 2013
  */
-public class GenericInputDialog extends DialogFragment implements TextView.OnEditorActionListener {
+public class GenericInputDialog extends DialogFragment {
 
-    public interface GenericInputDialogListener {
-        void onFinishDialog(String inputValue);
-    }
-
-    public static final String INTENT_RESULT_KEY = "Input";
+    public static final String INTENT_RESULT_KEY = "ResultKey";
     private EditText promptEditText;
     private String dialogTitle;
     private String optionalExistingValue;
+    private int inputType;
 
     public GenericInputDialog() {
     }
@@ -65,40 +63,28 @@ public class GenericInputDialog extends DialogFragment implements TextView.OnEdi
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                String input = promptEditText.getText().toString();
+                resultIntent.putExtra(INTENT_RESULT_KEY, input);
+
                 Fragment frag = getTargetFragment();
                 if (frag == null) {
-                    finishDialogWithResult();
+                    ((MainDrawerActivity) getActivity()).onActivityResult(inputType, inputType, resultIntent);
                 } else {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra(INTENT_RESULT_KEY, promptEditText.getText().toString());
-                    frag.onActivityResult(getTargetRequestCode(),
-                            ((MainListsFragment)frag).EDIT_ITEM_ID, resultIntent);
-                    dismiss();
+                    frag.onActivityResult(getTargetRequestCode(), ((MainListsFragment)frag).EDIT_ITEM_ID, resultIntent);
                 }
+                dismiss();
             }
         });
         getDialog().setTitle(dialogTitle);
         return rootView;
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            finishDialogWithResult();
-            return true;
-        }
-        return false;
-    }
-
-    private void finishDialogWithResult() {
-        String inputValue = promptEditText.getText().toString();
-
-        GenericInputDialogListener listener = (GenericInputDialogListener) getActivity();
-        listener.onFinishDialog(inputValue);
-        this.dismiss();
-    }
-
     public void setTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
+    }
+
+    public void setActionIdentifier(int inputType) {
+        this.inputType = inputType;
     }
 }

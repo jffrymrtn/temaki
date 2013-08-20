@@ -2,6 +2,7 @@ package com.jmartin.temaki;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,14 +31,16 @@ import java.util.HashMap;
  * Author: Jeff Martin, 2013
  */
 public class MainDrawerActivity extends FragmentActivity
-        implements GenericInputDialog.GenericInputDialogListener, GenericAlertDialog.GenericAlertDialogListener {
+        implements GenericAlertDialog.GenericAlertDialogListener {
 
+    private final int NEW_LIST_ID = 0;
+    private final int RENAME_LIST_ID = 1;
     private final String ALERT_DIALOG_TAG = "generic_alert_dialog_fragment";
     private final String INPUT_DIALOG_TAG = "generic_name_dialog_fragment";
     private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
 
-    private final String NEW_LIST_DIALOG_TITLE = "Enter the new list's name:";
+    private final String LIST_NAME_DIALOG_TITLE = "Enter this list's name:";
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
@@ -175,12 +178,15 @@ public class MainDrawerActivity extends FragmentActivity
 
         switch (item.getItemId()) {
             case R.id.action_delete_list:
-                deleteLoadedList();
+                showDeleteListPrompt();
                 return true;
             case R.id.action_new_list:
                 saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
-                createNewList();
+                showNewListPrompt();
                 return true;
+            case R.id.action_rename_list:
+                saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
+                showRenameListPrompt();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -188,29 +194,7 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onFinishAlertDialog() {
-        if (selectedItemPos != -1) {
-            lists.remove(drawerItems.get(selectedItemPos));
-            drawerItems.remove(selectedItemPos);
-            drawerListAdapter.notifyDataSetChanged();
-
-            // Reload
-            loadListIntoFragment(null, null);
-        }
-    }
-
-    @Override
-    public void onFinishDialog(String newListName) {
-        if (newListName.trim().equalsIgnoreCase("")) {
-            newListName = getDefaultTitle();
-        }
-
-        if (!lists.containsKey(newListName)) {
-            updateDrawer(newListName);
-            lists.put(newListName, new ArrayList<String>());
-            selectedItemPos = drawerItems.indexOf(newListName);
-        }
-
-        loadListIntoFragment(newListName, new ArrayList<String>());
+        deleteList(drawerItems.get(selectedItemPos));
     }
 
     @Override
@@ -225,11 +209,59 @@ public class MainDrawerActivity extends FragmentActivity
         super.onPause();
     }
 
-    /**
-     * Delete the currently checked list on the Navigation Drawer.
-     */
-    private void deleteLoadedList() {
-        showDeleteListConfirmationDialog();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String newListName = data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY).trim();
+
+        if (resultCode == RENAME_LIST_ID) {
+            renameList(newListName);
+        } else if (resultCode == NEW_LIST_ID) {
+            createNewList(newListName);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void createNewList(String newListName) {
+        if (newListName.trim().equalsIgnoreCase("")) {
+            newListName = getDefaultTitle();
+        }
+
+        if (!lists.containsKey(newListName)) {
+            updateDrawer(newListName);
+            lists.put(newListName, new ArrayList<String>());
+            selectedItemPos = drawerItems.indexOf(newListName);
+        }
+
+        loadListIntoFragment(newListName, new ArrayList<String>());
+    }
+
+    private void deleteList(String listName) {
+        lists.remove(listName);
+
+        drawerItems.remove(drawerItems.indexOf(listName));
+        drawerListAdapter.notifyDataSetChanged();
+
+        loadListIntoFragment(null, null);
+    }
+
+    private void renameList(String newListName) {
+        if (newListName.equalsIgnoreCase("")) {
+            return;
+        }
+
+        ArrayList<String> currentListItems = mainListsFragment.getListItems();
+        String oldListName = mainListsFragment.getListName();
+
+        if (!lists.containsKey(newListName)) {
+            updateDrawer(newListName);
+            lists.put(newListName, currentListItems);
+            selectedItemPos = drawerItems.indexOf(newListName);
+
+            // Delete old list
+            deleteList(oldListName);
+        }
+
+        loadListIntoFragment(newListName, currentListItems);
     }
 
     /**
@@ -269,18 +301,33 @@ public class MainDrawerActivity extends FragmentActivity
     /**
      * Prompt the user for the name of a list to be created.
      */
-    private void createNewList() {
+    private void showNewListPrompt() {
         // Show dialog for the name of the list, check for duplicates on drawerItems
-        showNewListDialog();
+        showNameInputDialog(NEW_LIST_ID);
     }
 
     /**
-     * Show the New List prompt dialog.
+     * Prompt the user for the name of the list to be renamed.
      */
-    private void showNewListDialog() {
+    private void showRenameListPrompt() {
+        showNameInputDialog(RENAME_LIST_ID);
+    }
+
+    /**
+     * Delete the currently checked list on the Navigation Drawer.
+     */
+    private void showDeleteListPrompt() {
+        showDeleteListConfirmationDialog();
+    }
+
+    /**
+     * Show the list name input dialog.
+     */
+    private void showNameInputDialog(int inputType) {
         FragmentManager fragManager = getFragmentManager();
         inputDialog = new GenericInputDialog();
-        inputDialog.setTitle(NEW_LIST_DIALOG_TITLE);
+        inputDialog.setActionIdentifier(inputType);
+        inputDialog.setTitle(LIST_NAME_DIALOG_TITLE);
         inputDialog.show(fragManager, INPUT_DIALOG_TAG);
     }
 
@@ -340,7 +387,7 @@ public class MainDrawerActivity extends FragmentActivity
 
             // Offset position by 1 because of the header (header @ index 0)
             if (--position < 0) {
-                createNewList();
+                showNewListPrompt();
             } else {
                 // Load the list specified by position 'position' on the nav drawer
                 String listName = drawerItems.get(position);

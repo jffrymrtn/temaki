@@ -10,4 +10,7 @@
     <string name="cancel_dialog_button_text">Cancel</string>
     <string name="context_menu_edit_item">Edit</string>
     <string name="universal_delete_string">Delete</string>
+    <string name="ab_menu_new_list">New List</string>
+    <string name="ab_menu_delete_list">Delete List</string>
+    <string name="ab_menu_rename_list">Rename List</string>
 </resources>

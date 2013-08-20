@@ -5,6 +5,34 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="On Startup, Load the Last Opened List"
+            android:id="@+id/startup_option_checkbox"
+            android:layout_gravity="left|center_vertical"/>
 
+    <TextView
+            android:id="@+id/google_plusone_promo"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:text="+1 Temaki on Google+" />
 
+    <TextView
+            android:id="@+id/attributions_settings"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:text="Attributions" />
+
+    <TextView
+        android:id="@+id/about_settings"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:text="About Temaki" />
 </LinearLayout>
