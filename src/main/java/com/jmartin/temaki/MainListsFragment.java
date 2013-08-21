@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -51,6 +52,7 @@ public class MainListsFragment extends Fragment
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
     private int selectedItemPos = -1;
+    private TextView selectedItemView = null;
 
     public MainListsFragment() {
         super();
@@ -113,6 +115,7 @@ public class MainListsFragment extends Fragment
     }
 
     private void clearItemSelection() {
+        selectedItemView = null;
         selectedItemPos = -1;
         itemsListAdapter.notifyDataSetChanged();
     }
@@ -212,6 +215,7 @@ public class MainListsFragment extends Fragment
             } else {
                 view.setSelected(true);
                 selectedItemPos = position;
+                selectedItemView = (TextView) view;
 
                 // Show Contextual ActionBar
                 if (actionMode == null) {

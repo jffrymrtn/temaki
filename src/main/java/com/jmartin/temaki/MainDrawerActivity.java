@@ -97,6 +97,7 @@ public class MainDrawerActivity extends FragmentActivity
         // If there is a list to load, load it
         if (!loadedListName.equalsIgnoreCase("")) {
             loadedList = lists.get(loadedListName);
+            selectedItemPos = drawerItems.indexOf((loadedListName));
         }
 
         // Set the Navigation Drawer up
@@ -104,7 +105,7 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerListView = (ListView) findViewById(R.id.lists_drawer);
 
         // Set the drawer ListView Header
-        View drawerListViewHeaderView = getLayoutInflater().inflate(R.layout.drawer_header, null);
+        View drawerListViewHeaderView = getLayoutInflater().inflate(R.layout.drawer_newlist_header, null);
         listsDrawerListView.addHeaderView(drawerListViewHeaderView);
 
         // Set drawer ListView adapter
@@ -220,7 +221,14 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onFinishAlertDialog() {
-        deleteList(drawerItems.get(selectedItemPos));
+        try {
+            // Normal delete procedure for saved lists
+            deleteList(drawerItems.get(selectedItemPos));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // Only happens when we try to delete a new list that hasn't been saved yet,
+            // Let's just load a new list in this case (kind of like a "clear" function)
+            loadListIntoFragment(null, null);
+        }
     }
 
     @Override
@@ -262,6 +270,11 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     private void deleteList(String listName) {
+        // If one of these don't contain the list, it means it was never persisted. Return here
+        if (!(lists.containsKey(listName) && drawerItems.contains(listName))) {
+            return;
+        }
+
         lists.remove(listName);
 
         drawerItems.remove(drawerItems.indexOf(listName));
@@ -322,6 +335,8 @@ public class MainDrawerActivity extends FragmentActivity
         // If the user wants to load the last opened list on startup, save the list's name
         if (sharedPrefs.getBoolean(SettingsActivity.KEY_PREF_STARTUP_OPTION, false)) {
             sharedPrefsEditor.putString(LAST_OPENED_LIST_SP_KEY, mainListsFragment.getListName());
+        } else {
+            sharedPrefsEditor.putString(LAST_OPENED_LIST_SP_KEY, "");
         }
 
         Gson gson = new Gson();
@@ -405,7 +420,7 @@ public class MainDrawerActivity extends FragmentActivity
             listName = getDefaultTitle();
         }
 
-        if (listItems.size() > 0) {
+        if ((listItems.size() > 0) || (lists.containsKey(listName))) {
             lists.put(listName, listItems);
             updateDrawer(listName);
         }

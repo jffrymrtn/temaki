@@ -6,28 +6,29 @@
     <string name="close_drawer">Close Drawer</string>
     <string name="add_new_item_edit_text_hint">Add a new item&#8230;</string>
     <string name="done_dialog_button_text">Done</string>
-    <string name="cancel_dialog_button_text">Cancel</string>
     <string name="context_menu_edit_item">Edit</string>
     <string name="universal_delete_string">Delete</string>
-    <string name="universal_okay_string">Okay</string>
     <string name="ab_menu_new_list">New List</string>
     <string name="ab_menu_delete_list">Delete List</string>
     <string name="ab_menu_rename_list">Rename List</string>
-    <string name="highlight">Highlight</string>
 
+    <string name="pref_startup_option_title">Load the last opened list on startup</string>
+    <string name="pref_list_style_option_title">List Style</string>
+    <string name="pref_attribution_dialog_title">Attributions</string>
+    <string name="pref_about_dialog_title">About Temaki</string>
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.25\n
+        Temaki v1.1\n
         2013\n\n
-        Developed by: Jeff Martin\n\n
-        Temaki is an open source project at:\n\n
+
+        Temaki is an open source project.\n
+        If you\'re a developer and want to contribute, visit:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
 
     <string name="attribution_string">
-        The following third-party libraries were used in parts of this app. Thank you to all!\n\n
+        The following third-party libraries were used in parts of this app.\n
+        Thank you to all!\n\n
         No third party libraries were used yet as of this app version.\n\n
     </string>
-    <string name="pref_startup_option_title">Load the last opened list on startup</string>
-    <string name="pref_list_style_option_title">List Style</string>
 </resources>

@@ -47,7 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:textAllCaps="true"
-            android:text="@string/cancel_dialog_button_text"
+            android:text="@android:string/cancel"
             android:background="?android:attr/selectableItemBackground"
             style="?android:attr/borderlessButtonStyle" />
         <Button
