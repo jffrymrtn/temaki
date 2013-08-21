@@ -17,14 +17,17 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.25, 2013\n\n
-
-        Temaki is an open source project.\n
-        Thank you to all contributing developers at:\n\n
+        Temaki v1.25\n
+        2013\n\n
+        Developed by: Jeff Martin\n\n
+        Temaki is an open source project at:\n\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
 
     <string name="attribution_string">
-        The following third-party libraries were used in parts of this app. Thank you to all respective developers!\n\n
+        The following third-party libraries were used in parts of this app. Thank you to all!\n\n
+        No third party libraries were used yet as of this app version.\n\n
     </string>
+    <string name="pref_startup_option_title">Load the last opened list on startup</string>
+    <string name="pref_list_style_option_title">List Style</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.settings.SettingsActivity;
+import com.jmartin.temaki.settings.SettingsFragment;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class MainDrawerActivity extends FragmentActivity
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
+    private final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
 
     private GenericInputDialog inputDialog;
     private DeleteConfirmationDialog alertDialog;
@@ -76,6 +79,11 @@ public class MainDrawerActivity extends FragmentActivity
             // Load from SharedPreferences
             SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
             listsJson = sharedPrefs.getString(LISTS_SP_KEY, "");
+
+            // Load the last loaded list if needed
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_STARTUP_OPTION, false)) {
+                loadedListName = sharedPrefs.getString(LAST_OPENED_LIST_SP_KEY, "");
+            }
         } else {
             // load from savedInstanceState
             listsJson = savedInstanceState.getString(LISTS_SP_KEY, "");
@@ -84,13 +92,11 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         // Initialize lists variable
-        Type listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
-        lists = new Gson().fromJson(listsJson, listsType);
+        deserializeJsonLists(listsJson);
 
-        if (lists != null && lists.size() > 0) {
-            drawerItems.addAll(lists.keySet());
-        } else if (lists == null) {
-            lists = new HashMap<String, ArrayList<String>>();
+        // If there is a list to load, load it
+        if (!loadedListName.equalsIgnoreCase("")) {
+            loadedList = lists.get(loadedListName);
         }
 
         // Set the Navigation Drawer up
@@ -123,10 +129,14 @@ public class MainDrawerActivity extends FragmentActivity
                 invalidateOptionsMenu();
             }
         };
+
         listsDrawerLayout.setDrawerListener(listsDrawerToggle);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        // Set up Preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Load the main fragment with an empty list
         mainListsFragment = new MainListsFragment();
@@ -137,6 +147,17 @@ public class MainDrawerActivity extends FragmentActivity
                 .commit();
 
         super.onCreate(savedInstanceState);
+    }
+
+    private void deserializeJsonLists(String listsJson) {
+        Type listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
+        lists = new Gson().fromJson(listsJson, listsType);
+
+        if (lists != null && lists.size() > 0) {
+            drawerItems.addAll(lists.keySet());
+        } else if (lists == null) {
+            lists = new HashMap<String, ArrayList<String>>();
+        }
     }
 
     @Override
@@ -295,7 +316,13 @@ public class MainDrawerActivity extends FragmentActivity
      * Save the current list of lists to SharedPreferences.
      */
     public void saveListsToSharedPreferences() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor sharedPrefsEditor = getPreferences(MODE_PRIVATE).edit();
+
+        // If the user wants to load the last opened list on startup, save the list's name
+        if (sharedPrefs.getBoolean(SettingsActivity.KEY_PREF_STARTUP_OPTION, false)) {
+            sharedPrefsEditor.putString(LAST_OPENED_LIST_SP_KEY, mainListsFragment.getListName());
+        }
 
         Gson gson = new Gson();
         String listsJson = gson.toJson(lists);
@@ -326,7 +353,7 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     /**
-     * Show the SettingsActivity
+     * Show the SettingsFragment
      */
     private void showSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
