@@ -20,11 +20,6 @@ Android Tablet Support
 
 As of version 1.0, the app is not yet optimized for tablets, but there are plans to have it supported for tablets at least as large as the Nexus 7 (2013).
 
-Developer and Author
-==================
-
-This app was developed by [Jeff Martin](http://www.jeffreymartin.ca). Feel free to reach out via my email address or any other social channel you can find me on to talk about this app.
-
 Contributions
 ===========
 
