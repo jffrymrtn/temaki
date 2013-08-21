@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list_style_array">
+        <item>No List Style</item>
+        <item>Numbered Lists</item>
+        <item>Bulleted Lists</item>
+    </string-array>
+
+    <string-array name="color_schemes_array">
+        <item>Default Color Scheme</item>
+    </string-array>
+</resources>

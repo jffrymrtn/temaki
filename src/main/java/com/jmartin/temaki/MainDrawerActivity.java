@@ -20,8 +20,9 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jmartin.temaki.dialog.GenericAlertDialog;
+import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
+import com.jmartin.temaki.settings.SettingsActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -31,11 +32,11 @@ import java.util.HashMap;
  * Author: Jeff Martin, 2013
  */
 public class MainDrawerActivity extends FragmentActivity
-        implements GenericAlertDialog.GenericAlertDialogListener {
+        implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
     private final int NEW_LIST_ID = 0;
     private final int RENAME_LIST_ID = 1;
-    private final String ALERT_DIALOG_TAG = "generic_alert_dialog_fragment";
+    private final String ALERT_DIALOG_TAG = "delete_confirmation_dialog_fragment";
     private final String INPUT_DIALOG_TAG = "generic_name_dialog_fragment";
     private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
@@ -46,7 +47,7 @@ public class MainDrawerActivity extends FragmentActivity
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
 
     private GenericInputDialog inputDialog;
-    private GenericAlertDialog alertDialog;
+    private DeleteConfirmationDialog alertDialog;
 
     private DrawerLayout listsDrawerLayout;
     private ListView listsDrawerListView;
@@ -187,6 +188,10 @@ public class MainDrawerActivity extends FragmentActivity
             case R.id.action_rename_list:
                 saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
                 showRenameListPrompt();
+                return true;
+            case R.id.action_settings:
+                showSettings();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -321,6 +326,14 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     /**
+     * Show the SettingsActivity
+     */
+    private void showSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
+    /**
      * Show the list name input dialog.
      */
     private void showNameInputDialog(int inputType) {
@@ -336,7 +349,7 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showDeleteListConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
-        alertDialog = new GenericAlertDialog();
+        alertDialog = new DeleteConfirmationDialog();
         alertDialog.setTitle(CONFIRM_DELETE_DIALOG_TITLE);
         alertDialog.show(fragManager, ALERT_DIALOG_TAG);
     }

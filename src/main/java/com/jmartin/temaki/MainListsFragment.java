@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jmartin.temaki.dialog.GenericAlertDialog;
+import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 
 import java.util.ArrayList;
@@ -30,14 +30,14 @@ import java.util.ArrayList;
  * Author: Jeff Martin, 2013
  */
 public class MainListsFragment extends Fragment
-        implements GenericAlertDialog.GenericAlertDialogListener {
+        implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
     private final String EDIT_ITEM_DIALOG_TITLE = "Edit List Item:";
     public static final int CANCEL_RESULT_CODE = 0;
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
 
-    private GenericAlertDialog alertDialog;
+    private DeleteConfirmationDialog alertDialog;
     private  GenericInputDialog inputDialog;
 
     private ListView itemsListView;
@@ -172,11 +172,11 @@ public class MainListsFragment extends Fragment
      */
     private void showDeleteItemConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
-        alertDialog = new GenericAlertDialog();
+        alertDialog = new DeleteConfirmationDialog();
 
         alertDialog.setTargetFragment(this, DELETE_ITEM_ID);
         alertDialog.setTitle(MainDrawerActivity.CONFIRM_DELETE_DIALOG_TITLE);
-        alertDialog.show(fragManager, "generic_alert_dialog_fragment");
+        alertDialog.show(fragManager, "delete_confirmation_dialog_fragment");
     }
 
     /**

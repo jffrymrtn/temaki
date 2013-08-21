@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">Temaki</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="add_new_item_edit_text_hint">Add a new item&#8230;</string>
@@ -10,7 +9,22 @@
     <string name="cancel_dialog_button_text">Cancel</string>
     <string name="context_menu_edit_item">Edit</string>
     <string name="universal_delete_string">Delete</string>
+    <string name="universal_okay_string">Okay</string>
     <string name="ab_menu_new_list">New List</string>
     <string name="ab_menu_delete_list">Delete List</string>
     <string name="ab_menu_rename_list">Rename List</string>
+    <string name="highlight">Highlight</string>
+
+    <!-- Long String Content -->
+    <string name="about_string">
+        Temaki v1.25, 2013\n\n
+
+        Temaki is an open source project.\n
+        Thank you to all contributing developers at:\n\n
+        http://github.com/mjeff/Temaki-Lists \n\n
+    </string>
+
+    <string name="attribution_string">
+        The following third-party libraries were used in parts of this app. Thank you to all respective developers!\n\n
+    </string>
 </resources>

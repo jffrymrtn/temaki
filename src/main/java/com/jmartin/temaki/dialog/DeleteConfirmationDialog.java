@@ -3,14 +3,10 @@ package com.jmartin.temaki.dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
@@ -18,7 +14,7 @@ import com.jmartin.temaki.R;
 /**
  * Author: Jeff Martin, 2013
  */
-public class GenericAlertDialog extends DialogFragment {
+public class DeleteConfirmationDialog extends DialogFragment {
 
     public interface GenericAlertDialogListener {
         void onFinishAlertDialog();
@@ -26,12 +22,12 @@ public class GenericAlertDialog extends DialogFragment {
 
     private String dialogTitle;
 
-    public GenericAlertDialog() {
+    public DeleteConfirmationDialog() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.generic_alert_dialog_fragment, container);
+        View rootView = inflater.inflate(R.layout.delete_confirmation_dialog_fragment, container);
 
         Button cancelButton = (Button) rootView.findViewById(R.id.cancel_dialog_button);
         Button okButton = (Button) rootView.findViewById(R.id.ok_dialog_button);

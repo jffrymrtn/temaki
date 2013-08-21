@@ -1,38 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginBottom="1dp"
+              android:orientation="vertical">
 
-    <CheckBox
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="On Startup, Load the Last Opened List"
-            android:id="@+id/startup_option_checkbox"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+        <TextView
+                android:text="app startup"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textAppearance="@android:style/TextAppearance.Holo"
+                android:layout_height="20dp"
+                android:layout_width="match_parent" />
+        <Switch
+                android:id="@+id/startup_options_toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Load last opened list on startup"
+                android:checked="false" />
+    </LinearLayout>
 
-    <TextView
-            android:id="@+id/google_plusone_promo"
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+        <TextView
+            android:text="list item style"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.Holo"
+            android:layout_height="20dp"
+            android:layout_width="match_parent" />
+        <Spinner
+            android:id="@+id/list_style_spinner"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-            android:text="+1 Temaki on Google+" />
+            android:layout_weight="1"
+            android:textAllCaps="true" />
+    </LinearLayout>
 
-    <TextView
-            android:id="@+id/attributions_settings"
-            android:layout_height="wrap_content"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-            android:text="Attributions" />
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+        <TextView
+                android:text="color scheme"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textAppearance="@android:style/TextAppearance.Holo"
+                android:layout_height="20dp"
+                android:layout_width="match_parent" />
+        <Spinner
+                android:id="@+id/color_scheme_spinner"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:textAllCaps="true" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/about_settings"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/attributions_button"
+        android:layout_height="0dip"
         android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:text="Attributions"
+        android:textAllCaps="true"
+        android:textColor="@color/main_light_text_color"
+        android:background="@drawable/flat_button_blue" />
+
+    <Button
+        android:id="@+id/about_button"
+        android:layout_height="0dip"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:text="About Temaki" />
+        android:layout_marginTop="1dp"
+        android:text="About Temaki"
+        android:textAllCaps="true"
+        android:textColor="@color/main_light_text_color"
+        android:background="@drawable/flat_button_blue" />
 </LinearLayout>

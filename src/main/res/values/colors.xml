@@ -2,6 +2,8 @@
 <resources>
     <color name="main_blue_face">#ff0099cc</color>
     <color name="main_blue_accent">#ff33b5e5</color>
+    <color name="button_blue">#ff0099ff</color>
+    <color name="button_blue_pressed">#ff00baee</color>
     <color name="off_white_background">#ffebebeb</color>
     <color name="main_dark_text_color">#ff333333</color>
     <color name="main_light_text_color">#ffe9e9e9</color>
