@@ -16,12 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jmartin.temaki.adapter.DrawerListAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.settings.SettingsActivity;
@@ -29,6 +29,7 @@ import com.jmartin.temaki.settings.SettingsActivity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Author: Jeff Martin, 2013
@@ -36,6 +37,7 @@ import java.util.HashMap;
 public class MainDrawerActivity extends FragmentActivity
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
+    private final int EMPTY_LIST_ITEMS_COUNT = 0;
     private final int NEW_LIST_ID = 0;
     private final int RENAME_LIST_ID = 1;
     private final String ALERT_DIALOG_TAG = "delete_confirmation_dialog_fragment";
@@ -55,21 +57,21 @@ public class MainDrawerActivity extends FragmentActivity
     private DrawerLayout listsDrawerLayout;
     private ListView listsDrawerListView;
     private ActionBarDrawerToggle listsDrawerToggle;
-    private ArrayList<String> drawerItems;
-    private ArrayAdapter<String> drawerListAdapter;
+    private LinkedHashMap<String, Integer> drawerItems;
+    private DrawerListAdapter drawerListAdapter;
     private HashMap<String, ArrayList<String>> lists;
 
     private MainListsFragment mainListsFragment;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
-    private int selectedItemPos = -1;
+    private String selectedListName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_drawer_layout);
 
-        drawerItems = new ArrayList<String>();
+        drawerItems = new LinkedHashMap<String, Integer>();
 
         String listsJson;
         String loadedListName = "";
@@ -97,7 +99,7 @@ public class MainDrawerActivity extends FragmentActivity
         // If there is a list to load, load it
         if (!loadedListName.equalsIgnoreCase("")) {
             loadedList = lists.get(loadedListName);
-            selectedItemPos = drawerItems.indexOf((loadedListName));
+            selectedListName = loadedListName;
         }
 
         // Set the Navigation Drawer up
@@ -109,7 +111,7 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerListView.addHeaderView(drawerListViewHeaderView);
 
         // Set drawer ListView adapter
-        drawerListAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, drawerItems);
+        drawerListAdapter = new DrawerListAdapter(this, drawerItems);
         listsDrawerListView.setAdapter(drawerListAdapter);
         listsDrawerListView.setOnItemClickListener(new ListsDrawerClickListener());
 
@@ -129,6 +131,13 @@ public class MainDrawerActivity extends FragmentActivity
                 searchView.clearFocus();
                 getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
+
+                // Make sure the navigation bar shows the updated count of the currently opened
+                // list - only if the list already exists (not new), OR if it has items
+                if ((drawerItems.containsKey(mainListsFragment.getListName())) ||
+                    (mainListsFragment.getListItems().size() > 0)) {
+                    updateDrawer(mainListsFragment.getListName(), mainListsFragment.getListItems().size());
+                }
             }
         };
 
@@ -156,7 +165,9 @@ public class MainDrawerActivity extends FragmentActivity
         lists = new Gson().fromJson(listsJson, listsType);
 
         if (lists != null && lists.size() > 0) {
-            drawerItems.addAll(lists.keySet());
+            for (String name : lists.keySet()) {
+                drawerItems.put(name, lists.get(name).size());
+            }
         } else if (lists == null) {
             lists = new HashMap<String, ArrayList<String>>();
         }
@@ -178,6 +189,8 @@ public class MainDrawerActivity extends FragmentActivity
                     if (query != null) {
                         mainListsFragment.search(query);
                     }
+                    hideKeyboard();
+                    searchView.clearFocus();
                     return false;
                 }
 
@@ -196,6 +209,10 @@ public class MainDrawerActivity extends FragmentActivity
                     if (!hasFocus) {
                         searchItem.collapseActionView();
                         searchView.setQuery("", false);
+                    } else {
+                        if (listsDrawerLayout.isDrawerOpen(listsDrawerListView)) {
+                            listsDrawerLayout.closeDrawer(listsDrawerListView);
+                        }
                     }
                 }
             });
@@ -268,7 +285,7 @@ public class MainDrawerActivity extends FragmentActivity
     public void onFinishAlertDialog() {
         try {
             // Normal delete procedure for saved lists
-            deleteList(drawerItems.get(selectedItemPos));
+            deleteList(selectedListName);
         } catch (ArrayIndexOutOfBoundsException e) {
             // Only happens when we try to delete a new list that hasn't been saved yet,
             // Let's just load a new list in this case (kind of like a "clear" function)
@@ -306,9 +323,9 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         if (!lists.containsKey(newListName)) {
-            updateDrawer(newListName);
+            updateDrawer(newListName, EMPTY_LIST_ITEMS_COUNT);
             lists.put(newListName, new ArrayList<String>());
-            selectedItemPos = drawerItems.indexOf(newListName);
+            selectedListName = newListName;
         }
 
         loadListIntoFragment(newListName, new ArrayList<String>());
@@ -316,15 +333,15 @@ public class MainDrawerActivity extends FragmentActivity
 
     private void deleteList(String listName) {
         // If one of these don't contain the list, it means it was never persisted. Return here
-        if (!(lists.containsKey(listName) && drawerItems.contains(listName))) {
+        if (!(lists.containsKey(listName) && drawerItems.containsKey(listName))) {
             return;
         }
 
         lists.remove(listName);
 
-        drawerItems.remove(drawerItems.indexOf(listName));
+        drawerItems.remove(listName);
         drawerListAdapter.notifyDataSetChanged();
-        selectedItemPos = -1;
+        selectedListName = "";
 
         loadListIntoFragment(null, null);
     }
@@ -338,12 +355,10 @@ public class MainDrawerActivity extends FragmentActivity
         String oldListName = mainListsFragment.getListName();
 
         if (!lists.containsKey(newListName)) {
-            updateDrawer(newListName);
+            updateDrawer(newListName, currentListItems.size());
             lists.put(newListName, currentListItems);
-            selectedItemPos = drawerItems.indexOf(newListName);
-
-            // Delete old list
             deleteList(oldListName);
+            selectedListName = newListName;
         }
 
         loadListIntoFragment(newListName, currentListItems);
@@ -447,11 +462,9 @@ public class MainDrawerActivity extends FragmentActivity
      * Update the Navigation Drawer ListView with the new list listName.
      * @param listName the new list to add to the Navigation Drawer.
      */
-    private void updateDrawer(String listName) {
-        if (!drawerItems.contains(listName)) {
-            drawerItems.add(listName);
-            drawerListAdapter.notifyDataSetChanged();
-        }
+    private void updateDrawer(String listName, int listItemsCount) {
+        drawerItems.put(listName, listItemsCount);
+        drawerListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -468,7 +481,7 @@ public class MainDrawerActivity extends FragmentActivity
 
         if ((listItems.size() > 0) || (lists.containsKey(listName))) {
             lists.put(listName, listItems);
-            updateDrawer(listName);
+            updateDrawer(listName, listItems.size());
         }
     }
 
@@ -500,12 +513,9 @@ public class MainDrawerActivity extends FragmentActivity
                 showNewListPrompt();
             } else {
                 // Load the list specified by position 'position' on the nav drawer
-                String listName = drawerItems.get(position);
-                loadListIntoFragment(listName, lists.get(listName));
+                selectedListName = drawerListAdapter.getKeyAtPosition(position);
+                loadListIntoFragment(selectedListName, lists.get(selectedListName));
             }
-
-            // Keep track of the currently loaded list
-            selectedItemPos = position;
 
             // Close the nav drawer
             view.setSelected(true);
