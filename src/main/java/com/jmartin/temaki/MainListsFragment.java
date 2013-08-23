@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -34,6 +33,7 @@ public class MainListsFragment extends Fragment
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
     private final String EDIT_ITEM_DIALOG_TITLE = "Edit List Item:";
+    private final String CONFIRM_DELETE_ITEM_DIALOG_TITLE = "Delete this item?";
     public static final int CANCEL_RESULT_CODE = 0;
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
@@ -74,6 +74,7 @@ public class MainListsFragment extends Fragment
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
         addItemsEditText.setOnClickListener(new EditTextClickListener());
+        addItemsEditText.setOnKeyListener(new EditTextKeyListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
 
         return view;
@@ -178,7 +179,7 @@ public class MainListsFragment extends Fragment
         alertDialog = new DeleteConfirmationDialog();
 
         alertDialog.setTargetFragment(this, DELETE_ITEM_ID);
-        alertDialog.setTitle(MainDrawerActivity.CONFIRM_DELETE_DIALOG_TITLE);
+        alertDialog.setTitle(CONFIRM_DELETE_ITEM_DIALOG_TITLE);
         alertDialog.show(fragManager, "delete_confirmation_dialog_fragment");
     }
 
@@ -190,15 +191,41 @@ public class MainListsFragment extends Fragment
         inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    public void search(CharSequence query) {
+        if (query.length() > 0) {
+            itemsListAdapter.getFilter().filter(query);
+        } else {
+            itemsListView.clearTextFilter();
+        }
+    }
+
+    private void addListItem() {
+        String newItem = addItemsEditText.getText().toString().trim();
+        if (newItem.length() > 0) {
+            listItems.add(newItem);
+            itemsListAdapter.notifyDataSetChanged();
+            addItemsEditText.setText("");
+        }
+    }
+
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            String newItem = v.getText().toString().trim();
-            if ((actionId == EditorInfo.IME_ACTION_DONE) && (newItem.length() > 0)){
-                listItems.add(newItem);
-                itemsListAdapter.notifyDataSetChanged();
-                v.setText("");
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                addListItem();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private class EditTextKeyListener implements View.OnKeyListener {
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_UP) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                addListItem();
                 return true;
             }
             return false;
@@ -265,6 +292,7 @@ public class MainListsFragment extends Fragment
             if (actionMode != null) {
                 actionMode.finish();
                 clearItemSelection();
+
             }
         }
     }

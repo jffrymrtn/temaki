@@ -1,5 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/action_search"
+          android:title="Search"
+          android:icon="@drawable/ic_search"
+          android:showAsAction="ifRoom|collapseActionView"
+          android:actionViewClass="android.widget.SearchView" />
+
     <item android:id="@+id/action_rename_list"
           android:title="@string/ab_menu_rename_list"
           android:orderInCategory="97"

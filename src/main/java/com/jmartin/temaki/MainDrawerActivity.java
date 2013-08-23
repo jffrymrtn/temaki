@@ -18,13 +18,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.settings.SettingsActivity;
-import com.jmartin.temaki.settings.SettingsFragment;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -165,6 +165,27 @@ public class MainDrawerActivity extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    if (query != null) {
+                        mainListsFragment.search(query);
+                    }
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText != null) {
+                        mainListsFragment.search(newText);
+                    }
+                    return false;
+                }
+            });
+        }
         return true;
     }
 
@@ -279,6 +300,7 @@ public class MainDrawerActivity extends FragmentActivity
 
         drawerItems.remove(drawerItems.indexOf(listName));
         drawerListAdapter.notifyDataSetChanged();
+        selectedItemPos = -1;
 
         loadListIntoFragment(null, null);
     }
