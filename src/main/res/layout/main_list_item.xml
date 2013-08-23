@@ -10,4 +10,4 @@
         android:textColor="@color/main_dark_text_color"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:fontFamily="sans-serif-light"
-        android:background="@drawable/main_list_item_style_holo_light_blue" />
+        android:background="@drawable/main_list_item" />

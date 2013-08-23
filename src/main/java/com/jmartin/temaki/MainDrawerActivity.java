@@ -126,6 +126,7 @@ public class MainDrawerActivity extends FragmentActivity
 
             public void onDrawerOpened(View view) {
                 hideKeyboard();
+                searchView.clearFocus();
                 getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
             }
@@ -207,6 +208,8 @@ public class MainDrawerActivity extends FragmentActivity
                 }
             });
         }
+
+        searchView.setQueryHint(getString(R.string.search_hint));
         return true;
     }
 
@@ -481,6 +484,9 @@ public class MainDrawerActivity extends FragmentActivity
         searchView.setIconified(false);
         searchView.clearFocus();
     }
+
+
+    /* Private Inner Classes from this point onward */
 
     private class ListsDrawerClickListener implements ListView.OnItemClickListener {
 

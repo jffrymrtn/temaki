@@ -27,7 +27,7 @@
             android:paddingRight="15dp"
             android:singleLine="true"
             android:hint="@string/add_new_item_edit_text_hint"
-            android:background="@drawable/edit_text_style_holo_light_blue"
+            android:background="@drawable/edit_text_style_holo"
             android:textColor ="@color/main_dark_text_color"
             android:imeOptions="flagNoExtractUi"
             android:drawableRight="@drawable/ic_add_item" />

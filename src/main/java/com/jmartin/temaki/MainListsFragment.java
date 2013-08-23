@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -76,6 +79,13 @@ public class MainListsFragment extends Fragment
         addItemsEditText.setOnClickListener(new EditTextClickListener());
         addItemsEditText.setOnKeyListener(new EditTextKeyListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
+        addItemsEditText.setOnTouchListener(new AddItemDrawableOnTouchListener(addItemsEditText) {
+            @Override
+            public boolean onTouchAddItemDrawable(MotionEvent event) {
+                addListItem();
+                return false;
+            }
+        });
 
         return view;
     }
@@ -115,10 +125,14 @@ public class MainListsFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void clearItemSelection() {
-        selectedItemView = null;
+    public void clearItemSelection() {
         selectedItemPos = -1;
         itemsListAdapter.notifyDataSetChanged();
+
+        if (selectedItemView != null) {
+            selectedItemView.setBackgroundResource(R.drawable.main_list_item);
+            selectedItemView = null;
+        }
     }
 
     /**
@@ -220,6 +234,8 @@ public class MainListsFragment extends Fragment
         }
     }
 
+    /* Private Inner Classes from this point onward */
+
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
 
         @Override
@@ -248,13 +264,14 @@ public class MainListsFragment extends Fragment
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (selectedItemPos == position) {
-                view.setSelected(false);
                 actionMode.finish();
                 clearItemSelection();
             } else {
-                view.setSelected(true);
+                clearItemSelection();
                 selectedItemPos = position;
                 selectedItemView = (TextView) view;
+
+                selectedItemView.setBackgroundResource(R.drawable.main_list_item_selected);
 
                 // Show Contextual ActionBar
                 if (actionMode == null) {
@@ -309,5 +326,34 @@ public class MainListsFragment extends Fragment
                 ((MainDrawerActivity) getActivity()).closeSearchView();
             }
         }
+    }
+
+    private abstract class AddItemDrawableOnTouchListener implements View.OnTouchListener {
+        Drawable addItemDrawable;
+        private final int HITBOX_VALUE = 10;
+
+        public AddItemDrawableOnTouchListener(EditText view) {
+            super();
+            final Drawable[] drawables = view.getCompoundDrawables();
+            if (drawables != null && drawables.length == 4) {
+                this.addItemDrawable = drawables[2];
+            }
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP && addItemDrawable != null) {
+                final int x = (int) event.getX();
+                final Rect drawableBounds = addItemDrawable.getBounds();
+
+                if ((x <= (v.getRight() - v.getPaddingRight() + HITBOX_VALUE)) &&
+                   (x >= (v.getRight() - drawableBounds.width() - HITBOX_VALUE))) {
+                    return onTouchAddItemDrawable(event);
+                }
+            }
+            return false;
+        }
+
+        public abstract boolean onTouchAddItemDrawable(final MotionEvent event);
     }
 }
