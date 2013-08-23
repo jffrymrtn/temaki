@@ -161,11 +161,14 @@ public class MainDrawerActivity extends FragmentActivity
         }
     }
 
+    private SearchView searchView;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchItem.getActionView();
 
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -182,6 +185,24 @@ public class MainDrawerActivity extends FragmentActivity
                     if (newText != null) {
                         mainListsFragment.search(newText);
                     }
+                    return false;
+                }
+            });
+
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        searchItem.collapseActionView();
+                        searchView.setQuery("", false);
+                    }
+                }
+            });
+
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    mainListsFragment.clearSearchFilter();
                     return false;
                 }
             });
@@ -453,6 +474,12 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private String getDefaultTitle() {
         return DEFAULT_LIST_NAME + (lists.size() + 1); // Offset index 0
+    }
+
+    public void closeSearchView() {
+        searchView.setQuery("", false);
+        searchView.setIconified(false);
+        searchView.clearFocus();
     }
 
     private class ListsDrawerClickListener implements ListView.OnItemClickListener {

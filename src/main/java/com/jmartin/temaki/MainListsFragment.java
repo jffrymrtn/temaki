@@ -195,11 +195,23 @@ public class MainListsFragment extends Fragment
         if (query.length() > 0) {
             itemsListAdapter.getFilter().filter(query);
         } else {
-            itemsListView.clearTextFilter();
+            clearSearchFilter();
         }
     }
 
+    public void clearSearchFilter() {
+        itemsListAdapter.getFilter().filter("");
+
+        // Workaround to an (apparently) bug in Android's ArrayAdapter... not pretty, I know
+        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListView.setAdapter(itemsListAdapter);
+        itemsListAdapter.notifyDataSetChanged();
+    }
+
     private void addListItem() {
+        // Make sure we clear any filters first
+        clearSearchFilter();
+
         String newItem = addItemsEditText.getText().toString().trim();
         if (newItem.length() > 0) {
             listItems.add(newItem);
@@ -292,7 +304,9 @@ public class MainListsFragment extends Fragment
             if (actionMode != null) {
                 actionMode.finish();
                 clearItemSelection();
+                clearSearchFilter();
 
+                ((MainDrawerActivity) getActivity()).closeSearchView();
             }
         }
     }
