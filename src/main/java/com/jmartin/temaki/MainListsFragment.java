@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jmartin.temaki.adapter.ListItemsAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 
@@ -46,7 +47,7 @@ public class MainListsFragment extends Fragment
 
     private ListView itemsListView;
     private EditText addItemsEditText;
-    private ArrayAdapter<String> itemsListAdapter;
+    private ListItemsAdapter itemsListAdapter;
 
     private String listName;
     private ArrayList<String> listItems;
@@ -72,7 +73,8 @@ public class MainListsFragment extends Fragment
         itemsListView = (ListView) view.findViewById(R.id.mainListView);
         addItemsEditText = (EditText) view.findViewById(R.id.addItemEditText);
 
-        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+//        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
@@ -173,6 +175,10 @@ public class MainListsFragment extends Fragment
         return (ArrayList<String>) listItems.clone();
     }
 
+    public int getSelectedItemPos() {
+        return selectedItemPos;
+    }
+
     /**
      * Show the Edit Item prompt dialog.
      */
@@ -217,7 +223,7 @@ public class MainListsFragment extends Fragment
         itemsListAdapter.getFilter().filter("");
 
         // Workaround to an (apparently) bug in Android's ArrayAdapter... not pretty, I know
-        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListAdapter.notifyDataSetChanged();
     }
@@ -270,6 +276,9 @@ public class MainListsFragment extends Fragment
                 clearItemSelection();
                 selectedItemPos = position;
                 selectedItemView = (TextView) view;
+
+                // Tell the items list adapter that the selected item position changed
+                itemsListAdapter.setSelectionItemPosition(selectedItemPos);
 
                 selectedItemView.setBackgroundResource(R.drawable.main_list_item_selected);
 
