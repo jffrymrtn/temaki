@@ -129,6 +129,7 @@ public class MainListsFragment extends Fragment
 
     public void clearItemSelection() {
         selectedItemPos = -1;
+        itemsListAdapter.setSelectionItemPosition(selectedItemPos);
         itemsListAdapter.notifyDataSetChanged();
 
         if (selectedItemView != null) {
