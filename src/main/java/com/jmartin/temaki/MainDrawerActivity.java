@@ -38,14 +38,19 @@ public class MainDrawerActivity extends FragmentActivity
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
     private final int EMPTY_LIST_ITEMS_COUNT = 0;
+    private final int LIST_CATEGORY_DEFAULT_COUNT = -1;
+
     private final int NEW_LIST_ID = 0;
     private final int RENAME_LIST_ID = 1;
+    private final int NEW_CATEGORY_ID = 2;
+
     private final String ALERT_DIALOG_TAG = "delete_confirmation_dialog_fragment";
     private final String INPUT_DIALOG_TAG = "generic_name_dialog_fragment";
     private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     private final String LIST_NAME_BUNDLE_KEY = "ListName";
 
     private final String LIST_NAME_DIALOG_TITLE = "Enter this list's name:";
+    private final String CATEGORY_DIALOG_TITLE = "Enter the category's name:";
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
     protected final String LISTS_SP_KEY = "MAIN_LISTS";
@@ -122,14 +127,12 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerToggle = new ActionBarDrawerToggle(this, listsDrawerLayout,R.drawable.ic_drawer,
                                                       R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View view) {
                 hideKeyboard();
                 searchView.clearFocus();
-                getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
 
                 // Make sure the navigation bar shows the updated count of the currently opened
@@ -307,12 +310,14 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String newListName = data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY).trim();
+        String input = data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY).trim();
 
         if (resultCode == RENAME_LIST_ID) {
-            renameList(newListName);
+            renameList(input);
         } else if (resultCode == NEW_LIST_ID) {
-            createNewList(newListName);
+            createNewList(input);
+        } else if (resultCode == NEW_CATEGORY_ID) {
+            createNewCategory(input);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -329,6 +334,22 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         loadListIntoFragment(newListName, new ArrayList<String>());
+    }
+
+    private void createNewCategory(String newCategoryName) {
+        if (newCategoryName.trim().equalsIgnoreCase("")) {
+            //TODO newCategoryName = getDefaultCategoryName();
+            return;
+
+        }
+
+        if (!lists.containsKey(newCategoryName)) {
+            updateDrawer(newCategoryName, LIST_CATEGORY_DEFAULT_COUNT);
+            lists.put(newCategoryName, new ArrayList<String>());
+            selectedListName = newCategoryName;
+        }
+
+        loadListIntoFragment(newCategoryName, new ArrayList<String>());
     }
 
     private void deleteList(String listName) {
@@ -411,14 +432,21 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showNewListPrompt() {
         // Show dialog for the name of the list, check for duplicates on drawerItems
-        showNameInputDialog(NEW_LIST_ID);
+        showInputDialog(NEW_LIST_ID);
+    }
+
+    /**
+     *
+     */
+    private void showNewCategoryPrompt() {
+        showInputDialog(NEW_CATEGORY_ID);
     }
 
     /**
      * Prompt the user for the name of the list to be renamed.
      */
     private void showRenameListPrompt() {
-        showNameInputDialog(RENAME_LIST_ID);
+        showInputDialog(RENAME_LIST_ID);
     }
 
     /**
@@ -439,11 +467,16 @@ public class MainDrawerActivity extends FragmentActivity
     /**
      * Show the list name input dialog.
      */
-    private void showNameInputDialog(int inputType) {
+    private void showInputDialog(int inputType) {
         FragmentManager fragManager = getFragmentManager();
         inputDialog = new GenericInputDialog();
         inputDialog.setActionIdentifier(inputType);
-        inputDialog.setTitle(LIST_NAME_DIALOG_TITLE);
+
+        if (inputType == NEW_CATEGORY_ID) {
+            inputDialog.setTitle(CATEGORY_DIALOG_TITLE);
+        } else {
+            inputDialog.setTitle(LIST_NAME_DIALOG_TITLE);
+        }
         inputDialog.show(fragManager, INPUT_DIALOG_TAG);
     }
 

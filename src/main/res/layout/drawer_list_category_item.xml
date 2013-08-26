@@ -17,15 +17,13 @@
         android:ellipsize="end"
         android:maxWidth="90dp"
         android:maxLines="1" />
-    <TextView
-        android:id="@+id/items_count"
+    <ImageView
+        android:id="@+id/expander"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_expand"
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
         android:layout_weight="0.3"
         android:gravity="center_vertical|right"
-        android:paddingRight="9dp"
-        android:textColor="@color/main_light_text_color"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:singleLine="true"
-        android:maxLines="1" />
+        android:paddingRight="9dp" />
 </LinearLayout>

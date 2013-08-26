@@ -8,13 +8,18 @@
 
     <item android:id="@+id/action_rename_list"
           android:title="@string/ab_menu_rename_list"
-          android:orderInCategory="97"
+          android:orderInCategory="96"
           android:showAsAction="never" />
 
     <item android:id="@+id/action_new_list"
           android:title="@string/ab_menu_new_list"
-          android:orderInCategory="98"
+          android:orderInCategory="97"
           android:showAsAction="never" />
+
+    <!--<item android:id="@+id/action_new_category"
+          android:title="@string/ab_menu_new_category"
+          android:orderInCategory="98"
+          android:showAsAction="never" />-->
 
     <item android:id="@+id/action_delete_list"
           android:title="@string/ab_menu_delete_list"

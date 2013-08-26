@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmartin.temaki.R;
 
@@ -48,12 +50,28 @@ public class DrawerListAdapter extends BaseAdapter {
         int itemsCount = getItem(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
-        TextView listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
-        TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
 
+        View drawerRowView = null;
+        TextView listNameTextView;
+
+        if (itemsCount != -1) {
+            drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+            TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
+            itemsCountTextView.setText(String.valueOf(itemsCount));
+        } else {
+            drawerRowView = inflater.inflate(R.layout.drawer_list_category_item, parent, false);
+            ImageView categoryExpanderImageView = (ImageView) drawerRowView.findViewById(R.id.expander);
+
+            categoryExpanderImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "It's coming!", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);
-        itemsCountTextView.setText(String.valueOf(itemsCount));
 
         return drawerRowView;
     }

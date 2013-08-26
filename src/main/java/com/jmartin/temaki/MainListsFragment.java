@@ -73,7 +73,6 @@ public class MainListsFragment extends Fragment
         itemsListView = (ListView) view.findViewById(R.id.mainListView);
         addItemsEditText = (EditText) view.findViewById(R.id.addItemEditText);
 
-//        itemsListAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
@@ -98,6 +97,13 @@ public class MainListsFragment extends Fragment
         if (this.alertDialog != null) this.alertDialog.dismiss();
         if (this.inputDialog != null) this.inputDialog.dismiss();
         super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Only important if coming from SettingsActivity, make sure any settings styles are applied
+        itemsListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -164,7 +170,7 @@ public class MainListsFragment extends Fragment
 
     private void setActionBarTitle() {
         if ((getActivity() != null) && this.listName != null) {
-            getActivity().getActionBar().setSubtitle(this.listName);
+            getActivity().getActionBar().setTitle(this.listName);
         }
     }
 
@@ -174,10 +180,6 @@ public class MainListsFragment extends Fragment
 
     public ArrayList<String> getListItems() {
         return (ArrayList<String>) listItems.clone();
-    }
-
-    public int getSelectedItemPos() {
-        return selectedItemPos;
     }
 
     /**

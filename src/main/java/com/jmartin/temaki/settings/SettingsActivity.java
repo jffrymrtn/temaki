@@ -10,6 +10,7 @@ import android.os.Bundle;
 public class SettingsActivity extends Activity {
 
     public static String KEY_PREF_STARTUP_OPTION = "pref_startup_option";
+    public static String KEY_PREF_LIST_ITEMS_CAPITALIZE_OPTION = "pref_list_items_capitalize_option";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
