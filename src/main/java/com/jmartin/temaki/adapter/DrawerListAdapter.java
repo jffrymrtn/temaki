@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jmartin.temaki.R;
 
@@ -65,7 +64,7 @@ public class DrawerListAdapter extends BaseAdapter {
             categoryExpanderImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "It's coming!", Toast.LENGTH_LONG).show();
+                    // TODO handle expand/collapse
                 }
             });
         }

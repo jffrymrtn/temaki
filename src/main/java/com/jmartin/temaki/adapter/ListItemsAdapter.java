@@ -32,7 +32,7 @@ public class ListItemsAdapter extends ArrayAdapter<String> {
         this.selectedItemPosition = -1;
     }
 
-    public void setSelectionItemPosition(int position) {
+    public void setSelectedItemPosition(int position) {
         this.selectedItemPosition = position;
     }
 

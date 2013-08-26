@@ -67,6 +67,7 @@ public class MainDrawerActivity extends FragmentActivity
     private HashMap<String, ArrayList<String>> lists;
 
     private MainListsFragment mainListsFragment;
+    private SearchView searchView;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
@@ -127,10 +128,12 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerToggle = new ActionBarDrawerToggle(this, listsDrawerLayout,R.drawable.ic_drawer,
                                                       R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
+                getActionBar().setTitle(mainListsFragment.getListName());
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View view) {
+                getActionBar().setTitle(getTitle());
                 hideKeyboard();
                 searchView.clearFocus();
                 invalidateOptionsMenu();
@@ -176,8 +179,6 @@ public class MainDrawerActivity extends FragmentActivity
         }
     }
 
-    private SearchView searchView;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -200,7 +201,11 @@ public class MainDrawerActivity extends FragmentActivity
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText != null) {
-                        mainListsFragment.search(newText);
+                        if (newText.equalsIgnoreCase("") && searchItem.isActionViewExpanded()) {
+                            mainListsFragment.clearSearchFilter();
+                        } else {
+                            mainListsFragment.search(newText);
+                        }
                     }
                     return false;
                 }
@@ -217,14 +222,6 @@ public class MainDrawerActivity extends FragmentActivity
                             listsDrawerLayout.closeDrawer(listsDrawerListView);
                         }
                     }
-                }
-            });
-
-            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-                @Override
-                public boolean onClose() {
-                    mainListsFragment.clearSearchFilter();
-                    return false;
                 }
             });
         }

@@ -19,10 +19,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmartin.temaki.adapter.ListItemsAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
@@ -38,6 +38,7 @@ public class MainListsFragment extends Fragment
 
     private final String EDIT_ITEM_DIALOG_TITLE = "Edit List Item:";
     private final String CONFIRM_DELETE_ITEM_DIALOG_TITLE = "Delete this item?";
+    private final String ITEM_EXISTS_WARNING = "That item already exists!";
     public static final int CANCEL_RESULT_CODE = 0;
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
@@ -55,8 +56,8 @@ public class MainListsFragment extends Fragment
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
-    private int selectedItemPos = -1;
     private TextView selectedItemView = null;
+    private String selectedItem = "";
 
     public MainListsFragment() {
         super();
@@ -108,14 +109,7 @@ public class MainListsFragment extends Fragment
 
     @Override
     public void onFinishAlertDialog() {
-        listItems.remove(selectedItemPos);
-        actionMode.finish();
-        clearItemSelection();
-    }
-
-    private void renameListItem(String inputValue) {
-        listItems.remove(selectedItemPos);
-        listItems.add(selectedItemPos, inputValue);
+        listItems.remove(indexOfItem(selectedItem));
         actionMode.finish();
         clearItemSelection();
     }
@@ -133,15 +127,35 @@ public class MainListsFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void renameListItem(String inputValue) {
+        int selectedItemPosition = indexOfItem(selectedItem);
+        listItems.remove(selectedItemPosition);
+        listItems.add(selectedItemPosition, inputValue);
+        actionMode.finish();
+        clearItemSelection();
+    }
+
     public void clearItemSelection() {
-        selectedItemPos = -1;
-        itemsListAdapter.setSelectionItemPosition(selectedItemPos);
+        selectedItem = "";
+        itemsListAdapter.setSelectedItemPosition(-1);
         itemsListAdapter.notifyDataSetChanged();
 
         if (selectedItemView != null) {
             selectedItemView.setBackgroundResource(R.drawable.main_list_item);
             selectedItemView = null;
         }
+    }
+
+    /**
+     * Custom indexOf for ArrayList<String> listItems so we can do case-insensitive comparisons
+     * within indexOf.
+     */
+    private int indexOfItem(String item) {
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).equalsIgnoreCase(item))
+                return i;
+        }
+        return -1;
     }
 
     /**
@@ -187,7 +201,7 @@ public class MainListsFragment extends Fragment
      */
     private void showEditItemDialog() {
         FragmentManager fragManager = getFragmentManager();
-        inputDialog = new GenericInputDialog(listItems.get(selectedItemPos));
+        inputDialog = new GenericInputDialog(listItems.get(indexOfItem(selectedItem)));
 
         inputDialog.setTargetFragment(this, EDIT_ITEM_ID);
         inputDialog.setTitle(EDIT_ITEM_DIALOG_TITLE);
@@ -217,8 +231,6 @@ public class MainListsFragment extends Fragment
     public void search(CharSequence query) {
         if (query.length() > 0) {
             itemsListAdapter.getFilter().filter(query);
-        } else {
-            clearSearchFilter();
         }
     }
 
@@ -235,11 +247,17 @@ public class MainListsFragment extends Fragment
         // Make sure we clear any filters first
         clearSearchFilter();
 
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+
         String newItem = addItemsEditText.getText().toString().trim();
-        if (newItem.length() > 0) {
+        if ((newItem.length() > 0) && indexOfItem(newItem) == -1) {
             listItems.add(newItem);
             itemsListAdapter.notifyDataSetChanged();
             addItemsEditText.setText("");
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), ITEM_EXISTS_WARNING, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -272,17 +290,16 @@ public class MainListsFragment extends Fragment
     private class ListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (selectedItemPos == position) {
+            if (indexOfItem(selectedItem) == position) {
                 actionMode.finish();
                 clearItemSelection();
             } else {
                 clearItemSelection();
-                selectedItemPos = position;
                 selectedItemView = (TextView) view;
+                selectedItem = selectedItemView.getText().toString();
 
                 // Tell the items list adapter that the selected item position changed
-                itemsListAdapter.setSelectionItemPosition(selectedItemPos);
-
+                itemsListAdapter.setSelectedItemPosition(position);
                 selectedItemView.setBackgroundResource(R.drawable.main_list_item_selected);
 
                 // Show Contextual ActionBar
@@ -324,6 +341,7 @@ public class MainListsFragment extends Fragment
         public void onDestroyActionMode(ActionMode mode) {
             actionMode = null;
             clearItemSelection();
+            clearSearchFilter();
         }
     };
 
