@@ -196,6 +196,10 @@ public class MainListsFragment extends Fragment
         return (ArrayList<String>) listItems.clone();
     }
 
+    public String getSelectedItem() {
+        return selectedItem;
+    }
+
     /**
      * Show the Edit Item prompt dialog.
      */

@@ -201,7 +201,7 @@ public class MainDrawerActivity extends FragmentActivity
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText != null) {
-                        if (newText.equalsIgnoreCase("") && searchItem.isActionViewExpanded()) {
+                        if (newText.equalsIgnoreCase("") && mainListsFragment.getSelectedItem().equals("")) {
                             mainListsFragment.clearSearchFilter();
                         } else {
                             mainListsFragment.search(newText);
