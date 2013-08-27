@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+        android:minWidth="50dp"
+        android:minHeight="1000dp"
+        android:initialLayout="@layout/widget"
+        android:resizeMode="horizontal|vertical"
+        android:widgetCategory="home_screen"
+        android:configure="com.jmartin.temaki.widget.TemakiWidgetConfigure">
+</appwidget-provider>

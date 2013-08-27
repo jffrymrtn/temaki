@@ -71,8 +71,8 @@ public class MainListsFragment extends Fragment
 
         listItems = listItems == null ? new ArrayList<String>() : listItems;
 
-        itemsListView = (ListView) view.findViewById(R.id.mainListView);
-        addItemsEditText = (EditText) view.findViewById(R.id.addItemEditText);
+        itemsListView = (ListView) view.findViewById(R.id.main_list_view);
+        addItemsEditText = (EditText) view.findViewById(R.id.add_item_edit_text);
 
         itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
         itemsListView.setAdapter(itemsListAdapter);
