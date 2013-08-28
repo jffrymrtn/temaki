@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 public class MainListsFragment extends Fragment
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
-    private final String EDIT_ITEM_DIALOG_TITLE = "Edit List Item:";
+    private final String EDIT_ITEM_DIALOG_TITLE = "Edit List TemakiListItem:";
     private final String CONFIRM_DELETE_ITEM_DIALOG_TITLE = "Delete this item?";
     private final String ITEM_EXISTS_WARNING = "That item already exists!";
     public static final int CANCEL_RESULT_CODE = 0;
@@ -53,6 +54,8 @@ public class MainListsFragment extends Fragment
     private String listName;
     private ArrayList<String> listItems;
     private ActionMode actionMode;
+
+    private Toast toast;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
@@ -81,11 +84,12 @@ public class MainListsFragment extends Fragment
         addItemsEditText.setOnClickListener(new EditTextClickListener());
         addItemsEditText.setOnKeyListener(new EditTextKeyListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
-        addItemsEditText.setOnTouchListener(new AddItemDrawableOnTouchListener(addItemsEditText) {
+
+        ImageButton addItemImageButton = (ImageButton) view.findViewById(R.id.add_item_image_button);
+        addItemImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouchAddItemDrawable(MotionEvent event) {
+            public void onClick(View v) {
                 addListItem();
-                return false;
             }
         });
 
@@ -201,7 +205,7 @@ public class MainListsFragment extends Fragment
     }
 
     /**
-     * Show the Edit Item prompt dialog.
+     * Show the Edit TemakiListItem prompt dialog.
      */
     private void showEditItemDialog() {
         FragmentManager fragManager = getFragmentManager();
@@ -213,7 +217,7 @@ public class MainListsFragment extends Fragment
     }
 
     /**
-     * Show the Delete Item prompt dialog.
+     * Show the Delete TemakiListItem prompt dialog.
      */
     private void showDeleteItemConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
@@ -260,8 +264,11 @@ public class MainListsFragment extends Fragment
             listItems.add(newItem);
             itemsListAdapter.notifyDataSetChanged();
             addItemsEditText.setText("");
-        } else {
-            Toast.makeText(getActivity().getApplicationContext(), ITEM_EXISTS_WARNING, Toast.LENGTH_SHORT).show();
+        } else if ((indexOfItem(newItem) != -1) && (newItem.length() > 0)) {
+            if (toast == null) {
+                toast = Toast.makeText(getActivity().getApplicationContext(), ITEM_EXISTS_WARNING, Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 
@@ -280,11 +287,12 @@ public class MainListsFragment extends Fragment
     }
 
     private class EditTextKeyListener implements View.OnKeyListener {
-
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if ((event.getAction() == KeyEvent.ACTION_UP) && keyCode == KeyEvent.KEYCODE_ENTER) {
-                addListItem();
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    addListItem();
+                }
                 return true;
             }
             return false;
@@ -360,34 +368,5 @@ public class MainListsFragment extends Fragment
                 ((MainDrawerActivity) getActivity()).closeSearchView();
             }
         }
-    }
-
-    private abstract class AddItemDrawableOnTouchListener implements View.OnTouchListener {
-        Drawable addItemDrawable;
-        private final int HITBOX_VALUE = 10;
-
-        public AddItemDrawableOnTouchListener(EditText view) {
-            super();
-            final Drawable[] drawables = view.getCompoundDrawables();
-            if (drawables != null && drawables.length == 4) {
-                this.addItemDrawable = drawables[2];
-            }
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_UP && addItemDrawable != null) {
-                final int x = (int) event.getX();
-                final Rect drawableBounds = addItemDrawable.getBounds();
-
-                if ((x <= (v.getRight() - v.getPaddingRight() + HITBOX_VALUE)) &&
-                   (x >= (v.getRight() - drawableBounds.width() - HITBOX_VALUE))) {
-                    return onTouchAddItemDrawable(event);
-                }
-            }
-            return false;
-        }
-
-        public abstract boolean onTouchAddItemDrawable(final MotionEvent event);
     }
 }

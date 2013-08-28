@@ -1,26 +1,14 @@
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/new_list_drawer_header_button"
         android:minHeight="50dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="@color/main_blue_face">
-    <ImageView
-        android:src="@drawable/ic_new_item"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/new_item_text_view"
         android:gravity="center"
-        android:contentDescription="" />
-    <TextView
-            android:id="@+id/new_item_text_view"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textAppearance="@android:style/TextAppearance.Holo.Large"
-            android:text="New List"
-            android:textColor="@color/main_light_text_color" />
-</RelativeLayout>
+        android:text="@string/ab_menu_new_list"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textColor="@color/main_light_text_color"
+        android:background="@drawable/drawer_header_selector"
+        android:focusable="false"
+        android:clickable="false" />
