@@ -37,8 +37,7 @@
     </string>
 
     <string name="attribution_string">
-        The following third-party libraries were used in parts of this app.\n
-        Thank you to all!\n\n
-        No third party libraries were used yet as of this app version.\n\n
+        The following third-party libraries were used in parts of this app. Thank you to all!\n\n
+        Google GSON\n
     </string>
 </resources>

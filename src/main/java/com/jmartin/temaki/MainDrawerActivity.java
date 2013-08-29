@@ -55,7 +55,7 @@ public class MainDrawerActivity extends FragmentActivity
     private final String CATEGORY_DIALOG_TITLE = "Enter the category's name:";
     public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
     private final String DEFAULT_LIST_NAME = "NEW LIST ";
-    protected final String LISTS_SP_KEY = "MAIN_LISTS";
+    public static final String LISTS_SP_KEY = "MAIN_LISTS";
     private final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
 
     private GenericInputDialog inputDialog;
