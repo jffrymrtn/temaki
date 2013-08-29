@@ -7,6 +7,8 @@
     <string name="add_new_item_edit_text_hint">Add a new item&#8230;</string>
     <string name="done_dialog_button_text">Done</string>
     <string name="context_menu_edit_item">Edit</string>
+    <string name="context_menu_highlight_item">Highlight</string>
+    <string name="context_menu_finished_item">Finished</string>
     <string name="universal_delete_string">Delete</string>
 
     <string name="ab_menu_new_list">New List</string>

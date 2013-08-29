@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -13,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -28,6 +25,7 @@ import android.widget.Toast;
 import com.jmartin.temaki.adapter.ListItemsAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
+import com.jmartin.temaki.model.TemakiItem;
 
 import java.util.ArrayList;
 
@@ -52,7 +50,7 @@ public class MainListsFragment extends Fragment
     private ListItemsAdapter itemsListAdapter;
 
     private String listName;
-    private ArrayList<String> listItems;
+    private ArrayList<TemakiItem> listItems;
     private ActionMode actionMode;
 
     private Toast toast;
@@ -72,12 +70,12 @@ public class MainListsFragment extends Fragment
 
         setActionBarTitle();
 
-        listItems = listItems == null ? new ArrayList<String>() : listItems;
+        listItems = listItems == null ? new ArrayList<TemakiItem>() : listItems;
 
         itemsListView = (ListView) view.findViewById(R.id.main_list_view);
         addItemsEditText = (EditText) view.findViewById(R.id.add_item_edit_text);
 
-        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListView.setOnItemClickListener(new ListItemClickListener());
 
@@ -133,8 +131,21 @@ public class MainListsFragment extends Fragment
 
     private void renameListItem(String inputValue) {
         int selectedItemPosition = indexOfItem(selectedItem);
-        listItems.remove(selectedItemPosition);
-        listItems.add(selectedItemPosition, inputValue);
+        listItems.get(selectedItemPosition).setText(inputValue);
+        actionMode.finish();
+        clearItemSelection();
+    }
+
+    private void toggleItemHighlight() {
+        int selectedItemPosition = indexOfItem(selectedItem);
+        listItems.get(selectedItemPosition).toggleHighlighted();
+        actionMode.finish();
+        clearItemSelection();
+    }
+
+    private void toggleItemFinished() {
+        int selectedItemPosition = indexOfItem(selectedItem);
+        listItems.get(selectedItemPosition).toggleFinished();
         actionMode.finish();
         clearItemSelection();
     }
@@ -156,7 +167,7 @@ public class MainListsFragment extends Fragment
      */
     private int indexOfItem(String item) {
         for (int i = 0; i < listItems.size(); i++) {
-            if (listItems.get(i).equalsIgnoreCase(item))
+            if (listItems.get(i).getText().equalsIgnoreCase(item))
                 return i;
         }
         return -1;
@@ -167,8 +178,8 @@ public class MainListsFragment extends Fragment
      * @param listName the name of the initial list to load on this Fragment.
      * @param list the list to initially load on this Fragment.
      */
-    public void loadList(String listName, ArrayList<String> list) {
-        if (this.listItems == null) this.listItems = new ArrayList<String>();
+    public void loadList(String listName, ArrayList<TemakiItem> list) {
+        if (this.listItems == null) this.listItems = new ArrayList<TemakiItem>();
 
         this.listItems.clear();
         this.listItems.addAll(list);
@@ -196,8 +207,8 @@ public class MainListsFragment extends Fragment
         return listName;
     }
 
-    public ArrayList<String> getListItems() {
-        return (ArrayList<String>) listItems.clone();
+    public ArrayList<TemakiItem> getListItems() {
+        return (ArrayList<TemakiItem>) listItems.clone();
     }
 
     public String getSelectedItem() {
@@ -209,7 +220,7 @@ public class MainListsFragment extends Fragment
      */
     private void showEditItemDialog() {
         FragmentManager fragManager = getFragmentManager();
-        inputDialog = new GenericInputDialog(listItems.get(indexOfItem(selectedItem)));
+        inputDialog = new GenericInputDialog(listItems.get(indexOfItem(selectedItem)).getText());
 
         inputDialog.setTargetFragment(this, EDIT_ITEM_ID);
         inputDialog.setTitle(EDIT_ITEM_DIALOG_TITLE);
@@ -246,7 +257,7 @@ public class MainListsFragment extends Fragment
         itemsListAdapter.getFilter().filter("");
 
         // Workaround to an (apparently) bug in Android's ArrayAdapter... not pretty, I know
-        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), R.layout.main_list_item, listItems);
+        itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), listItems);
         itemsListView.setAdapter(itemsListAdapter);
         itemsListAdapter.notifyDataSetChanged();
     }
@@ -259,12 +270,12 @@ public class MainListsFragment extends Fragment
             actionMode.finish();
         }
 
-        String newItem = addItemsEditText.getText().toString().trim();
-        if ((newItem.length() > 0) && indexOfItem(newItem) == -1) {
+        TemakiItem newItem = new TemakiItem(addItemsEditText.getText().toString().trim());
+        if ((newItem.getText().length() > 0) && indexOfItem(newItem.getText()) == -1) {
             listItems.add(newItem);
             itemsListAdapter.notifyDataSetChanged();
             addItemsEditText.setText("");
-        } else if ((indexOfItem(newItem) != -1) && (newItem.length() > 0)) {
+        } else if ((indexOfItem(newItem.getText()) != -1) && (newItem.getText().length() > 0)) {
             if (toast == null) {
                 toast = Toast.makeText(getActivity().getApplicationContext(), ITEM_EXISTS_WARNING, Toast.LENGTH_SHORT);
                 toast.show();
@@ -338,6 +349,12 @@ public class MainListsFragment extends Fragment
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.context_menu_finished:
+                    toggleItemFinished();
+                    return true;
+                case R.id.context_menu_highlight:
+                    toggleItemHighlight();
+                    return true;
                 case R.id.context_menu_edit:
                     showEditItemDialog();
                     return true;

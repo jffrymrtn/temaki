@@ -13,4 +13,5 @@
     <color name="main_list_divider">#ffababab</color>
     <color name="ab_edittext_background">#fff8f8f8</color>
     <color name="highlights_drawer_header_background">#ff4e4e4f</color>
+    <color name="main_item_done_color">#80bdbdbd</color>
 </resources>

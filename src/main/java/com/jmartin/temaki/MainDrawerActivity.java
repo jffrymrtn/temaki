@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.adapter.DrawerListAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
+import com.jmartin.temaki.model.TemakiItem;
 import com.jmartin.temaki.settings.SettingsActivity;
 
 import java.lang.reflect.Type;
@@ -66,7 +67,7 @@ public class MainDrawerActivity extends FragmentActivity
     private ActionBarDrawerToggle listsDrawerToggle;
     private LinkedHashMap<String, Integer> drawerItems;
     private DrawerListAdapter drawerListAdapter;
-    private HashMap<String, ArrayList<String>> lists;
+    private HashMap<String, ArrayList<TemakiItem>> lists;
 
     private MainListsFragment mainListsFragment;
     private SearchView searchView;
@@ -83,7 +84,7 @@ public class MainDrawerActivity extends FragmentActivity
 
         String listsJson;
         String loadedListName = "";
-        ArrayList<String> loadedList = null;
+        ArrayList<TemakiItem> loadedList = null;
 
         if (savedInstanceState == null) {
             // Load from SharedPreferences
@@ -98,7 +99,6 @@ public class MainDrawerActivity extends FragmentActivity
             // load from savedInstanceState
             listsJson = savedInstanceState.getString(LISTS_SP_KEY, "");
             loadedListName = savedInstanceState.getString(LIST_NAME_BUNDLE_KEY, "");
-            loadedList = savedInstanceState.getStringArrayList(LIST_ITEMS_BUNDLE_KEY);
         }
 
         // Initialize lists variable
@@ -169,15 +169,31 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     private void deserializeJsonLists(String listsJson) {
-        Type listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
-        lists = new Gson().fromJson(listsJson, listsType);
+        Type listsType = new TypeToken<HashMap<String, ArrayList<TemakiItem>>>() {}.getType();
+        try {
+            lists = new Gson().fromJson(listsJson, listsType);
+        } catch (Exception e) {
+            // Compatibility code, we need this for users who are coming from older versions of the app
+            listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
+            HashMap<String, ArrayList<String>> compatLists = new Gson().fromJson(listsJson, listsType);
+
+            // Convert these to the new type
+            lists = new HashMap<String, ArrayList<TemakiItem>>();
+            for (String key : compatLists.keySet()) {
+                ArrayList<TemakiItem> newListType = new ArrayList<TemakiItem>();
+                for (String item : compatLists.get(key)) {
+                    newListType.add(new TemakiItem(item));
+                }
+                lists.put(key, newListType);
+            }
+        }
 
         if (lists != null && lists.size() > 0) {
             for (String name : lists.keySet()) {
                 drawerItems.put(name, lists.get(name).size());
             }
         } else if (lists == null) {
-            lists = new HashMap<String, ArrayList<String>>();
+            lists = new HashMap<String, ArrayList<TemakiItem>>();
         }
     }
 
@@ -253,7 +269,7 @@ public class MainDrawerActivity extends FragmentActivity
         outState.putString(LISTS_SP_KEY, jsonLists);
 
         outState.putString(LIST_NAME_BUNDLE_KEY, mainListsFragment.getListName());
-        outState.putStringArrayList(LIST_ITEMS_BUNDLE_KEY, mainListsFragment.getListItems());
+        outState.putString(LIST_ITEMS_BUNDLE_KEY, gson.toJson(mainListsFragment.getListItems()));
         super.onSaveInstanceState(outState);
     }
 
@@ -328,11 +344,11 @@ public class MainDrawerActivity extends FragmentActivity
 
         if (!lists.containsKey(newListName)) {
             updateDrawer(newListName, EMPTY_LIST_ITEMS_COUNT);
-            lists.put(newListName, new ArrayList<String>());
+            lists.put(newListName, new ArrayList<TemakiItem>());
             selectedListName = newListName;
         }
 
-        loadListIntoFragment(newListName, new ArrayList<String>());
+        loadListIntoFragment(newListName, lists.get(newListName));
     }
 
     private void createNewCategory(String newCategoryName) {
@@ -344,11 +360,11 @@ public class MainDrawerActivity extends FragmentActivity
 
         if (!lists.containsKey(newCategoryName)) {
             updateDrawer(newCategoryName, LIST_CATEGORY_DEFAULT_COUNT);
-            lists.put(newCategoryName, new ArrayList<String>());
+            lists.put(newCategoryName, new ArrayList<TemakiItem>());
             selectedListName = newCategoryName;
         }
 
-        loadListIntoFragment(newCategoryName, new ArrayList<String>());
+        loadListIntoFragment(newCategoryName, new ArrayList<TemakiItem>());
     }
 
     private void deleteList(String listName) {
@@ -371,7 +387,7 @@ public class MainDrawerActivity extends FragmentActivity
             return;
         }
 
-        ArrayList<String> currentListItems = mainListsFragment.getListItems();
+        ArrayList<TemakiItem> currentListItems = mainListsFragment.getListItems();
         String oldListName = mainListsFragment.getListName();
 
         if (!lists.containsKey(newListName)) {
@@ -389,10 +405,10 @@ public class MainDrawerActivity extends FragmentActivity
      * @param listName the name of the list to load.
      * @param list the list to load.
      */
-    public void loadListIntoFragment(String listName, ArrayList<String> list) {
+    public void loadListIntoFragment(String listName, ArrayList<TemakiItem> list) {
         if (listName == null || list == null) {
             listName = getDefaultTitle();
-            list = new ArrayList<String>();
+            list = new ArrayList<TemakiItem>();
         }
 
         mainListsFragment.loadList(listName, list);
@@ -504,7 +520,7 @@ public class MainDrawerActivity extends FragmentActivity
      * @param listName the name of the new list to add or replace.
      * @param listItems the ArrayList to add or replace.
      */
-    public void saveList(String listName, ArrayList<String> listItems) {
+    public void saveList(String listName, ArrayList<TemakiItem> listItems) {
         if (listName == null || listItems == null) return;
 
         if (listName.length() == 0) {
