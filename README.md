@@ -10,7 +10,9 @@ Try the app on Google Play: [![GooglePlayImg](http://jeffreymartin.ca/images/pro
 Android Libraries
 ==============
 
-Temaki doesn't use any third-party Android libraries, yet.
+Temaki uses the following third-party libraries:
+
+  - Google GSON
 
 Android Device Support
 ===================
@@ -20,7 +22,7 @@ Temaki is supported on all Android devices running Ice Cream Sandwich 4.0 and hi
 Android Tablet Support
 ===================
 
-As of version 1.0, the app is not yet optimized for tablets, but there are plans to have it supported for tablets at least as large as the Nexus 7 (2013).
+As of version 1.0, the app is not yet optimized for tablets. There are currently no plans to have it supported for Android tablets at this moment.
 
 Contributions
 ===========
