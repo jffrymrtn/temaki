@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -92,6 +93,11 @@ public class MainListsFragment extends Fragment
         });
 
         return view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -307,8 +313,8 @@ public class MainListsFragment extends Fragment
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     addListItem();
+                    return true;
                 }
-                return true;
             }
             return false;
         }
