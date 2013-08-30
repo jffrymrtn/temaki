@@ -16,10 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -130,7 +128,7 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerToggle = new ActionBarDrawerToggle(this, listsDrawerLayout,R.drawable.ic_drawer,
                                                       R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mainListsFragment.getListName());
+                getActionBar().setTitle(mainListsFragment.getCapitalizedListName());
                 invalidateOptionsMenu();
             }
 

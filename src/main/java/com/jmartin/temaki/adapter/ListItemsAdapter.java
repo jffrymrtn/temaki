@@ -74,16 +74,18 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
 
         rowTextView.setText(itemText);
 
-        // Configure the TextView appearance based on whether or not the item is finished or highlighted
         if (item.isHighlighted()) {
             rowTextView.setTypeface(null, Typeface.BOLD);
+            rowTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_highlight, 0);
         } else {
             rowTextView.setTypeface(null, Typeface.NORMAL);
+            rowTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 
+        // Item is marked as finished
         if (item.isFinished()) {
             rowTextView.setPaintFlags(rowTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.main_item_done_color));
+            rowTextView.setTextColor(context.getResources().getColor(R.color.main_item_done_text_color));
         } else {
             rowTextView.setPaintFlags(rowTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
             rowTextView.setTextColor(context.getResources().getColor(R.color.main_dark_text_color));
@@ -93,7 +95,11 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
         if (position == selectedItemPosition) {
             row.setBackgroundResource(R.drawable.main_list_item_selected);
         } else {
-            row.setBackgroundResource(R.drawable.main_list_item);
+            if (item.isFinished()) {
+                row.setBackgroundResource(R.drawable.main_list_item_finished);
+            } else {
+                row.setBackgroundResource(R.drawable.main_list_item);
+            }
         }
         return row;
     }

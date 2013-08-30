@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class MainListsFragment extends Fragment
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
 
-    private final String EDIT_ITEM_DIALOG_TITLE = "Edit List TemakiListItem:";
+    private final String EDIT_ITEM_DIALOG_TITLE = "Edit Item";
     private final String CONFIRM_DELETE_ITEM_DIALOG_TITLE = "Delete this item?";
     private final String ITEM_EXISTS_WARNING = "That item already exists!";
     public static final int CANCEL_RESULT_CODE = 0;
@@ -199,8 +199,12 @@ public class MainListsFragment extends Fragment
 
     private void setActionBarTitle() {
         if ((getActivity() != null) && this.listName != null) {
-            getActivity().getActionBar().setTitle(this.listName);
+            getActivity().getActionBar().setTitle(getCapitalizedListName());
         }
+    }
+
+    public String getCapitalizedListName() {
+        return (this.listName.substring(0, 1).toUpperCase() + this.listName.substring(1).toLowerCase());
     }
 
     public String getListName() {

@@ -4,14 +4,14 @@
           android:title="@string/context_menu_finished_item"
           android:showAsAction="withText|ifRoom" />
 
-    <item android:id="@+id/context_menu_edit"
-          android:icon="@drawable/ic_edit"
-          android:title="@string/context_menu_edit_item"
-          android:showAsAction="withText|ifRoom" />
-
     <item android:id="@+id/context_menu_highlight"
           android:icon="@drawable/ic_highlight"
           android:title="@string/context_menu_highlight_item"
+          android:showAsAction="withText|ifRoom" />
+
+    <item android:id="@+id/context_menu_edit"
+          android:icon="@drawable/ic_edit"
+          android:title="@string/context_menu_edit_item"
           android:showAsAction="withText|ifRoom" />
 
     <item android:id="@+id/context_menu_delete"
