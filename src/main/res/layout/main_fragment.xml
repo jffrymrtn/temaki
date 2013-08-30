@@ -8,7 +8,7 @@
               android:focusableInTouchMode="true"
               android:background="@color/main_background">
 
-    <ListView
+    <com.jmartin.temaki.libsources.DynamicListView
             android:id="@+id/main_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft ="15dp"
-            android:paddingRight="15dp"
+            android:paddingRight="10dp"
             android:singleLine="true"
             android:hint="@string/add_new_item_edit_text_hint"
             android:background="@drawable/edit_text_style_holo"
@@ -40,7 +40,7 @@
             android:src="@drawable/ic_add_item"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:contentDescription="@null"
             android:background="@drawable/add_item_image_button_selector" />
     </LinearLayout>

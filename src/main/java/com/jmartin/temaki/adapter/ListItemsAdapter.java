@@ -78,7 +78,7 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
             rowTextView.setTypeface(null, Typeface.BOLD);
             rowTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_highlight, 0);
         } else {
-            rowTextView.setTypeface(null, Typeface.NORMAL);
+            rowTextView.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
             rowTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 

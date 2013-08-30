@@ -1,23 +1,31 @@
 package com.jmartin.temaki;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -128,12 +136,13 @@ public class MainDrawerActivity extends FragmentActivity
         listsDrawerToggle = new ActionBarDrawerToggle(this, listsDrawerLayout,R.drawable.ic_drawer,
                                                       R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mainListsFragment.getCapitalizedListName());
+                setActionBarCustomTitle(mainListsFragment.getCapitalizedListName());
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View view) {
-                getActionBar().setTitle(getTitle());
+                setActionBarCustomTitle(getTitle().toString());
+
                 hideKeyboard();
                 searchView.clearFocus();
                 invalidateOptionsMenu();
@@ -149,8 +158,10 @@ public class MainDrawerActivity extends FragmentActivity
 
         listsDrawerLayout.setDrawerListener(listsDrawerToggle);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        setActionBarCustomTitle(getTitle().toString());
 
         // Set up Preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -163,7 +174,33 @@ public class MainDrawerActivity extends FragmentActivity
                 .replace(R.id.content_frame_layout, mainListsFragment)
                 .commit();
 
+        // !! Workaround to windowContentOverlay bug in Android API Level 18, REMOVE when Google fixes it
+        windowContentOverlayWorkaround();
+
         super.onCreate(savedInstanceState);
+    }
+
+    private void setActionBarCustomTitle(String title) {
+        SpannableString abTitle = new SpannableString(title);
+        abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getActionBar().setTitle(abTitle);
+    }
+
+    /**
+     * !IMPORTANT! Workaround to a bug in Android API Level 18. Remove when fixed
+     */
+    private void windowContentOverlayWorkaround() {
+        View contentView = findViewById(android.R.id.content);
+
+        if (contentView instanceof FrameLayout) {
+            TypedValue typedValue = new TypedValue();
+
+            if (getTheme().resolveAttribute(android.R.attr.windowContentOverlay, typedValue, true)) {
+                if (typedValue.resourceId != 0) {
+                    ((FrameLayout) contentView).setForeground(getResources().getDrawable(typedValue.resourceId));
+                }
+            }
+        }
     }
 
     private void deserializeJsonLists(String listsJson) {
@@ -201,6 +238,11 @@ public class MainDrawerActivity extends FragmentActivity
         getMenuInflater().inflate(R.menu.main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
+
+        // Configure SearchView TextView font stuff
+        int textViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView searchViewTextView = (TextView) searchView.findViewById(textViewId);
+        searchViewTextView.setTypeface(Typeface.create("sans-serif-thin", Typeface.NORMAL));
 
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -409,6 +451,7 @@ public class MainDrawerActivity extends FragmentActivity
             list = new ArrayList<TemakiItem>();
         }
 
+        setActionBarCustomTitle(listName);
         mainListsFragment.loadList(listName, list);
     }
 

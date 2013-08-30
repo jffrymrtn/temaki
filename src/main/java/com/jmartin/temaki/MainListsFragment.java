@@ -69,8 +69,6 @@ public class MainListsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
-        setActionBarTitle();
-
         listItems = listItems == null ? new ArrayList<TemakiItem>() : listItems;
 
         itemsListView = (ListView) view.findViewById(R.id.main_list_view);
@@ -191,8 +189,6 @@ public class MainListsFragment extends Fragment
         this.listItems.addAll(list);
         this.listName = listName == null ? "" : listName;
 
-        setActionBarTitle();
-
         if (actionMode != null) {
             actionMode.finish();
         }
@@ -200,12 +196,6 @@ public class MainListsFragment extends Fragment
         // Notify data set changed if we need to select an item (only happens on orientation change)
         if (itemsListAdapter != null) {
             itemsListAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void setActionBarTitle() {
-        if ((getActivity() != null) && this.listName != null) {
-            getActivity().getActionBar().setTitle(getCapitalizedListName());
         }
     }
 

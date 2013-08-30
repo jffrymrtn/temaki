@@ -16,32 +16,18 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:actionBarStyle">@style/TemakiActionBarStyle</item>
-        <item name="android:buttonStyle">@style/TemakiButtonStyle</item>
-        <item name="android:textViewStyle">@style/TemakiTextViewStyle</item>
         <item name="android:editTextStyle">@style/TemakiEditTextStyle</item>
         <item name="android:actionModeCloseDrawable">@drawable/ic_action_close</item>
     </style>
 
-    <!-- TextView Style -->
-    <style name="TemakiTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
-    <!-- Button Style -->
-    <style name="TemakiButtonStyle" parent="android:Widget.Button">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-    </style>
-
     <!-- EditText Style -->
     <style name="TemakiEditTextStyle" parent="android:Widget.EditText">
-        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
     <!-- ActionBar Style -->
     <style name="TemakiActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_style_holo</item>
-        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAllCaps">true</item>
     </style>
 </resources>
