@@ -9,46 +9,40 @@
     <string name="context_menu_edit_item">Modificare</string>
     <string name="context_menu_highlight_item">Importante</string>
     <string name="context_menu_finished_item">Finito</string>
-    <string name="universal_delete_string">Cancellare</string>
+    <string name="universal_delete_string">Rimuovi</string>
 
     <string name="ab_menu_new_list">Nuovo Lista</string>
-    <string name="ab_menu_delete_list">Cancellare Lista</string>
+    <string name="ab_menu_delete_list">Rimuovi Lista</string>
     <string name="ab_menu_rename_list">Rinominare Lista</string>
     <string name="ab_menu_new_category">Nuovo Categoria</string>
     <string name="search_hint">Cerca lista</string>
 
-    <string name="item_exists_toast">That item already exists!</string>
+    <string name="item_exists_toast">Elemento esiste!</string>
 
     <!-- Dialog Titles -->
-    <string name="list_name_dialog_title">Enter this list\'s name:</string>
-    <string name="list_delete_confirm_title">Delete this list?</string>
-    <string name="edit_item_dialog_title">Edit Item</string>
-    <string name="item_delete_confirm_title">Delete this item?</string>
-    <string name="category_name_dialog_title">Enter this category\'s name:</string>
+    <string name="list_name_dialog_title">Nome dell\'elemento:</string>
+    <string name="list_delete_confirm_title">Rimuovi lista?</string>
+    <string name="edit_item_dialog_title">Modificare elemento</string>
+    <string name="item_delete_confirm_title">Rimuovi elemento?</string>
+    <string name="category_name_dialog_title">Nome della categoria:</string>
 
     <!-- Preferences Strings -->
-    <string name="pref_startup_option_title">Load the last opened list on startup</string>
-    <string name="pref_list_items_capitalize_title">Auto-capitalize first letter of list items</string>
+    <string name="pref_startup_option_title">Aprire ultimo lista aperta all\'avvio</string>
+    <string name="pref_list_items_capitalize_title">Capitalizzare prima lettera di voci di lista</string>
     <string name="pref_language">Lingua</string>
-    <string name="pref_rate_temaki">Rate Temaki on Google Play</string>
+    <string name="pref_rate_temaki">Temaki su Google Play Valutare</string>
     <string name="pref_list_style_option_title">Lista Style</string>
     <string name="pref_attribution_dialog_title">Attribuzioni</string>
     <string name="pref_about_dialog_title">Informazioni</string>
 
-    <string name="pref_language_summary">Requires full app restart</string>
+    <string name="pref_language_summary">Richiede la piena applicazione riavvio</string>
 
     <!-- Long String Content -->
     <string name="about_string">
         Temaki v1.32\n
         2013\n\n
 
-        Temaki is an open source project.\n
-        If you\'re a developer and want to contribute, visit:\n
+        Temaki è open source a:\n
         http://github.com/mjeff/Temaki-Lists \n\n
-    </string>
-
-    <string name="attribution_string">
-        The following third-party libraries were used in parts of this app. Thank you to all!\n\n
-        Google GSON\n
     </string>
 </resources>

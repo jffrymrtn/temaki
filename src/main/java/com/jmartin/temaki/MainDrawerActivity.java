@@ -69,6 +69,9 @@ public class MainDrawerActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_drawer_layout);
 
+        // Optimize overdraw on window background
+        getWindow().setBackgroundDrawable(null);
+
         drawerItems = new LinkedHashMap<String, Integer>();
 
         String listsJson;
@@ -173,11 +176,14 @@ public class MainDrawerActivity extends FragmentActivity
         Configuration updatedConfig = getBaseContext().getResources().getConfiguration();
         String defaultLocale = Locale.getDefault().toString();
         String stringLocale = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_PREF_LOCALE, defaultLocale);
-        Locale locale = new Locale(stringLocale);
 
-        Locale.setDefault(locale);
-        updatedConfig.locale = locale;
-        getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
+        if (!stringLocale.equals("")) {
+            Locale locale = new Locale(stringLocale);
+
+            Locale.setDefault(locale);
+            updatedConfig.locale = locale;
+            getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
 
     /**

@@ -9,6 +9,8 @@ import android.preference.PreferenceFragment;
 import com.jmartin.temaki.R;
 import com.jmartin.temaki.model.Constants;
 
+import java.util.Locale;
+
 /**
  * Author: Jeff Martin, 2013
  */
@@ -19,6 +21,10 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+
+//        Preference languagePref = findPreference(Constants.KEY_PREF_LOCALE);
+//        String defaultLocale = Locale.getDefault().toString();
+//        languagePref.setDefaultValue(defaultLocale);
 
         Preference ratePref = findPreference(Constants.KEY_PREF_RATE_TEMAKI);
         ratePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

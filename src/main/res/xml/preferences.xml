@@ -24,7 +24,7 @@
         android:dialogTitle="@string/pref_list_style_option_title"
         android:entries="@array/languages_array"
         android:entryValues="@array/locales_array"
-        android:defaultValue="English" />
+        android:defaultValue="" />
     <Preference
         android:key="@string/pref_rate_temaki_key"
         android:title="@string/pref_rate_temaki" />

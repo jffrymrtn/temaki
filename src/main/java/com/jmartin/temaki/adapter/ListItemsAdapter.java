@@ -56,6 +56,18 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+    /**
+     * Custom indexOf for ArrayList<String> listItems so we can do case-insensitive comparisons
+     * within indexOf.
+     */
+    public int indexOfItem(String item) {
+        for (int i = 0; i < this.filteredData.size(); i++) {
+            if (this.filteredData.get(i).getText().equalsIgnoreCase(item))
+                return i;
+        }
+        return -1;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -95,11 +107,12 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
         // Make sure the selection acts properly when scrolling
         if (position == selectedItemPosition) {
             row.setBackgroundResource(R.drawable.main_list_item_selected);
+            rowTextView.setTextColor(context.getResources().getColor(R.color.main_light_text_color));
         } else {
-            if (item.isFinished()) {
-                row.setBackgroundResource(R.drawable.main_list_item_finished);
-            } else {
-                row.setBackgroundResource(R.drawable.main_list_item);
+            row.setBackgroundResource(R.drawable.main_list_item);
+
+            if (!item.isFinished()) {
+                rowTextView.setTextColor(context.getResources().getColor(R.color.main_dark_text_color));
             }
         }
         return row;

@@ -3,50 +3,44 @@
 <!-- String values XML resource file for the French language/locale. -->
 <resources>
     <!-- In App Strings -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Paramètres</string>
     <string name="add_new_item_edit_text_hint">Ajouter un nouvel élément&#8230;</string>
     <string name="done_dialog_button_text">Fini</string>
     <string name="context_menu_edit_item">Modifier</string>
     <string name="context_menu_highlight_item">Importante</string>
     <string name="context_menu_finished_item">Fini</string>
-    <string name="universal_delete_string">Effacer</string>
+    <string name="universal_delete_string">Supprimer</string>
 
     <string name="ab_menu_new_list">Nouvelle Liste</string>
-    <string name="ab_menu_delete_list">Effacer La Liste</string>
+    <string name="ab_menu_delete_list">Supprimer La Liste</string>
     <string name="ab_menu_rename_list">Renommer La Liste</string>
     <string name="ab_menu_new_category">Nouvelle Catégorie</string>
     <string name="search_hint">Recherche</string>
 
-    <string name="item_exists_toast">That item already exists!</string>
+    <string name="item_exists_toast">Élément existe!</string>
 
     <!-- Dialog Titles -->
-    <string name="list_name_dialog_title">Enter this list\'s name:</string>
-    <string name="list_delete_confirm_title">Delete this list?</string>
-    <string name="edit_item_dialog_title">Edit Item</string>
-    <string name="item_delete_confirm_title">Delete this item?</string>
-    <string name="category_name_dialog_title">Enter this category\'s name:</string>
+    <string name="list_name_dialog_title">Nom de liste:</string>
+    <string name="list_delete_confirm_title">Supprimer la liste?</string>
+    <string name="edit_item_dialog_title">Modifier</string>
+    <string name="item_delete_confirm_title">Supprimer?</string>
+    <string name="category_name_dialog_title">Nome de catégorie:</string>
 
 
     <!-- Preferences Strings -->
     <string name="pref_list_style_option_title">Style de Liste</string>
     <string name="pref_language">Langage</string>
-    <string name="pref_rate_temaki">Rate Temaki on Google Play</string>
+    <string name="pref_rate_temaki">Évaluer Temaki sur Google Play</string>
     <string name="pref_attribution_dialog_title">Attribution</string>
     <string name="pref_about_dialog_title">À propos de Temaki</string>
-    <string name="pref_language_summary">Requires full app restart</string>
+    <string name="pref_language_summary">Exige la pleine application redémarre</string>
 
     <!-- Long String Content -->
     <string name="about_string">
         Temaki v1.32\n
         2013\n\n
 
-        Temaki is an open source project.\n
-        If you\'re a developer and want to contribute, visit:\n
+        Temaki est open source project à:\n
         http://github.com/mjeff/Temaki-Lists \n\n
-    </string>
-
-    <string name="attribution_string">
-        The following third-party libraries were used in parts of this app. Thank you to all!\n\n
-        Google GSON\n
     </string>
 </resources>

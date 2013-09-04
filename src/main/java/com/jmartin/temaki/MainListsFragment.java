@@ -66,6 +66,7 @@ public class MainListsFragment extends Fragment
         listItems = listItems == null ? new ArrayList<TemakiItem>() : listItems;
 
         itemsListView = (ListView) view.findViewById(R.id.main_list_view);
+
         addItemsEditText = (EditText) view.findViewById(R.id.add_item_edit_text);
 
         itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), listItems);
@@ -308,11 +309,13 @@ public class MainListsFragment extends Fragment
     private class ListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (indexOfItem(selectedItem) == position) {
-                actionMode.finish();
+            if (selectedItem.equalsIgnoreCase(((TextView) view).getText().toString())) {
                 clearItemSelection();
+                clearSearchFilter();
+                actionMode.finish();
             } else {
                 clearItemSelection();
+
                 selectedItemView = (TextView) view;
                 selectedItem = selectedItemView.getText().toString();
 
