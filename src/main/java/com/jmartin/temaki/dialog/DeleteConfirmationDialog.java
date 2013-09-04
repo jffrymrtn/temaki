@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
+import com.jmartin.temaki.model.Constants;
 
 /**
  * Author: Jeff Martin, 2013
@@ -38,7 +39,7 @@ public class DeleteConfirmationDialog extends DialogFragment {
                 Fragment frag = getTargetFragment();
                 if (frag != null) {
                     frag.onActivityResult(getTargetRequestCode(),
-                            MainListsFragment.CANCEL_RESULT_CODE, null);
+                            Constants.CANCEL_RESULT_CODE, null);
                 }
                 dismiss();
             }
@@ -52,7 +53,7 @@ public class DeleteConfirmationDialog extends DialogFragment {
                     finishDialogWithResult();
                 } else {
                     frag.onActivityResult(getTargetRequestCode(),
-                                     ((MainListsFragment)frag).DELETE_ITEM_ID, null);
+                                     Constants.DELETE_ITEM_ID, null);
                     dismiss();
                 }
             }

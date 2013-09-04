@@ -16,13 +16,13 @@ import android.widget.TextView;
 import com.jmartin.temaki.MainDrawerActivity;
 import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
+import com.jmartin.temaki.model.Constants;
 
 /**
  * Author: Jeff Martin, 2013
  */
 public class GenericInputDialog extends DialogFragment {
 
-    public static final String INTENT_RESULT_KEY = "ResultKey";
     private EditText promptEditText;
     private String dialogTitle;
     private String optionalExistingValue;
@@ -54,7 +54,7 @@ public class GenericInputDialog extends DialogFragment {
                 Fragment frag = getTargetFragment();
                 if (frag != null) {
                     frag.onActivityResult(getTargetRequestCode(),
-                            MainListsFragment.CANCEL_RESULT_CODE, null);
+                            Constants.CANCEL_RESULT_CODE, null);
                 }
                 dismiss();
             }
@@ -65,13 +65,13 @@ public class GenericInputDialog extends DialogFragment {
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
                 String input = promptEditText.getText().toString();
-                resultIntent.putExtra(INTENT_RESULT_KEY, input);
+                resultIntent.putExtra(Constants.INTENT_RESULT_KEY, input);
 
                 Fragment frag = getTargetFragment();
                 if (frag == null) {
                     ((MainDrawerActivity) getActivity()).onActivityResult(inputType, inputType, resultIntent);
                 } else {
-                    frag.onActivityResult(getTargetRequestCode(), ((MainListsFragment)frag).EDIT_ITEM_ID, resultIntent);
+                    frag.onActivityResult(getTargetRequestCode(), Constants.EDIT_ITEM_ID, resultIntent);
                 }
                 dismiss();
             }

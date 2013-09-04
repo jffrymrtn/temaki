@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_blue_face">#ff0099cc</color>
+    <color name="main_blue_face">#ff0099ff</color>
     <color name="main_blue_accent">#ff33b5e5</color>
     <color name="button_blue">#ff0099ff</color>
     <color name="button_blue_pressed">#ff00baee</color>

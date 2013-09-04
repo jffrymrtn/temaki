@@ -14,8 +14,9 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.jmartin.temaki.R;
+import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
-import com.jmartin.temaki.settings.SettingsActivity;
+import com.jmartin.temaki.settings.SettingsFragment;
 
 import java.util.ArrayList;
 
@@ -68,7 +69,7 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
         String itemText = item.getText();
 
         // If user wants to force auto-capitalization, make sure first letters are capitalized
-        if (prefMgr.getBoolean(SettingsActivity.KEY_PREF_LIST_ITEMS_CAPITALIZE_OPTION, true)) {
+        if (prefMgr.getBoolean(Constants.KEY_PREF_LIST_ITEMS_CAPITALIZE_OPTION, true)) {
             itemText = itemText.substring(0, 1).toUpperCase() + itemText.substring(1);
         }
 

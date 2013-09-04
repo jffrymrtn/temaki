@@ -17,6 +17,17 @@
         android:entries="@array/list_style_array"
         android:entryValues="@array/list_style_array"
         android:defaultValue="No List Style" />-->
+    <ListPreference
+        android:key="@string/pref_locale_key"
+        android:title="@string/pref_language"
+        android:summary="@string/pref_language_summary"
+        android:dialogTitle="@string/pref_list_style_option_title"
+        android:entries="@array/languages_array"
+        android:entryValues="@array/locales_array"
+        android:defaultValue="English" />
+    <Preference
+        android:key="@string/pref_rate_temaki_key"
+        android:title="@string/pref_rate_temaki" />
     <com.jmartin.temaki.settings.InformationDialogPreference
         android:dialogMessage="@string/attribution_string"
         android:dialogTitle="@string/pref_attribution_dialog_title"

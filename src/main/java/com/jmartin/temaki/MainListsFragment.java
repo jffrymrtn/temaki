@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.jmartin.temaki.adapter.ListItemsAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
+import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
 
 import java.util.ArrayList;
@@ -35,13 +36,6 @@ import java.util.ArrayList;
  */
 public class MainListsFragment extends Fragment
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
-
-    private final String EDIT_ITEM_DIALOG_TITLE = "Edit Item";
-    private final String CONFIRM_DELETE_ITEM_DIALOG_TITLE = "Delete this item?";
-    private final String ITEM_EXISTS_WARNING = "That item already exists!";
-    public static final int CANCEL_RESULT_CODE = 0;
-    public static final int DELETE_ITEM_ID = 1;
-    public static final int EDIT_ITEM_ID = 2;
 
     private DeleteConfirmationDialog alertDialog;
     private  GenericInputDialog inputDialog;
@@ -122,11 +116,11 @@ public class MainListsFragment extends Fragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == DELETE_ITEM_ID) {
+        if (resultCode == Constants.DELETE_ITEM_ID) {
             onFinishAlertDialog();
-        } else if (resultCode == EDIT_ITEM_ID) {
-            renameListItem(data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY));
-        } else if (resultCode == CANCEL_RESULT_CODE) {
+        } else if (resultCode == Constants.EDIT_ITEM_ID) {
+            renameListItem(data.getStringExtra(Constants.INTENT_RESULT_KEY));
+        } else if (resultCode == Constants.CANCEL_RESULT_CODE) {
             actionMode.finish();
             clearItemSelection();
         }
@@ -222,8 +216,8 @@ public class MainListsFragment extends Fragment
         FragmentManager fragManager = getFragmentManager();
         inputDialog = new GenericInputDialog(listItems.get(indexOfItem(selectedItem)).getText());
 
-        inputDialog.setTargetFragment(this, EDIT_ITEM_ID);
-        inputDialog.setTitle(EDIT_ITEM_DIALOG_TITLE);
+        inputDialog.setTargetFragment(this, Constants.EDIT_ITEM_ID);
+        inputDialog.setTitle(getActivity().getApplicationContext().getResources().getString(R.string.edit_item_dialog_title));
         inputDialog.show(fragManager, "generic_name_dialog_fragment");
     }
 
@@ -234,8 +228,8 @@ public class MainListsFragment extends Fragment
         FragmentManager fragManager = getFragmentManager();
         alertDialog = new DeleteConfirmationDialog();
 
-        alertDialog.setTargetFragment(this, DELETE_ITEM_ID);
-        alertDialog.setTitle(CONFIRM_DELETE_ITEM_DIALOG_TITLE);
+        alertDialog.setTargetFragment(this, Constants.DELETE_ITEM_ID);
+        alertDialog.setTitle(getActivity().getApplicationContext().getResources().getString(R.string.item_delete_confirm_title));
         alertDialog.show(fragManager, "delete_confirmation_dialog_fragment");
     }
 
@@ -276,8 +270,9 @@ public class MainListsFragment extends Fragment
             itemsListAdapter.notifyDataSetChanged();
             addItemsEditText.setText("");
         } else if ((indexOfItem(newItem.getText()) != -1) && (newItem.getText().length() > 0)) {
+            Context context = getActivity().getApplicationContext();
             if (toast == null) {
-                toast = Toast.makeText(getActivity().getApplicationContext(), ITEM_EXISTS_WARNING, Toast.LENGTH_SHORT);
+                toast = Toast.makeText(context, context.getResources().getString(R.string.item_exists_toast), Toast.LENGTH_SHORT);
                 toast.show();
             }
         }

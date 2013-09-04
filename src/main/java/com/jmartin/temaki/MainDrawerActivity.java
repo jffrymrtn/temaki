@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.adapter.DrawerListAdapter;
 import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
+import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
 import com.jmartin.temaki.settings.SettingsActivity;
 
@@ -39,31 +40,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 /**
  * Author: Jeff Martin, 2013
  */
 public class MainDrawerActivity extends FragmentActivity
         implements DeleteConfirmationDialog.GenericAlertDialogListener {
-
-    private final int EMPTY_LIST_ITEMS_COUNT = 0;
-    private final int LIST_CATEGORY_DEFAULT_COUNT = -1;
-
-    private final int NEW_LIST_ID = 0;
-    private final int RENAME_LIST_ID = 1;
-    private final int NEW_CATEGORY_ID = 2;
-
-    private final String ALERT_DIALOG_TAG = "delete_confirmation_dialog_fragment";
-    private final String INPUT_DIALOG_TAG = "generic_name_dialog_fragment";
-    private final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
-    private final String LIST_NAME_BUNDLE_KEY = "ListName";
-
-    private final String LIST_NAME_DIALOG_TITLE = "Enter this list's name:";
-    private final String CATEGORY_DIALOG_TITLE = "Enter the category's name:";
-    public static final String CONFIRM_DELETE_DIALOG_TITLE = "Delete this List?";
-    private final String DEFAULT_LIST_NAME = "NEW LIST ";
-    public static final String LISTS_SP_KEY = "MAIN_LISTS";
-    private final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
 
     private GenericInputDialog inputDialog;
     private DeleteConfirmationDialog alertDialog;
@@ -92,19 +75,22 @@ public class MainDrawerActivity extends FragmentActivity
         String loadedListName = "";
         ArrayList<TemakiItem> loadedList = null;
 
+        // Set the locale in case the user changed it
+        setLocale();
+
         if (savedInstanceState == null) {
             // Load from SharedPreferences
             SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
-            listsJson = sharedPrefs.getString(LISTS_SP_KEY, "");
+            listsJson = sharedPrefs.getString(Constants.LISTS_SP_KEY, "");
 
             // Load the last loaded list if needed
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_STARTUP_OPTION, false)) {
-                loadedListName = sharedPrefs.getString(LAST_OPENED_LIST_SP_KEY, "");
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_STARTUP_OPTION, false)) {
+                loadedListName = sharedPrefs.getString(Constants.LAST_OPENED_LIST_SP_KEY, "");
             }
         } else {
             // load from savedInstanceState
-            listsJson = savedInstanceState.getString(LISTS_SP_KEY, "");
-            loadedListName = savedInstanceState.getString(LIST_NAME_BUNDLE_KEY, "");
+            listsJson = savedInstanceState.getString(Constants.LISTS_SP_KEY, "");
+            loadedListName = savedInstanceState.getString(Constants.LIST_NAME_BUNDLE_KEY, "");
         }
 
         // Initialize lists variable
@@ -180,6 +166,23 @@ public class MainDrawerActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Sets the custom locale of the application if the user changed it in Settings.
+     */
+    private void setLocale() {
+        Configuration updatedConfig = getBaseContext().getResources().getConfiguration();
+        String defaultLocale = Locale.getDefault().toString();
+        String stringLocale = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_PREF_LOCALE, defaultLocale);
+        Locale locale = new Locale(stringLocale);
+
+        Locale.setDefault(locale);
+        updatedConfig.locale = locale;
+        getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
+    }
+
+    /**
+     * Sets the ActionBar title to the parameter 'title'.
+     */
     private void setActionBarCustomTitle(String title) {
         SpannableString abTitle = new SpannableString(title);
         abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -203,6 +206,9 @@ public class MainDrawerActivity extends FragmentActivity
         }
     }
 
+    /**
+     * Deserializes the JSON string listsJson into its respective Collection<?> type.
+     */
     private void deserializeJsonLists(String listsJson) {
         Type listsType = new TypeToken<HashMap<String, ArrayList<TemakiItem>>>() {}.getType();
         try {
@@ -306,10 +312,10 @@ public class MainDrawerActivity extends FragmentActivity
         // Store drawersList
         Gson gson = new Gson();
         String jsonLists = gson.toJson(lists);
-        outState.putString(LISTS_SP_KEY, jsonLists);
+        outState.putString(Constants.LISTS_SP_KEY, jsonLists);
 
-        outState.putString(LIST_NAME_BUNDLE_KEY, mainListsFragment.getListName());
-        outState.putString(LIST_ITEMS_BUNDLE_KEY, gson.toJson(mainListsFragment.getListItems()));
+        outState.putString(Constants.LIST_NAME_BUNDLE_KEY, mainListsFragment.getListName());
+        outState.putString(Constants.LIST_ITEMS_BUNDLE_KEY, gson.toJson(mainListsFragment.getListItems()));
         super.onSaveInstanceState(outState);
     }
 
@@ -365,15 +371,16 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String input = data.getStringExtra(GenericInputDialog.INTENT_RESULT_KEY).trim();
+        String input = data.getStringExtra(Constants.INTENT_RESULT_KEY).trim();
 
-        if (resultCode == RENAME_LIST_ID) {
+        if (resultCode == Constants.RENAME_LIST_ID) {
             renameList(input);
-        } else if (resultCode == NEW_LIST_ID) {
+        } else if (resultCode == Constants.NEW_LIST_ID) {
             createNewList(input);
-        } else if (resultCode == NEW_CATEGORY_ID) {
+        } else if (resultCode == Constants.NEW_CATEGORY_ID) {
             createNewCategory(input);
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -383,7 +390,7 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         if (!lists.containsKey(newListName)) {
-            updateDrawer(newListName, EMPTY_LIST_ITEMS_COUNT);
+            updateDrawer(newListName, Constants.EMPTY_LIST_ITEMS_COUNT);
             lists.put(newListName, new ArrayList<TemakiItem>());
             selectedListName = newListName;
         }
@@ -399,7 +406,7 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         if (!lists.containsKey(newCategoryName)) {
-            updateDrawer(newCategoryName, LIST_CATEGORY_DEFAULT_COUNT);
+            updateDrawer(newCategoryName, Constants.LIST_CATEGORY_DEFAULT_COUNT);
             lists.put(newCategoryName, new ArrayList<TemakiItem>());
             selectedListName = newCategoryName;
         }
@@ -471,15 +478,15 @@ public class MainDrawerActivity extends FragmentActivity
         SharedPreferences.Editor sharedPrefsEditor = getPreferences(MODE_PRIVATE).edit();
 
         // If the user wants to load the last opened list on startup, save the list's name
-        if (sharedPrefs.getBoolean(SettingsActivity.KEY_PREF_STARTUP_OPTION, false)) {
-            sharedPrefsEditor.putString(LAST_OPENED_LIST_SP_KEY, mainListsFragment.getListName());
+        if (sharedPrefs.getBoolean(Constants.KEY_PREF_STARTUP_OPTION, false)) {
+            sharedPrefsEditor.putString(Constants.LAST_OPENED_LIST_SP_KEY, mainListsFragment.getListName());
         } else {
-            sharedPrefsEditor.putString(LAST_OPENED_LIST_SP_KEY, "");
+            sharedPrefsEditor.putString(Constants.LAST_OPENED_LIST_SP_KEY, "");
         }
 
         Gson gson = new Gson();
         String listsJson = gson.toJson(lists);
-        sharedPrefsEditor.putString(LISTS_SP_KEY, listsJson);
+        sharedPrefsEditor.putString(Constants.LISTS_SP_KEY, listsJson);
         sharedPrefsEditor.commit();
     }
 
@@ -488,21 +495,21 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void showNewListPrompt() {
         // Show dialog for the name of the list, check for duplicates on drawerItems
-        showInputDialog(NEW_LIST_ID);
+        showInputDialog(Constants.NEW_LIST_ID);
     }
 
     /**
      *
      */
     private void showNewCategoryPrompt() {
-        showInputDialog(NEW_CATEGORY_ID);
+        showInputDialog(Constants.NEW_CATEGORY_ID);
     }
 
     /**
      * Prompt the user for the name of the list to be renamed.
      */
     private void showRenameListPrompt() {
-        showInputDialog(RENAME_LIST_ID);
+        showInputDialog(Constants.RENAME_LIST_ID);
     }
 
     /**
@@ -528,12 +535,12 @@ public class MainDrawerActivity extends FragmentActivity
         inputDialog = new GenericInputDialog();
         inputDialog.setActionIdentifier(inputType);
 
-        if (inputType == NEW_CATEGORY_ID) {
-            inputDialog.setTitle(CATEGORY_DIALOG_TITLE);
+        if (inputType == Constants.NEW_CATEGORY_ID) {
+            inputDialog.setTitle(this.getResources().getString(R.string.category_name_dialog_title));
         } else {
-            inputDialog.setTitle(LIST_NAME_DIALOG_TITLE);
+            inputDialog.setTitle(getResources().getString(R.string.list_name_dialog_title));
         }
-        inputDialog.show(fragManager, INPUT_DIALOG_TAG);
+        inputDialog.show(fragManager, Constants.INPUT_DIALOG_TAG);
     }
 
     /**
@@ -542,8 +549,8 @@ public class MainDrawerActivity extends FragmentActivity
     private void showDeleteListConfirmationDialog() {
         FragmentManager fragManager = getFragmentManager();
         alertDialog = new DeleteConfirmationDialog();
-        alertDialog.setTitle(CONFIRM_DELETE_DIALOG_TITLE);
-        alertDialog.show(fragManager, ALERT_DIALOG_TAG);
+        alertDialog.setTitle(getResources().getString(R.string.list_delete_confirm_title));
+        alertDialog.show(fragManager, Constants.ALERT_DIALOG_TAG);
     }
 
 
@@ -578,7 +585,7 @@ public class MainDrawerActivity extends FragmentActivity
      * @return the default title for a new list.
      */
     private String getDefaultTitle() {
-        return DEFAULT_LIST_NAME + (lists.size() + 1); // Offset index 0
+        return Constants.DEFAULT_LIST_NAME + (lists.size() + 1); // Offset index 0
     }
 
     public void closeSearchView() {

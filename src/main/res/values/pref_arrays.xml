@@ -9,4 +9,16 @@
     <string-array name="color_schemes_array">
         <item>Default Color Scheme</item>
     </string-array>
+
+    <string-array name="languages_array">
+        <item>English</item>
+        <item>Français</item>
+        <item>Italiano</item>
+    </string-array>
+
+    <string-array name="locales_array">
+        <item>en</item>
+        <item>fr</item>
+        <item>it</item>
+    </string-array>
 </resources>

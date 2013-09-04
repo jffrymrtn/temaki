@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Temaki</string>
+
+    <!-- In App Strings -->
     <string name="action_settings">Settings</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
@@ -15,22 +18,36 @@
     <string name="ab_menu_delete_list">Delete List</string>
     <string name="ab_menu_rename_list">Rename List</string>
     <string name="ab_menu_new_category">New Category</string>
+    <string name="search_hint">Search list items</string>
 
+    <string name="item_exists_toast">That item already exists!</string>
+
+    <!-- Dialog Titles -->
+    <string name="list_name_dialog_title">Enter this list\'s name:</string>
+    <string name="list_delete_confirm_title">Delete this list?</string>
+    <string name="edit_item_dialog_title">Edit Item</string>
+    <string name="item_delete_confirm_title">Delete this item?</string>
+    <string name="category_name_dialog_title">Enter this category\'s name:</string>
+
+    <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Load the last opened list on startup</string>
-    <string name="pref_list_items_capitalize_title">Auto-capitalize first letter of list items</string>
+    <string name="pref_list_items_capitalize_title">Capitalize first letter of list items</string>
     <string name="pref_list_style_option_title">List Style</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_rate_temaki">Rate Temaki on Google Play</string>
     <string name="pref_attribution_dialog_title">Attributions</string>
     <string name="pref_about_dialog_title">About Temaki</string>
 
+    <string name="pref_language_summary">Requires full app restart</string>
+
+    <string name="pref_rate_temaki_key">pref_rate_temaki_option</string>
     <string name="pref_list_items_capitalize_key">pref_list_items_capitalize_option</string>
     <string name="pref_startup_option_key">pref_startup_option</string>
-
-    <string name="search_hint">Search list items</string>
-
+    <string name="pref_locale_key">pref_locale_option</string>
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.4\n
+        Temaki v1.32\n
         2013\n\n
 
         Temaki is an open source project.\n
