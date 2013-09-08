@@ -61,7 +61,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/dependency-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/build/exploded-bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/libs" />
       <excludeFolder url="file://$MODULE_DIR$/build/manifests" />
@@ -71,7 +70,8 @@
     <orderEntry type="jdk" jdkName="Android 4.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" name="android-support-v13" level="project" />
+    <orderEntry type="library" exported="" name="dropbox-sync-sdk-android" level="project" />
+    <orderEntry type="library" exported="" name="android-support-v13" level="project" />
   </component>
 </module>
 

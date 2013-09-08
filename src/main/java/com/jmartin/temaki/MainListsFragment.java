@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -232,14 +231,6 @@ public class MainListsFragment extends Fragment
         alertDialog.setTargetFragment(this, Constants.DELETE_ITEM_ID);
         alertDialog.setTitle(getActivity().getApplicationContext().getResources().getString(R.string.item_delete_confirm_title));
         alertDialog.show(fragManager, "delete_confirmation_dialog_fragment");
-    }
-
-    /**
-     * Hide the software keyboard.
-     */
-    private void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void search(CharSequence query) {

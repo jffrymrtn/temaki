@@ -31,6 +31,7 @@
     <string name="pref_list_style_option_title">Style de Liste</string>
     <string name="pref_language">Langage</string>
     <string name="pref_rate_temaki">Évaluer Temaki sur Google Play</string>
+    <string name="pref_credits">Crédits</string>
     <string name="pref_attribution_dialog_title">Attribution</string>
     <string name="pref_about_dialog_title">À propos de Temaki</string>
     <string name="pref_language_summary">Exige la pleine application redémarre</string>

@@ -24,10 +24,23 @@ public class Constants {
     public static String KEY_PREF_STARTUP_OPTION = "pref_startup_option";
     public static String KEY_PREF_LIST_ITEMS_CAPITALIZE_OPTION = "pref_list_items_capitalize_option";
     public static String KEY_PREF_RATE_TEMAKI = "pref_rate_temaki_option";
+    public static String KEY_PREF_SYNC = "pref_sync";
 
+    // 0-49, task IDs
     public static final int CANCEL_RESULT_CODE = 0;
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
 
+    // 50+ Sync IDs
+    public static final int DBX_LINK_REQUEST_ID = 50;
+
     public static final String INTENT_RESULT_KEY = "ResultKey";
+
+    // API Keys - Replace these with actual values before launch
+    public static final String DB_APP_SECRET = "";
+    public static final String DB_APP_KEY = "";
+
+    // Cloud filenames
+    public static final String METADATA_FILENAME = "metadata.temaki";
+    public static final String EXPORTABLE_FILENAME = "temaki-lists.txt";
 }

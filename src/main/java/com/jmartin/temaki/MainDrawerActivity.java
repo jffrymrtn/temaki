@@ -1,6 +1,7 @@
 package com.jmartin.temaki;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
 import com.jmartin.temaki.settings.SettingsActivity;
+import com.jmartin.temaki.sync.SyncManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -80,6 +82,7 @@ public class MainDrawerActivity extends FragmentActivity
 
         // Set the locale in case the user changed it
         setLocale();
+        SyncManager.init(this);
 
         if (savedInstanceState == null) {
             // Load from SharedPreferences
@@ -385,6 +388,10 @@ public class MainDrawerActivity extends FragmentActivity
             createNewList(input);
         } else if (resultCode == Constants.NEW_CATEGORY_ID) {
             createNewCategory(input);
+        } else if (requestCode == Constants.DBX_LINK_REQUEST_ID) {
+            if (resultCode == Activity.RESULT_OK) {
+                SyncManager.setupDropboxFileSystem();
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);

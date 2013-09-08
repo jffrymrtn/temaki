@@ -33,21 +33,31 @@
     <string name="pref_startup_option_title">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalize first letter of list items</string>
     <string name="pref_list_style_option_title">List Style</string>
+    <string name="pref_sync">Dropbox Sync</string>
     <string name="pref_language">Language</string>
     <string name="pref_rate_temaki">Rate Temaki on Google Play</string>
+    <string name="pref_credits">Credits</string>
     <string name="pref_attribution_dialog_title">Attributions</string>
     <string name="pref_about_dialog_title">About Temaki</string>
 
     <string name="pref_language_summary">Changes will take place after a full app restart</string>
 
+    <string name="pref_sync_key">pref_sync_option</string>
     <string name="pref_rate_temaki_key">pref_rate_temaki_option</string>
     <string name="pref_list_items_capitalize_key">pref_list_items_capitalize_option</string>
     <string name="pref_startup_option_key">pref_startup_option</string>
     <string name="pref_locale_key">pref_locale_option</string>
 
     <!-- Long String Content -->
+    <string name="credits_string">
+        One thousand thank yous to the following contributors who have helped make Temaki better!\n\n
+
+        Diederik Bailleul (Dutch translation)\n
+        0p51k (Russian translation)\n\n
+    </string>
+
     <string name="about_string">
-        Temaki v1.32\n
+        Temaki v1.5\n
         2013\n\n
 
         Temaki is an open source project.\n

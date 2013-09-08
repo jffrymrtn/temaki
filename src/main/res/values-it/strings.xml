@@ -32,6 +32,7 @@
     <string name="pref_language">Lingua</string>
     <string name="pref_rate_temaki">Temaki su Google Play Valutare</string>
     <string name="pref_list_style_option_title">Lista Style</string>
+    <string name="pref_credits">Crediti</string>
     <string name="pref_attribution_dialog_title">Attribuzioni</string>
     <string name="pref_about_dialog_title">Informazioni</string>
 

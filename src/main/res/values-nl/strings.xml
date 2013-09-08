@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- String values XML resource file for the Dutch (nl) language/locale. -->
+<resources>
+    <!-- In App Strings -->
+    <string name="action_settings">Instellingen</string>
+    <string name="add_new_item_edit_text_hint">Item toevoegen&#8230;</string>
+    <string name="done_dialog_button_text">Klaar</string>
+    <string name="context_menu_edit_item">Bewerken</string>
+    <string name="context_menu_highlight_item">Belangrijk</string>
+    <string name="context_menu_finished_item">Gedaan</string>
+    <string name="universal_delete_string">Verwijderen</string>
+
+    <string name="ab_menu_new_list">Nieuwe lijst</string>
+    <string name="ab_menu_delete_list">Lijst verwijderen</string>
+    <string name="ab_menu_rename_list">Lijst hernoemen</string>
+    <string name="search_hint">Zoeken in lijst</string>
+
+    <string name="item_exists_toast">Dit item bestaat al!</string>
+
+    <!-- Dialog Titles -->
+    <string name="list_name_dialog_title">Voer de naam van de lijst in:</string>
+    <string name="list_delete_confirm_title">Wil je deze lijst verwijderen?</string>
+    <string name="edit_item_dialog_title">Bewerk item</string>
+    <string name="item_delete_confirm_title">Wil je dit item verwijderen?</string>
+
+    <!-- Preferences Strings -->
+    <string name="pref_startup_option_title">Laatste lijst openen bij opstarten app</string>
+    <string name="pref_list_items_capitalize_title">Eerste letter van een item een hoodlettter geven</string>
+    <string name="pref_language">Taal</string>
+    <string name="pref_rate_temaki">Geef Temaki een waardering op Google Play</string>
+    <string name="pref_credits">Credits</string>
+    <string name="pref_attribution_dialog_title">Attributen</string>
+    <string name="pref_about_dialog_title">Over Temaki</string>
+
+    <string name="pref_language_summary">Alle veranderingen worden van kracht na het heropstarten van de app</string>
+
+    <!-- Long String Content -->
+    <string name="about_string">
+        Temaki v1.5\n
+        2013\n\n
+
+        Temaki is an open source project at:\n
+        http://github.com/mjeff/Temaki-Lists \n\n
+    </string>
+</resources>
