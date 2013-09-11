@@ -24,7 +24,7 @@
     <string name="list_delete_confirm_title">Supprimer la liste?</string>
     <string name="edit_item_dialog_title">Modifier</string>
     <string name="item_delete_confirm_title">Supprimer?</string>
-    <string name="category_name_dialog_title">Nome de catégorie:</string>
+    <string name="edit_focus_dialog_title">Modifier Focus</string>
 
 
     <!-- Preferences Strings -->
@@ -38,7 +38,7 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.32\n
+        Temaki v1.4\n
         2013\n\n
 
         Temaki est open source project à:\n

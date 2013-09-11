@@ -50,24 +50,11 @@ public class DrawerListAdapter extends BaseAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View drawerRowView = null;
         TextView listNameTextView;
 
-        if (itemsCount != -1) {
-            drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
-            TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
-            itemsCountTextView.setText(String.valueOf(itemsCount));
-        } else {
-            drawerRowView = inflater.inflate(R.layout.drawer_list_category_item, parent, false);
-            ImageView categoryExpanderImageView = (ImageView) drawerRowView.findViewById(R.id.expander);
-
-            categoryExpanderImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO handle expand/collapse
-                }
-            });
-        }
+        View drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+        TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
+        itemsCountTextView.setText(String.valueOf(itemsCount));
 
         listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);

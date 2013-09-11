@@ -22,6 +22,7 @@
     <string name="list_delete_confirm_title">Удалить этот список?</string>
     <string name="edit_item_dialog_title">Редактировать пункт</string>
     <string name="item_delete_confirm_title">Удалить этот пункт?</string>
+    <string name="edit_focus_dialog_title">Редактировать Focus</string>
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Загружать последний открытый список при запуске</string>
@@ -37,10 +38,10 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.5\n
+        Temaki v1.4\n
         2013\n\n
 
-        Temaki is an open source project at:\n
+        Temaki с открытым исходным кодом на:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
 </resources>

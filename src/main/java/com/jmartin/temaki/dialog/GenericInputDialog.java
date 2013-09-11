@@ -1,5 +1,6 @@
 package com.jmartin.temaki.dialog;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jmartin.temaki.FocusActivity;
 import com.jmartin.temaki.MainDrawerActivity;
 import com.jmartin.temaki.MainListsFragment;
 import com.jmartin.temaki.R;
@@ -69,7 +71,12 @@ public class GenericInputDialog extends DialogFragment {
 
                 Fragment frag = getTargetFragment();
                 if (frag == null) {
-                    ((MainDrawerActivity) getActivity()).onActivityResult(inputType, inputType, resultIntent);
+                    Activity activity = getActivity();
+                    if (activity instanceof MainDrawerActivity) {
+                        ((MainDrawerActivity) activity).onActivityResult(inputType, inputType, resultIntent);
+                    } else if (activity instanceof FocusActivity) {
+                        ((FocusActivity) activity).onActivityResult(inputType, inputType, resultIntent);
+                    }
                 } else {
                     frag.onActivityResult(getTargetRequestCode(), Constants.EDIT_ITEM_ID, resultIntent);
                 }

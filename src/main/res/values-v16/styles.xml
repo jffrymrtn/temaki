@@ -10,6 +10,13 @@
         <item name="android:editTextStyle">@style/TemakiEditTextStyle</item>
     </style>
 
+    <style name="FocusTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/TemakiActionBarFocusStyle</item>
+        <item name="android:buttonStyle">@style/TemakiButtonStyle</item>
+        <item name="android:textViewStyle">@style/TemakiTextViewStyle</item>
+        <item name="android:editTextStyle">@style/TemakiEditTextStyle</item>
+    </style>
+
     <!-- TextView Style -->
     <style name="TemakiTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-light</item>

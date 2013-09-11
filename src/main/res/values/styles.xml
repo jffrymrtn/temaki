@@ -20,6 +20,14 @@
         <item name="android:actionModeCloseDrawable">@drawable/ic_action_close</item>
     </style>
 
+    <!-- Application theme - Focus -->
+    <style name="FocusTheme" parent="android:Theme.Holo">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/TemakiActionBarFocusStyle</item>
+        <item name="android:editTextStyle">@style/TemakiEditTextStyle</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_action_close</item>
+    </style>
+
     <!-- EditText Style -->
     <style name="TemakiEditTextStyle" parent="android:Widget.EditText">
         <item name="android:textCursorDrawable">@null</item>
@@ -29,5 +37,9 @@
     <style name="TemakiActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_style_holo</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TemakiActionBarFocusStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_style_focus</item>
     </style>
 </resources>

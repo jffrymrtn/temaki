@@ -24,7 +24,7 @@
     <string name="list_delete_confirm_title">Rimuovi lista?</string>
     <string name="edit_item_dialog_title">Modificare elemento</string>
     <string name="item_delete_confirm_title">Rimuovi elemento?</string>
-    <string name="category_name_dialog_title">Nome della categoria:</string>
+    <string name="edit_focus_dialog_title">Modificare Focus</string>
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Aprire ultimo lista aperta all\'avvio</string>
@@ -40,7 +40,7 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.32\n
+        Temaki v1.4\n
         2013\n\n
 
         Temaki è open source a:\n

@@ -21,15 +21,6 @@ public class SettingsFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        Preference syncPref = findPreference(Constants.KEY_PREF_SYNC);
-        syncPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                SyncManager.linkDropboxAccount(getActivity());
-                return false;
-            }
-        });
-
         Preference ratePref = findPreference(Constants.KEY_PREF_RATE_TEMAKI);
         ratePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

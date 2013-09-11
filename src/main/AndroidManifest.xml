@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jmartin.temaki"
-    android:versionCode="10"
-    android:versionName="1.5" >
+    android:versionCode="11"
+    android:versionName="1.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -25,6 +25,12 @@
             </intent-filter>
             <meta-data android:name="android.app.searchable"
                        android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".FocusActivity"
+            android:label="@string/focus"
+            android:parentActivityName=".MainDrawerActivity"
+            android:theme="@style/FocusTheme">
         </activity>
         <activity
             android:name=".settings.SettingsActivity"

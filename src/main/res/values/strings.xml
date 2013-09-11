@@ -14,6 +14,12 @@
     <string name="context_menu_finished_item">Finished</string>
     <string name="universal_delete_string">Delete</string>
 
+    <string name="focus">Focus</string>
+    <string name="focus_hint">
+        "Focus" on one thing you want to keep in mind.
+        \n\nTap here to create a new Focus.
+    </string>
+
     <string name="ab_menu_new_list">New List</string>
     <string name="ab_menu_delete_list">Delete List</string>
     <string name="ab_menu_rename_list">Rename List</string>
@@ -27,7 +33,7 @@
     <string name="list_delete_confirm_title">Delete this list?</string>
     <string name="edit_item_dialog_title">Edit Item</string>
     <string name="item_delete_confirm_title">Delete this item?</string>
-    <string name="category_name_dialog_title">Enter this category\'s name:</string>
+    <string name="edit_focus_dialog_title">Edit Focus</string>
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Load the last opened list on startup</string>
@@ -57,7 +63,7 @@
     </string>
 
     <string name="about_string">
-        Temaki v1.5\n
+        Temaki v1.4\n
         2013\n\n
 
         Temaki is an open source project.\n

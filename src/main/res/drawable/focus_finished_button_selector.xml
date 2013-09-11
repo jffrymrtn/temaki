@@ -2,13 +2,14 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/main_blue_accent" />
+        <shape android:shape="oval">
+            <solid android:color="@color/focus_finished_pressed" />
         </shape>
     </item>
+
     <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/main_blue_face" />
+        <shape android:shape="oval">
+            <solid android:color="@color/focus_background" />
         </shape>
     </item>
 </selector>

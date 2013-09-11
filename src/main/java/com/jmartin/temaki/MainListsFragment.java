@@ -27,6 +27,7 @@ import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
+import com.jmartin.temaki.sync.SyncManager;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,8 @@ public class MainListsFragment extends Fragment
     * is not working in the click listener below.*/
     private TextView selectedItemView = null;
     private String selectedItem = "";
+
+    private SyncManager syncManager;
 
     public MainListsFragment() {
         super();
@@ -109,7 +112,12 @@ public class MainListsFragment extends Fragment
 
     @Override
     public void onFinishAlertDialog() {
-        listItems.remove(indexOfItem(selectedItem));
+        TemakiItem item = listItems.remove(indexOfItem(selectedItem));
+
+        if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncManager.deleteItem(listName, item);
+        }
+
         actionMode.finish();
         clearItemSelection();
     }
@@ -129,21 +137,41 @@ public class MainListsFragment extends Fragment
 
     private void renameListItem(String inputValue) {
         int selectedItemPosition = indexOfItem(selectedItem);
+        String oldItemTitle = listItems.get(selectedItemPosition).getText();
+
         listItems.get(selectedItemPosition).setText(inputValue);
+
+        if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncManager.renameItemRecord(this.listName, oldItemTitle, inputValue);
+        }
+
         actionMode.finish();
         clearItemSelection();
     }
 
     private void toggleItemHighlight() {
         int selectedItemPosition = indexOfItem(selectedItem);
-        listItems.get(selectedItemPosition).toggleHighlighted();
+        TemakiItem item = listItems.get(selectedItemPosition);
+
+        item.toggleHighlighted();
+
+        if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncManager.toggleItemHighlight(listName, item.getText());
+        }
+
         actionMode.finish();
         clearItemSelection();
     }
 
     private void toggleItemFinished() {
         int selectedItemPosition = indexOfItem(selectedItem);
-        listItems.get(selectedItemPosition).toggleFinished();
+        TemakiItem item = listItems.get(selectedItemPosition);
+        item.toggleFinished();
+
+        if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncManager.toggleItemFinished(listName, item.getText());
+        }
+
         actionMode.finish();
         clearItemSelection();
     }
@@ -268,6 +296,14 @@ public class MainListsFragment extends Fragment
                 toast.show();
             }
         }
+
+        if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncManager.createItemRecord(this.listName, newItem);
+        }
+    }
+
+    public void loadSyncManager(SyncManager syncManager) {
+        this.syncManager = syncManager;
     }
 
     /* Private Inner Classes from this point onward */
@@ -276,7 +312,7 @@ public class MainListsFragment extends Fragment
 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 addListItem();
                 return true;
             }
