@@ -15,9 +15,10 @@
     <string name="universal_delete_string">Delete</string>
 
     <string name="focus">Focus</string>
+    <string name="focus_finished">Finished!\n\nTap here to create a new item.</string>
     <string name="focus_hint">
-        "Focus" on one thing you want to keep in mind.
-        \n\nTap here to create a new Focus.
+        "Focus" on any one thing you want to keep in mind.
+        \n\nTap here to get started.
     </string>
 
     <string name="ab_menu_new_list">New List</string>
@@ -58,7 +59,8 @@
     <string name="credits_string">
         One thousand thank yous to the following contributors who have helped make Temaki better!\n\n
 
-        Diederik Bailleul (Dutch translation)\n
+        Diederik Bailleul (Dutch translations)\n
+        Bert Wijman (Dutch translations)\n
         0p51k (Russian translation)\n\n
     </string>
 

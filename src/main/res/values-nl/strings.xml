@@ -10,6 +10,12 @@
     <string name="context_menu_finished_item">Gedaan</string>
     <string name="universal_delete_string">Verwijderen</string>
 
+    <string name="focus_finished">Gedaan!\n\nKlik hier om een ​​nieuw item toe te voegen.</string>
+    <string name="focus_hint">
+        "Focus" op datgene dat je wilt onthouden.
+        \n\nKlik hier om te beginnen.
+    </string>
+
     <string name="ab_menu_new_list">Nieuwe lijst</string>
     <string name="ab_menu_delete_list">Lijst verwijderen</string>
     <string name="ab_menu_rename_list">Lijst hernoemen</string>
@@ -36,6 +42,14 @@
     <string name="pref_language_summary">Alle veranderingen worden van kracht na het heropstarten van de app</string>
 
     <!-- Long String Content -->
+    <string name="credits_string">
+        Duizendmaal dank aan de volgende vrijwilligers die geholpen hebben met het verbeteren van Temaki!\n\n
+
+        Diederik Bailleul (Dutch translations)\n
+        Bert Wijman (Dutch translations)\n
+        0p51k (Russian translation)\n\n
+    </string>
+
     <string name="about_string">
         Temaki v1.4\n
         2013\n\n

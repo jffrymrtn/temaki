@@ -18,7 +18,6 @@
         android:singleLine="true"
         android:imeOptions="actionDone"
         android:paddingLeft ="15dp"
-        android:textColor ="#333333"
         style="@style/TemakiEditTextStyle" />
 
     <RelativeLayout

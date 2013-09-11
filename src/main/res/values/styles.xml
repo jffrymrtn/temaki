@@ -36,10 +36,11 @@
     <!-- ActionBar Style -->
     <style name="TemakiActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_style_holo</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:icon">@drawable/ic_logo</item>
     </style>
 
     <style name="TemakiActionBarFocusStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_style_focus</item>
+        <item name="android:icon">@drawable/ic_logo</item>
     </style>
 </resources>

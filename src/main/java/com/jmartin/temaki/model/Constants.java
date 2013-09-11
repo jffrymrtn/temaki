@@ -33,7 +33,7 @@ public class Constants {
     public static final int DELETE_ITEM_ID = 1;
     public static final int EDIT_ITEM_ID = 2;
     public static final int EDIT_FOCUS_ID = 3;
-    public static final int FOCUS_ACTIVITY_RESULT_ID = 4;
+    public static final String SP_NAME_BUNDLE_ID = "spref_name";
 
     // 50+ Sync IDs
     public static final int DBX_LINK_REQUEST_ID = 50;

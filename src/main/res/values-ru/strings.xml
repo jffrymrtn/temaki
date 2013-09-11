@@ -10,6 +10,12 @@
     <string name="context_menu_finished_item">Закончено</string>
     <string name="universal_delete_string">Удалить</string>
 
+    <string name="focus_finished">Закончено!\n\nTap here to create a new one.</string>
+    <string name="focus_hint">
+        "Focus" on one thing you want to keep in mind.
+        \n\nTap here to get started.
+    </string>
+
     <string name="ab_menu_new_list">Создать список</string>
     <string name="ab_menu_delete_list">Удалить список</string>
     <string name="ab_menu_rename_list">Переименовать список</string>

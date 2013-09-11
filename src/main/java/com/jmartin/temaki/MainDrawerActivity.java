@@ -69,7 +69,7 @@ public class MainDrawerActivity extends FragmentActivity
     private MainListsFragment mainListsFragment;
     private SearchView searchView;
 
-    private SyncManager syncManager;
+    private SyncManager syncManager = null;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
@@ -447,10 +447,6 @@ public class MainDrawerActivity extends FragmentActivity
             } else {
                 Log.d("Dropbox Link", "Dropbox link failed");
             }
-        } else if (requestCode == Constants.FOCUS_ACTIVITY_RESULT_ID) {
-            if (resultCode == Activity.RESULT_OK) {
-                saveFocus(data.getStringExtra(Constants.FOCUS_TITLE));
-            }
         } else {
             String input = data.getStringExtra(Constants.INTENT_RESULT_KEY).trim();
             if (resultCode == Constants.RENAME_LIST_ID) {
@@ -738,16 +734,6 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     /**
-     * Save the user's Focus list in a separate SharedPreferences than other lists.
-     */
-    private void saveFocus(String focus) {
-        SharedPreferences.Editor sharedPrefsEditor = getPreferences(MODE_PRIVATE).edit();
-
-        sharedPrefsEditor.putString(Constants.FOCUS_SP_KEY, focus);
-        sharedPrefsEditor.commit();
-    }
-
-    /**
      * @return the default title for a new list.
      */
     private String getDefaultTitle() {
@@ -766,8 +752,9 @@ public class MainDrawerActivity extends FragmentActivity
 
         Intent focusIntent = new Intent(this, FocusActivity.class);
         focusIntent.putExtra(Constants.FOCUS_BUNDLE_ID, focusText);
+        focusIntent.putExtra(Constants.SP_NAME_BUNDLE_ID, getLocalClassName());
 
-        startActivityForResult(focusIntent, Constants.FOCUS_ACTIVITY_RESULT_ID);
+        startActivity(focusIntent);
         overridePendingTransition(R.anim.focus_anim_slide_in_left, R.anim.focus_anim_slide_out_left);
     }
 

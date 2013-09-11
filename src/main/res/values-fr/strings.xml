@@ -11,6 +11,12 @@
     <string name="context_menu_finished_item">Fini</string>
     <string name="universal_delete_string">Supprimer</string>
 
+    <string name="focus_finished">Fini!\n\nAppuyez ici pour créer un nouvel élément.</string>
+    <string name="focus_hint">
+        "Focus" sur une chose que vous voulez garder à l\'esprit.
+        \n\nAppuyez ici pour commencer.
+    </string>
+
     <string name="ab_menu_new_list">Nouvelle Liste</string>
     <string name="ab_menu_delete_list">Supprimer La Liste</string>
     <string name="ab_menu_rename_list">Renommer La Liste</string>

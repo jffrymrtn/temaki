@@ -27,7 +27,7 @@ public class SyncManager {
     private DbxAccountManager dbxAcctMgr;
     private DbxAccount dbxAccount;
     private DbxDatastore datastore;
-    private ArrayList<DbxTable> itemsTbls;
+    private ArrayList<DbxTable> itemsTables;
 
     public SyncManager(Context ctx) {
         context = ctx;
@@ -48,11 +48,19 @@ public class SyncManager {
         dbxAccount = dbxAcctMgr.getLinkedAccount();
 
         // Open default datastore
+        openDatastore();
+    }
+
+    public void openDatastore() {
         try {
             datastore = DbxDatastore.openDefault(dbxAccount);
         } catch (DbxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void closeDatastore() {
+        datastore.close();
     }
 
     public void unlinkDropboxAccount() {
@@ -74,8 +82,8 @@ public class SyncManager {
 
     public ArrayList<DbxTable> getTables() {
         Set<DbxTable> tables = datastore.getTables();
-        itemsTbls = new ArrayList<DbxTable>(tables);
-        return itemsTbls;
+        itemsTables = new ArrayList<DbxTable>(tables);
+        return itemsTables;
     }
 
     /**
@@ -92,11 +100,7 @@ public class SyncManager {
         table.insert().set(Constants.TABLE_ITEM_TITLE, item.getText())
                       .set(Constants.TABLE_ITEM_ISFINISHED, item.isFinished())
                       .set(Constants.TABLE_ITEM_ISHIGHLIGHTED, item.isHighlighted());
-        try {
-            datastore.sync();
-        } catch (DbxException e) {
-            // TODO handle
-        }
+        syncDropbox();
     }
 
     public void renameItemRecord(String listName, String oldTitle, String newTitle) {
@@ -108,10 +112,11 @@ public class SyncManager {
             DbxRecord record = queryResult.iterator().next();
 
             record.set(Constants.TABLE_ITEM_TITLE, newTitle);
-            datastore.sync();
         } catch (DbxException e) {
             // TODO handle
         }
+
+        syncDropbox();
     }
 
     public void toggleItemHighlight(String listName, String itemTitle) {
@@ -124,10 +129,11 @@ public class SyncManager {
             boolean oldHighlight = record.getBoolean(Constants.TABLE_ITEM_ISHIGHLIGHTED);
 
             record.set(Constants.TABLE_ITEM_ISHIGHLIGHTED, !oldHighlight);
-            datastore.sync();
         } catch (DbxException e) {
             // TODO handle
         }
+
+        syncDropbox();
     }
 
     public void toggleItemFinished(String listName, String itemTitle) {
@@ -140,10 +146,11 @@ public class SyncManager {
             boolean oldFinished = record.getBoolean(Constants.TABLE_ITEM_ISFINISHED);
 
             record.set(Constants.TABLE_ITEM_ISFINISHED, !oldFinished);
-            datastore.sync();
         } catch (DbxException e) {
             // TODO handle
         }
+
+        syncDropbox();
     }
 
     public void deleteItem(String listName, TemakiItem item) {
@@ -155,10 +162,11 @@ public class SyncManager {
             DbxRecord record = queryResult.iterator().next();
 
             record.deleteRecord();
-            datastore.sync();
         } catch (DbxException e) {
             // TODO handle
         }
+
+        syncDropbox();
     }
 
     public void createNewListTable(String listName) {
@@ -180,4 +188,22 @@ public class SyncManager {
     public boolean isSyncAvailable() {
         return dbxAcctMgr.hasLinkedAccount();
     }
+
+    public void registerListener() {
+        datastore.addSyncStatusListener(datastoreSyncStatusListener);
+    }
+
+    public void deregisterListener() {
+        datastore.removeSyncStatusListener(datastoreSyncStatusListener);
+    }
+
+    private DbxDatastore.SyncStatusListener datastoreSyncStatusListener = new DbxDatastore.SyncStatusListener() {
+        @Override
+        public void onDatastoreStatusChange(DbxDatastore dbxDatastore) {
+            if (dbxDatastore.getSyncStatus().hasIncoming) {
+                syncDropbox();
+                getTables();
+            }
+        }
+    };
 }
