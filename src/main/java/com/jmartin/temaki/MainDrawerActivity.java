@@ -663,6 +663,9 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     protected void onResume() {
+        // Set the locale in case the user changed it
+        setLocale();
+        
         // Check if Dropbox sync was enabled from Preferences
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)) {
             initDropboxSync();
