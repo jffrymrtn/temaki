@@ -30,16 +30,24 @@ public class FocusActivity extends Activity {
     private TemakiItem focusItem;
 
     private String spName = "";
+    private GenericInputDialog inputDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.focus_layout);
 
-        String focusBundledText = getIntent().getStringExtra(Constants.FOCUS_BUNDLE_ID);
         spName = getIntent().getStringExtra(Constants.SP_NAME_BUNDLE_ID);
 
-        focusItem = new TemakiItem(focusBundledText);
+        if (savedInstanceState == null) {
+            // Then we should create from the Intent
+            String focusBundledText = getIntent().getStringExtra(Constants.FOCUS_BUNDLE_ID);
+            focusItem = new TemakiItem(focusBundledText);
+        } else {
+            // Then let's use whatever is in savedInstanceState
+            String focusSavedInstanceText = savedInstanceState.getString(Constants.FOCUS_SP_KEY);
+            focusItem = new TemakiItem(focusSavedInstanceText);
+        }
 
         focusTextView = (TextView) findViewById(R.id.focus_text_view);
         focusTextView.setOnClickListener(new View.OnClickListener() {
@@ -94,8 +102,16 @@ public class FocusActivity extends Activity {
 
     @Override
     protected void onPause() {
+        if (inputDialog != null) inputDialog.dismiss();
+
         saveFocus();
         super.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(Constants.FOCUS_SP_KEY, focusItem.getText());
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -119,7 +135,7 @@ public class FocusActivity extends Activity {
 
     private void editFocusText() {
         FragmentManager fragManager = getFragmentManager();
-        GenericInputDialog inputDialog = new GenericInputDialog(focusItem.getText());
+        inputDialog = new GenericInputDialog(focusItem.getText());
 
         inputDialog.setActionIdentifier(Constants.EDIT_FOCUS_ID);
         inputDialog.setTitle(getResources().getString(R.string.edit_focus_dialog_title));
