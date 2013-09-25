@@ -1,7 +1,7 @@
 Temaki-Lists
 ============
 
-![Temaki Screenshot](http://jeffreymartin.ca/temaki/device-drawer.png)
+![Temaki Screenshot](http://jeffreymartin.ca/temaki/img/device-drawer.png)
 
 Temaki is an Android app for quickly creating simple lists.
 
@@ -13,6 +13,7 @@ Android Libraries
 Temaki uses the following third-party libraries:
 
   - Google GSON
+  - Dropbox Datastore API
 
 Android Device Support
 ===================
