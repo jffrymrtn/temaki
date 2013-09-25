@@ -3,8 +3,10 @@ package com.jmartin.temaki;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -65,11 +67,12 @@ public class MainDrawerActivity extends FragmentActivity
     private DrawerListAdapter drawerListAdapter;
     private HashMap<String, ArrayList<TemakiItem>> lists;
 
-    FocusActivity focusActivity;
+    private FocusActivity focusActivity;
     private MainListsFragment mainListsFragment;
     private SearchView searchView;
 
     private SyncManager syncManager = null;
+    private DropboxBroadcastReceiver dropboxBroadcastReceiver;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
@@ -78,6 +81,8 @@ public class MainDrawerActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_drawer_layout);
+
+        dropboxBroadcastReceiver = new DropboxBroadcastReceiver();
 
         // Optimize overdraw on window background
         getWindow().setBackgroundDrawable(null);
@@ -88,17 +93,17 @@ public class MainDrawerActivity extends FragmentActivity
         // Set the locale in case the user changed it
         setLocale();
 
+        // Load metadata and lastLoadedList
+        String listsJson = initListsJson(savedInstanceState);
+
+        // Initialize lists variable
+        deserializeJsonLists(listsJson);
+
         // If Dropbox Sync is enabled
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)) {
             syncManager = new SyncManager(getApplicationContext());
             syncManager.init();
-            lists = syncManager.loadItemsFromDropbox();
-        } else {
-            // Load metadata and lastLoadedList
-            String listsJson = initListsJson(savedInstanceState);
-
-            // Initialize lists variable
-            deserializeJsonLists(listsJson);
+            loadDatastoreTables();
         }
 
         String loadedListName = initLastLoadedList(savedInstanceState);
@@ -178,118 +183,6 @@ public class MainDrawerActivity extends FragmentActivity
         windowContentOverlayWorkaround();
 
         super.onCreate(savedInstanceState);
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        setActionBarCustomTitle(getTitle().toString());
-    }
-
-    private String initListsJson(Bundle savedInstanceState) {
-        String listsJson = "";
-        if (savedInstanceState != null) {
-            // load from savedInstanceState
-            listsJson = savedInstanceState.getString(Constants.LISTS_SP_KEY, "");
-        } else {
-            // Load from SharedPreferences
-            SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
-            listsJson = sharedPrefs.getString(Constants.LISTS_SP_KEY, "");
-        }
-        return listsJson;
-    }
-
-    private String initLastLoadedList(Bundle savedInstanceState) {
-        String loadedListName = "";
-        if (savedInstanceState == null) {
-            // Load from SharedPreferences
-            SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
-
-            // Load the last loaded list if needed
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_STARTUP_OPTION, false)) {
-                loadedListName = sharedPrefs.getString(Constants.LAST_OPENED_LIST_SP_KEY, "");
-            }
-        } else {
-            // load from savedInstanceState
-            loadedListName = savedInstanceState.getString(Constants.LIST_NAME_BUNDLE_KEY, "");
-        }
-        return loadedListName;
-    }
-
-    /**
-     * Sets the custom locale of the application if the user changed it in Settings.
-     */
-    private void setLocale() {
-        Configuration updatedConfig = getBaseContext().getResources().getConfiguration();
-        String defaultLocale = Locale.getDefault().toString();
-        String stringLocale = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_PREF_LOCALE, defaultLocale);
-
-        if (!stringLocale.equals("")) {
-            Locale locale = new Locale(stringLocale);
-
-            Locale.setDefault(locale);
-            updatedConfig.locale = locale;
-            getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
-        }
-    }
-
-    /**
-     * Sets the ActionBar title to the parameter 'title'.
-     */
-    private void setActionBarCustomTitle(String title) {
-        SpannableString abTitle = new SpannableString(title);
-        abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        getActionBar().setTitle(abTitle);
-    }
-
-    /**
-     * !IMPORTANT! Workaround to a bug in Android API Level 18. Remove when fixed
-     */
-    private void windowContentOverlayWorkaround() {
-        View contentView = findViewById(android.R.id.content);
-
-        if (contentView instanceof FrameLayout) {
-            TypedValue typedValue = new TypedValue();
-
-            if (getTheme().resolveAttribute(android.R.attr.windowContentOverlay, typedValue, true)) {
-                if (typedValue.resourceId != 0) {
-                    ((FrameLayout) contentView).setForeground(getResources().getDrawable(typedValue.resourceId));
-                }
-            }
-        }
-    }
-
-    /**
-     * Deserializes the JSON string listsJson into its respective Collection<?> type.
-     */
-    private void deserializeJsonLists(String listsJson) {
-        Type listsType = new TypeToken<HashMap<String, ArrayList<TemakiItem>>>() {}.getType();
-        try {
-            lists = new Gson().fromJson(listsJson, listsType);
-        } catch (Exception e) {
-            // Compatibility code, we need this for users who are coming from older versions of the app
-            listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
-            HashMap<String, ArrayList<String>> compatLists = new Gson().fromJson(listsJson, listsType);
-
-            // Convert these to the new type
-            lists = new HashMap<String, ArrayList<TemakiItem>>();
-            for (String key : compatLists.keySet()) {
-                ArrayList<TemakiItem> newListType = new ArrayList<TemakiItem>();
-                for (String item : compatLists.get(key)) {
-                    newListType.add(new TemakiItem(item));
-                }
-                lists.put(key, newListType);
-            }
-        }
-
-        if (lists != null && lists.size() > 0) {
-            for (String name : lists.keySet()) {
-                drawerItems.put(name, lists.get(name).size());
-            }
-        } else if (lists == null) {
-            lists = new HashMap<String, ArrayList<TemakiItem>>();
-        }
     }
 
     @Override
@@ -419,6 +312,8 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onPause() {
+        unregisterReceiver(dropboxBroadcastReceiver);
+
         // Make sure dialogs are closed (needed in order to maintain orientation change)
         if (this.alertDialog != null) this.alertDialog.dismiss();
         if (this.inputDialog != null) this.inputDialog.dismiss();
@@ -433,7 +328,11 @@ public class MainDrawerActivity extends FragmentActivity
         saveListsToSharedPreferences(listsJson);
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
+            syncFocus();
             syncManager.syncDropbox();
+
+            syncManager.deregisterListener();
+            syncManager.closeDatastore();
         }
         super.onPause();
     }
@@ -443,8 +342,15 @@ public class MainDrawerActivity extends FragmentActivity
         if (requestCode == Constants.DBX_LINK_REQUEST_ID) {
             if (resultCode == Activity.RESULT_OK) {
                 syncManager.setupDropboxAccount();
+                syncManager.registerListener();
                 loadDatastoreTables();
+                syncExistingTables();
             } else {
+                syncManager = null;
+                PreferenceManager.getDefaultSharedPreferences(this)
+                                 .edit()
+                                 .putBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)
+                                 .commit();
                 Log.d("Dropbox Link", "Dropbox link failed");
             }
         } else {
@@ -459,6 +365,179 @@ public class MainDrawerActivity extends FragmentActivity
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void initActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        setActionBarCustomTitle(getTitle().toString());
+    }
+
+    private String initListsJson(Bundle savedInstanceState) {
+        String listsJson = "";
+        if (savedInstanceState != null) {
+            // load from savedInstanceState
+            listsJson = savedInstanceState.getString(Constants.LISTS_SP_KEY, "");
+        } else {
+            // Load from SharedPreferences
+            SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
+            listsJson = sharedPrefs.getString(Constants.LISTS_SP_KEY, "");
+        }
+        return listsJson;
+    }
+
+    private String initLastLoadedList(Bundle savedInstanceState) {
+        String loadedListName = "";
+        if (savedInstanceState == null) {
+            // Load from SharedPreferences
+            SharedPreferences sharedPrefs = getPreferences(MODE_PRIVATE);
+
+            // Load the last loaded list if needed
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_STARTUP_OPTION, false)) {
+                loadedListName = sharedPrefs.getString(Constants.LAST_OPENED_LIST_SP_KEY, "");
+            }
+        } else {
+            // load from savedInstanceState
+            loadedListName = savedInstanceState.getString(Constants.LIST_NAME_BUNDLE_KEY, "");
+        }
+        return loadedListName;
+    }
+
+    /**
+     * Sets the custom locale of the application if the user changed it in Settings.
+     */
+    private void setLocale() {
+        Configuration updatedConfig = getBaseContext().getResources().getConfiguration();
+        String defaultLocale = Locale.getDefault().toString();
+        String stringLocale = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_PREF_LOCALE, defaultLocale);
+
+        if (!stringLocale.equals("")) {
+            Locale locale = new Locale(stringLocale);
+
+            Locale.setDefault(locale);
+            updatedConfig.locale = locale;
+            getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
+
+    /**
+     * Sets the ActionBar title to the parameter 'title'.
+     */
+    private void setActionBarCustomTitle(String title) {
+        SpannableString abTitle = new SpannableString(title);
+        abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getActionBar().setTitle(abTitle);
+    }
+
+    /**
+     * !IMPORTANT! Workaround to a bug in Android API Level 18. Remove when fixed
+     */
+    private void windowContentOverlayWorkaround() {
+        View contentView = findViewById(android.R.id.content);
+
+        if (contentView instanceof FrameLayout) {
+            TypedValue typedValue = new TypedValue();
+
+            if (getTheme().resolveAttribute(android.R.attr.windowContentOverlay, typedValue, true)) {
+                if (typedValue.resourceId != 0) {
+                    ((FrameLayout) contentView).setForeground(getResources().getDrawable(typedValue.resourceId));
+                }
+            }
+        }
+    }
+
+    /**
+     * Deserializes the JSON string listsJson into its respective Collection<?> type.
+     */
+    private void deserializeJsonLists(String listsJson) {
+        Type listsType = new TypeToken<HashMap<String, ArrayList<TemakiItem>>>() {}.getType();
+        try {
+            lists = new Gson().fromJson(listsJson, listsType);
+        } catch (Exception e) {
+            // Compatibility code, we need this for users who are coming from older versions of the app
+            listsType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
+            HashMap<String, ArrayList<String>> compatLists = new Gson().fromJson(listsJson, listsType);
+
+            // Convert these to the new type
+            lists = new HashMap<String, ArrayList<TemakiItem>>();
+            for (String key : compatLists.keySet()) {
+                ArrayList<TemakiItem> newListType = new ArrayList<TemakiItem>();
+                for (String item : compatLists.get(key)) {
+                    newListType.add(new TemakiItem(item));
+                }
+                lists.put(key, newListType);
+            }
+        }
+
+        if (lists != null && lists.size() > 0) {
+            for (String name : lists.keySet()) {
+                drawerItems.put(name, lists.get(name).size());
+            }
+        } else if (lists == null) {
+            lists = new HashMap<String, ArrayList<TemakiItem>>();
+        }
+    }
+
+    /**
+     * This method gets called when the app is linked with Dropbox, and never again.
+     */
+    private void syncExistingTables() {
+        // Sync Focus
+        syncFocus();
+
+        // Sync Tables
+        for (String list : lists.keySet()) {
+            ArrayList<TemakiItem> content = lists.get(list);
+            syncManager.createNewList(list);
+
+            for (TemakiItem item : content) {
+                syncManager.createItem(list, item);
+            }
+        }
+        syncManager.syncDropbox();
+    }
+
+    private void syncFocus() {
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        String focusText = sp.getString(Constants.FOCUS_SP_KEY, "");
+
+        if (focusText.length() > 0) {
+            syncManager.createNewList(Constants.DB_FOCUS_TABLE_NAME);
+            syncManager.createFocus(Constants.DB_FOCUS_TABLE_NAME, focusText);
+            syncManager.syncDropbox();
+        } else {
+            try {
+                DbxRecord focusRecord = syncManager.getTable(Constants.DB_FOCUS_TABLE_NAME).get(Constants.DB_FOCUS_TABLE_NAME);
+                if (focusRecord != null) {
+                    focusRecord.deleteRecord();
+                }
+            } catch (DbxException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadFocusFromDropbox() {
+        DbxTable focusTable = syncManager.getTable(Constants.DB_FOCUS_TABLE_NAME);
+        String newFocus = "";
+
+        try {
+            DbxRecord focusRecord = focusTable.get(Constants.DB_FOCUS_TABLE_NAME);
+            if (focusRecord != null) {
+                focusRecord.getString(Constants.TABLE_ITEM_TITLE);
+            }
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+
+        String oldFocus = sp.getString(Constants.FOCUS_SP_KEY, "");
+        if (!newFocus.equalsIgnoreCase(oldFocus)) {
+            edit.putString(Constants.FOCUS_SP_KEY, newFocus);
+        }
+    }
+
     /**
      * This method gets called when the app is linked with Dropbox, and never again.
      */
@@ -469,8 +548,21 @@ public class MainDrawerActivity extends FragmentActivity
 
         // Note: table = list, record = item
         for (DbxTable tbl : dbxTables) {
-            String listName = tbl.getId();
             try {
+                String listName = tbl.getId().replace("_-_", " ");
+                if (listName.equalsIgnoreCase(Constants.DB_FOCUS_TABLE_NAME)) {
+                    DbxRecord focusRecord = tbl.get(Constants.DB_FOCUS_TABLE_NAME);
+                    SharedPreferences sp = getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor edit = sp.edit();
+
+                    if (focusRecord != null) {
+                        edit.putString(Constants.FOCUS_SP_KEY, focusRecord.getString(Constants.TABLE_ITEM_TITLE));
+                        edit.commit();
+                    }
+
+                    continue;
+                }
+
                 DbxTable.QueryResult records = tbl.query();
                 Iterator<DbxRecord> recordIterator = records.iterator();
                 ArrayList<TemakiItem> lst = new ArrayList<TemakiItem>();
@@ -482,10 +574,12 @@ public class MainDrawerActivity extends FragmentActivity
                     boolean isHighlighted = record.getBoolean("isHighlighted");
 
 
+                    // Get the list if it already exists
                     if (lists.containsKey(listName)) {
                         lst = lists.get(listName);
                     }
 
+                    // Add list items from Dbx
                     if (!isItemInList(lst, item)) {
                         TemakiItem temakiItem = new TemakiItem(item);
 
@@ -495,13 +589,19 @@ public class MainDrawerActivity extends FragmentActivity
                         lst.add(0, temakiItem);
                     }
                 }
-                lists.put(listName, lst);
-                updateDrawer(listName, lst.size());
+
+                if (lst.size() > 0) {
+                    lists.put(listName, lst);
+                    updateDrawer(listName, lst.size());
+                }
+
+                if (mainListsFragment != null && mainListsFragment.getListName().equalsIgnoreCase(listName)) {
+                    mainListsFragment.updateDataSet(lst);
+                }
             } catch (DbxException e) {
                 // TODO handle
             }
         }
-
     }
 
     /**
@@ -528,7 +628,7 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.createNewListTable(newListName);
+            syncManager.createNewList(newListName);
         }
 
         loadListIntoFragment(newListName, lists.get(newListName));
@@ -547,7 +647,7 @@ public class MainDrawerActivity extends FragmentActivity
         selectedListName = "";
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.deleteListTable(listName);
+            syncManager.deleteList(listName);
         }
 
         loadListIntoFragment(null, null);
@@ -569,7 +669,7 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.renameListTable(oldListName, newListName);
+            syncManager.renameList(oldListName, newListName);
         }
 
         loadListIntoFragment(newListName, currentListItems);
@@ -663,12 +763,22 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     protected void onResume() {
+        // Set up our BroadcastReceiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.DB_SYNC_REQUIRED);
+        registerReceiver(dropboxBroadcastReceiver, filter);
+
         // Set the locale in case the user changed it
         setLocale();
         
         // Check if Dropbox sync was enabled from Preferences
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)) {
-            initDropboxSync();
+            if (syncManager == null) {
+                initDropboxSync();
+            } else {
+                syncManager.openDatastore();
+                syncManager.registerListener();
+            }
         } else {
             if (syncManager != null) {
                 syncManager.unlinkDropboxAccount();
@@ -715,7 +825,9 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private void updateDrawer(String listName, int listItemsCount) {
         drawerItems.put(listName, listItemsCount);
-        drawerListAdapter.notifyDataSetChanged();
+        if (drawerListAdapter != null) {
+            drawerListAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -784,6 +896,15 @@ public class MainDrawerActivity extends FragmentActivity
             // Close the nav drawer
             view.setSelected(true);
             listsDrawerLayout.closeDrawer(listsDrawerListView);
+        }
+    }
+
+    private class DropboxBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadDatastoreTables();
+            loadFocusFromDropbox();
         }
     }
 }

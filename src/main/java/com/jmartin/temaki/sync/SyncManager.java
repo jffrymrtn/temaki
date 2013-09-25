@@ -2,6 +2,7 @@ package com.jmartin.temaki.sync;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
@@ -15,6 +16,7 @@ import com.jmartin.temaki.model.TemakiItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -81,30 +83,35 @@ public class SyncManager {
     }
 
     public ArrayList<DbxTable> getTables() {
-        Set<DbxTable> tables = datastore.getTables();
-        itemsTables = new ArrayList<DbxTable>(tables);
+        if (datastore != null) {
+            Set<DbxTable> tables = datastore.getTables();
+            itemsTables = new ArrayList<DbxTable>(tables);
+        }
         return itemsTables;
     }
 
-    /**
-     * Read the items from the datastore
-     */
-    public HashMap<String, ArrayList<TemakiItem>> loadItemsFromDropbox() {
-        HashMap<String, ArrayList<TemakiItem>> result = new HashMap<String, ArrayList<TemakiItem>>();
-
-        return result;
-    }
-
-    public void createItemRecord(String listName, TemakiItem item) {
-        DbxTable table = datastore.getTable(listName);
+    public void createItem(String listName, TemakiItem item) {
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
         table.insert().set(Constants.TABLE_ITEM_TITLE, item.getText())
                       .set(Constants.TABLE_ITEM_ISFINISHED, item.isFinished())
                       .set(Constants.TABLE_ITEM_ISHIGHLIGHTED, item.isHighlighted());
         syncDropbox();
     }
 
-    public void renameItemRecord(String listName, String oldTitle, String newTitle) {
-        DbxTable table = datastore.getTable(listName);
+    public void createFocus(String listName, String focus) {
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
+
+        try {
+            table.getOrInsert(Constants.DB_FOCUS_TABLE_NAME).set(Constants.TABLE_ITEM_TITLE, focus);
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+
+        syncDropbox();
+    }
+
+    public void renameItem(String listName, String oldTitle, String newTitle) {
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
         DbxFields queryParams = new DbxFields().set(Constants.TABLE_ITEM_TITLE, oldTitle);
 
         try {
@@ -120,7 +127,7 @@ public class SyncManager {
     }
 
     public void toggleItemHighlight(String listName, String itemTitle) {
-        DbxTable table = datastore.getTable(listName);
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
         DbxFields queryParams = new DbxFields().set(Constants.TABLE_ITEM_TITLE, itemTitle);
 
         try {
@@ -136,8 +143,12 @@ public class SyncManager {
         syncDropbox();
     }
 
+    private String getDbFriendlyId(String listName) {
+        return listName.replace(" ", "_-_");
+    }
+
     public void toggleItemFinished(String listName, String itemTitle) {
-        DbxTable table = datastore.getTable(listName);
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
         DbxFields queryParams = new DbxFields().set(Constants.TABLE_ITEM_TITLE, itemTitle);
 
         try {
@@ -154,7 +165,7 @@ public class SyncManager {
     }
 
     public void deleteItem(String listName, TemakiItem item) {
-        DbxTable table = datastore.getTable(listName);
+        DbxTable table = datastore.getTable(getDbFriendlyId(listName));
         DbxFields queryParams = new DbxFields().set(Constants.TABLE_ITEM_TITLE, item.getText());
 
         try {
@@ -169,19 +180,23 @@ public class SyncManager {
         syncDropbox();
     }
 
-    public void createNewListTable(String listName) {
-        datastore.getTable(listName);
+    public void createNewList(String listName) {
+        datastore.getTable(getDbFriendlyId(listName));
     }
 
-    public void deleteListTable(String listName) {
-//        datastore.getTable(listName).
+    public void deleteList(String listName) {
+        try {
+            Iterator iter = datastore.getTable(getDbFriendlyId(listName)).query().iterator();
+            while (iter.hasNext()) {
+                DbxRecord record = (DbxRecord) iter.next();
+                record.deleteRecord();
+            }
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void renameListTable(String oldListName, String newListName) {
-
-    }
-
-    public void updateListTable(String listName) {
+    public void renameList(String oldListName, String newListName) {
 
     }
 
@@ -203,7 +218,15 @@ public class SyncManager {
             if (dbxDatastore.getSyncStatus().hasIncoming) {
                 syncDropbox();
                 getTables();
+
+                Intent broadcast = new Intent();
+                broadcast.setAction(Constants.DB_SYNC_REQUIRED);
+                context.sendBroadcast(broadcast);
             }
         }
     };
+
+    public DbxTable getTable(String table) {
+        return datastore.getTable(table);
+    }
 }

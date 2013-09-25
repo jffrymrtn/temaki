@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -142,7 +143,7 @@ public class MainListsFragment extends Fragment
         listItems.get(selectedItemPosition).setText(inputValue);
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.renameItemRecord(this.listName, oldItemTitle, inputValue);
+            syncManager.renameItem(this.listName, oldItemTitle, inputValue);
         }
 
         actionMode.finish();
@@ -298,12 +299,28 @@ public class MainListsFragment extends Fragment
         }
 
         if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.createItemRecord(this.listName, newItem);
+            syncManager.createItem(this.listName, newItem);
         }
     }
 
     public void loadSyncManager(SyncManager syncManager) {
         this.syncManager = syncManager;
+    }
+
+
+    final Handler updateListViewHandler = new Handler();
+
+    public void updateDataSet(final ArrayList<TemakiItem> newDataSet) {
+        updateListViewHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                listItems.clear();
+                listItems.addAll(newDataSet);
+                itemsListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //getActivity().runOnUiThread(updateListView);
     }
 
     /* Private Inner Classes from this point onward */

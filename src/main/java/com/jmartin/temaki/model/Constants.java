@@ -20,6 +20,7 @@ public class Constants {
     public static final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
     public static final String FOCUS_SP_KEY = "focus_key";
     public static final String FOCUS_BUNDLE_ID = "focus_bundle_id";
+    public static final String DB_SYNC_REQUIRED = "com.jmartin.temaki.broadcast.syncrequired";
 
     public static String KEY_PREF_LOCALE = "pref_locale_option";
     public static String KEY_PREF_DROPBOX_SYNC = "pref_sync_option";
@@ -47,4 +48,5 @@ public class Constants {
     public static final String TABLE_ITEM_TITLE = "title";
     public static final String TABLE_ITEM_ISFINISHED = "isFinished";
     public static final String TABLE_ITEM_ISHIGHLIGHTED = "isHighlighted";
+    public static final String DB_FOCUS_TABLE_NAME = "Focus";
 }
