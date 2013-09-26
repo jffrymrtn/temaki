@@ -13,7 +13,15 @@ Android Libraries
 Temaki uses the following third-party libraries:
 
   - Google GSON
-  - Dropbox Datastore API
+
+# Sync
+
+Dropbox Sync was initially planned for version 1.5, but was dropped due to complications with conflicting methods of using list
+names as tables names in the Dropbox Datastore API. Sync has been deferred for now due to my personal time constraints, with no 
+plans to continue it at the moment.
+
+However, there is still a desire to add Sync to Dropbox, and any help is appreciated!
+
 
 Android Device Support
 ===================
