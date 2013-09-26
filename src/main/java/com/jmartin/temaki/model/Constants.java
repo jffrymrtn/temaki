@@ -20,7 +20,6 @@ public class Constants {
     public static final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
     public static final String FOCUS_SP_KEY = "focus_key";
     public static final String FOCUS_BUNDLE_ID = "focus_bundle_id";
-    public static final String DB_SYNC_REQUIRED = "com.jmartin.temaki.broadcast.syncrequired";
 
     public static String KEY_PREF_LOCALE = "pref_locale_option";
     public static String KEY_PREF_DROPBOX_SYNC = "pref_sync_option";
@@ -36,17 +35,5 @@ public class Constants {
     public static final int EDIT_FOCUS_ID = 3;
     public static final String SP_NAME_BUNDLE_ID = "spref_name";
 
-    // 50+ Sync IDs
-    public static final int DBX_LINK_REQUEST_ID = 50;
-
     public static final String INTENT_RESULT_KEY = "ResultKey";
-
-    // API Keys - Replace these with actual values before launch
-    public static final String DB_APP_SECRET = "";
-    public static final String DB_APP_KEY = "";
-
-    public static final String TABLE_ITEM_TITLE = "title";
-    public static final String TABLE_ITEM_ISFINISHED = "isFinished";
-    public static final String TABLE_ITEM_ISHIGHLIGHTED = "isHighlighted";
-    public static final String DB_FOCUS_TABLE_NAME = "Focus";
 }

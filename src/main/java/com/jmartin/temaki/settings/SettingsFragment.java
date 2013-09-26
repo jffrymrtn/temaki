@@ -8,7 +8,6 @@ import android.preference.PreferenceFragment;
 
 import com.jmartin.temaki.R;
 import com.jmartin.temaki.model.Constants;
-import com.jmartin.temaki.sync.SyncManager;
 
 /**
  * Author: Jeff Martin, 2013

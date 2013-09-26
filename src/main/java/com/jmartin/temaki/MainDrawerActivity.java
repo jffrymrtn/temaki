@@ -1,12 +1,9 @@
 package com.jmartin.temaki;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -19,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,9 +27,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxRecord;
-import com.dropbox.sync.android.DbxTable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jmartin.temaki.adapter.DrawerListAdapter;
@@ -42,12 +35,10 @@ import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
 import com.jmartin.temaki.settings.SettingsActivity;
-import com.jmartin.temaki.sync.SyncManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 
@@ -71,9 +62,6 @@ public class MainDrawerActivity extends FragmentActivity
     private MainListsFragment mainListsFragment;
     private SearchView searchView;
 
-    private SyncManager syncManager = null;
-    private DropboxBroadcastReceiver dropboxBroadcastReceiver;
-
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
     private String selectedListName = "";
@@ -81,8 +69,6 @@ public class MainDrawerActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_drawer_layout);
-
-        dropboxBroadcastReceiver = new DropboxBroadcastReceiver();
 
         // Optimize overdraw on window background
         getWindow().setBackgroundDrawable(null);
@@ -98,13 +84,6 @@ public class MainDrawerActivity extends FragmentActivity
 
         // Initialize lists variable
         deserializeJsonLists(listsJson);
-
-        // If Dropbox Sync is enabled
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)) {
-            syncManager = new SyncManager(getApplicationContext());
-            syncManager.init();
-            loadDatastoreTables();
-        }
 
         String loadedListName = initLastLoadedList(savedInstanceState);
 
@@ -279,6 +258,11 @@ public class MainDrawerActivity extends FragmentActivity
         }
 
         switch (item.getItemId()) {
+            case R.id.action_clear_finished:
+                if (mainListsFragment != null) {
+                    mainListsFragment.clearFinished();
+                }
+                return true;
             case R.id.action_delete_list:
                 showDeleteListPrompt();
                 return true;
@@ -312,8 +296,6 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     public void onPause() {
-        unregisterReceiver(dropboxBroadcastReceiver);
-
         // Make sure dialogs are closed (needed in order to maintain orientation change)
         if (this.alertDialog != null) this.alertDialog.dismiss();
         if (this.inputDialog != null) this.inputDialog.dismiss();
@@ -326,42 +308,17 @@ public class MainDrawerActivity extends FragmentActivity
         String listsJson = gson.toJson(lists);
 
         saveListsToSharedPreferences(listsJson);
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncFocus();
-            syncManager.syncDropbox();
-
-            syncManager.deregisterListener();
-            syncManager.closeDatastore();
-        }
         super.onPause();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.DBX_LINK_REQUEST_ID) {
-            if (resultCode == Activity.RESULT_OK) {
-                syncManager.setupDropboxAccount();
-                syncManager.registerListener();
-                loadDatastoreTables();
-                syncExistingTables();
-            } else {
-                syncManager = null;
-                PreferenceManager.getDefaultSharedPreferences(this)
-                                 .edit()
-                                 .putBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)
-                                 .commit();
-                Log.d("Dropbox Link", "Dropbox link failed");
-            }
-        } else {
             String input = data.getStringExtra(Constants.INTENT_RESULT_KEY).trim();
             if (resultCode == Constants.RENAME_LIST_ID) {
                 renameList(input);
             } else if (resultCode == Constants.NEW_LIST_ID) {
                 createNewList(input);
             }
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -477,147 +434,8 @@ public class MainDrawerActivity extends FragmentActivity
         }
     }
 
-    /**
-     * This method gets called when the app is linked with Dropbox, and never again.
-     */
-    private void syncExistingTables() {
-        // Sync Focus
-        syncFocus();
-
-        // Sync Tables
-        for (String list : lists.keySet()) {
-            ArrayList<TemakiItem> content = lists.get(list);
-            syncManager.createNewList(list);
-
-            for (TemakiItem item : content) {
-                syncManager.createItem(list, item);
-            }
-        }
-        syncManager.syncDropbox();
-    }
-
-    private void syncFocus() {
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        String focusText = sp.getString(Constants.FOCUS_SP_KEY, "");
-
-        if (focusText.length() > 0) {
-            syncManager.createNewList(Constants.DB_FOCUS_TABLE_NAME);
-            syncManager.createFocus(Constants.DB_FOCUS_TABLE_NAME, focusText);
-            syncManager.syncDropbox();
-        } else {
-            try {
-                DbxRecord focusRecord = syncManager.getTable(Constants.DB_FOCUS_TABLE_NAME).get(Constants.DB_FOCUS_TABLE_NAME);
-                if (focusRecord != null) {
-                    focusRecord.deleteRecord();
-                }
-            } catch (DbxException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void loadFocusFromDropbox() {
-        DbxTable focusTable = syncManager.getTable(Constants.DB_FOCUS_TABLE_NAME);
-        String newFocus = "";
-
-        try {
-            DbxRecord focusRecord = focusTable.get(Constants.DB_FOCUS_TABLE_NAME);
-            if (focusRecord != null) {
-                focusRecord.getString(Constants.TABLE_ITEM_TITLE);
-            }
-        } catch (DbxException e) {
-            e.printStackTrace();
-        }
-
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-
-        String oldFocus = sp.getString(Constants.FOCUS_SP_KEY, "");
-        if (!newFocus.equalsIgnoreCase(oldFocus)) {
-            edit.putString(Constants.FOCUS_SP_KEY, newFocus);
-        }
-    }
-
-    /**
-     * This method gets called when the app is linked with Dropbox, and never again.
-     */
-    private void loadDatastoreTables() {
-        // If Dbx Datastore has records, load them here as new lists or insert items to existing
-        // lists if applicable
-        ArrayList<DbxTable> dbxTables = syncManager.getTables();
-
-        // Note: table = list, record = item
-        for (DbxTable tbl : dbxTables) {
-            try {
-                String listName = tbl.getId().replace("_-_", " ");
-                if (listName.equalsIgnoreCase(Constants.DB_FOCUS_TABLE_NAME)) {
-                    DbxRecord focusRecord = tbl.get(Constants.DB_FOCUS_TABLE_NAME);
-                    SharedPreferences sp = getPreferences(MODE_PRIVATE);
-                    SharedPreferences.Editor edit = sp.edit();
-
-                    if (focusRecord != null) {
-                        edit.putString(Constants.FOCUS_SP_KEY, focusRecord.getString(Constants.TABLE_ITEM_TITLE));
-                        edit.commit();
-                    }
-
-                    continue;
-                }
-
-                DbxTable.QueryResult records = tbl.query();
-                Iterator<DbxRecord> recordIterator = records.iterator();
-                ArrayList<TemakiItem> lst = new ArrayList<TemakiItem>();
-
-                while (recordIterator.hasNext()) {
-                    DbxRecord record = recordIterator.next();
-                    String item = record.getString("title");
-                    boolean isFinished = record.getBoolean("isFinished");
-                    boolean isHighlighted = record.getBoolean("isHighlighted");
-
-
-                    // Get the list if it already exists
-                    if (lists.containsKey(listName)) {
-                        lst = lists.get(listName);
-                    }
-
-                    // Add list items from Dbx
-                    if (!isItemInList(lst, item)) {
-                        TemakiItem temakiItem = new TemakiItem(item);
-
-                        if (isFinished) temakiItem.toggleFinished();
-                        if (isHighlighted) temakiItem.toggleHighlighted();
-
-                        lst.add(0, temakiItem);
-                    }
-                }
-
-                if (lst.size() > 0) {
-                    lists.put(listName, lst);
-                    updateDrawer(listName, lst.size());
-                }
-
-                if (mainListsFragment != null && mainListsFragment.getListName().equalsIgnoreCase(listName)) {
-                    mainListsFragment.updateDataSet(lst);
-                }
-            } catch (DbxException e) {
-                // TODO handle
-            }
-        }
-    }
-
-    /**
-     * Return whether or not the item 'item' exists in ArrayList lst.
-     */
-    private boolean isItemInList(ArrayList<TemakiItem> lst, String item) {
-        for (TemakiItem itm : lst) {
-            if (itm.getText().equalsIgnoreCase(item)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void createNewList(String newListName) {
-        if (newListName.trim().equalsIgnoreCase("")) {
+        if (newListName.trim().length() == 0) {
             newListName = getDefaultTitle();
         }
 
@@ -625,10 +443,6 @@ public class MainDrawerActivity extends FragmentActivity
             updateDrawer(newListName, Constants.EMPTY_LIST_ITEMS_COUNT);
             lists.put(newListName, new ArrayList<TemakiItem>());
             selectedListName = newListName;
-        }
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.createNewList(newListName);
         }
 
         loadListIntoFragment(newListName, lists.get(newListName));
@@ -646,15 +460,11 @@ public class MainDrawerActivity extends FragmentActivity
         drawerListAdapter.notifyDataSetChanged();
         selectedListName = "";
 
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.deleteList(listName);
-        }
-
         loadListIntoFragment(null, null);
     }
 
     private void renameList(String newListName) {
-        if (newListName.equalsIgnoreCase("")) {
+        if (newListName.trim().length() == 0) {
             return;
         }
 
@@ -666,10 +476,6 @@ public class MainDrawerActivity extends FragmentActivity
             lists.put(newListName, currentListItems);
             deleteList(oldListName);
             selectedListName = newListName;
-        }
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.renameList(oldListName, newListName);
         }
 
         loadListIntoFragment(newListName, currentListItems);
@@ -692,10 +498,6 @@ public class MainDrawerActivity extends FragmentActivity
 
         setActionBarCustomTitle(listName);
         mainListsFragment.loadList(listName, list);
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            mainListsFragment.loadSyncManager(syncManager);
-        }
 
         if (!mainListsFragment.isVisible()) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -763,37 +565,9 @@ public class MainDrawerActivity extends FragmentActivity
 
     @Override
     protected void onResume() {
-        // Set up our BroadcastReceiver
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.DB_SYNC_REQUIRED);
-        registerReceiver(dropboxBroadcastReceiver, filter);
-
         // Set the locale in case the user changed it
         setLocale();
-        
-        // Check if Dropbox sync was enabled from Preferences
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_DROPBOX_SYNC, false)) {
-            if (syncManager == null) {
-                initDropboxSync();
-            } else {
-                syncManager.openDatastore();
-                syncManager.registerListener();
-            }
-        } else {
-            if (syncManager != null) {
-                syncManager.unlinkDropboxAccount();
-            }
-            syncManager = null;
-        }
-
         super.onResume();
-    }
-
-    private void initDropboxSync() {
-        if (syncManager == null) {
-            syncManager = new SyncManager(getApplicationContext());
-            syncManager.linkDropboxAccount(this);
-        }
     }
 
     /**
@@ -896,15 +670,6 @@ public class MainDrawerActivity extends FragmentActivity
             // Close the nav drawer
             view.setSelected(true);
             listsDrawerLayout.closeDrawer(listsDrawerListView);
-        }
-    }
-
-    private class DropboxBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            loadDatastoreTables();
-            loadFocusFromDropbox();
         }
     }
 }

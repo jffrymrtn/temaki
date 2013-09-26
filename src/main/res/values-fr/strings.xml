@@ -20,7 +20,7 @@
     <string name="ab_menu_new_list">Nouvelle Liste</string>
     <string name="ab_menu_delete_list">Supprimer La Liste</string>
     <string name="ab_menu_rename_list">Renommer La Liste</string>
-    <string name="ab_menu_new_category">Nouvelle Catégorie</string>
+    <string name="ab_menu_clear_finished_items">Fini Clair</string>
     <string name="search_hint">Recherche</string>
 
     <string name="item_exists_toast">Élément existe!</string>

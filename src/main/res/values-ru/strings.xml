@@ -19,6 +19,7 @@
     <string name="ab_menu_delete_list">Удалить список</string>
     <string name="ab_menu_rename_list">Переименовать список</string>
     <string name="search_hint">Найти пункт в списке</string>
+    <string name="ab_menu_clear_finished_items">удалить закончен</string>
 
     <string name="item_exists_toast">Такой пункт уже существует!</string>
 
@@ -32,7 +33,6 @@
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Открывать последний</string>
     <string name="pref_list_items_capitalize_title">Автоматические заглавные</string>
-    <string name="pref_sync">Dropbox Sync</string>
     <string name="pref_language">Язык</string>
     <string name="pref_rate_temaki">Оценить Temaki в Google Play</string>
     <string name="pref_credits">Благодарности</string>

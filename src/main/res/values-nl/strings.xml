@@ -20,6 +20,7 @@
     <string name="ab_menu_delete_list">Lijst verwijderen</string>
     <string name="ab_menu_rename_list">Lijst hernoemen</string>
     <string name="search_hint">Zoeken in lijst</string>
+    <string name="ab_menu_clear_finished_items">Verwijderen afgewerkt</string>
 
     <string name="item_exists_toast">Dit item bestaat al!</string>
 

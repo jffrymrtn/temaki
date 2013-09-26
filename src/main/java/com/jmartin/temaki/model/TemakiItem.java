@@ -12,6 +12,12 @@ public class TemakiItem {
         this.text = text;
     }
 
+    public TemakiItem(String text, boolean finished, boolean highlighted) {
+        this.text = text;
+        this.isFinished = finished;
+        this.isHighlighted = highlighted;
+    }
+
     public boolean isFinished() {
         return this.isFinished;
     }

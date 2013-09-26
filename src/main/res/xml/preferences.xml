@@ -10,10 +10,6 @@
             android:key="@string/pref_list_items_capitalize_key"
             android:title="@string/pref_list_items_capitalize_title"
             android:defaultValue="true" />
-    <SwitchPreference
-        android:key="@string/pref_sync_key"
-        android:title="@string/pref_sync"
-        android:defaultValue="false" />
     <ListPreference
         android:key="@string/pref_locale_key"
         android:title="@string/pref_language"

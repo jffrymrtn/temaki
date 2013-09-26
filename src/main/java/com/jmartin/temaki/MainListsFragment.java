@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.test.suitebuilder.TestMethod;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,9 +29,9 @@ import com.jmartin.temaki.dialog.DeleteConfirmationDialog;
 import com.jmartin.temaki.dialog.GenericInputDialog;
 import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
-import com.jmartin.temaki.sync.SyncManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Author: Jeff Martin, 2013
@@ -55,8 +56,6 @@ public class MainListsFragment extends Fragment
     * is not working in the click listener below.*/
     private TextView selectedItemView = null;
     private String selectedItem = "";
-
-    private SyncManager syncManager;
 
     public MainListsFragment() {
         super();
@@ -113,12 +112,7 @@ public class MainListsFragment extends Fragment
 
     @Override
     public void onFinishAlertDialog() {
-        TemakiItem item = listItems.remove(indexOfItem(selectedItem));
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.deleteItem(listName, item);
-        }
-
+        listItems.remove(indexOfItem(selectedItem));
         actionMode.finish();
         clearItemSelection();
     }
@@ -138,13 +132,7 @@ public class MainListsFragment extends Fragment
 
     private void renameListItem(String inputValue) {
         int selectedItemPosition = indexOfItem(selectedItem);
-        String oldItemTitle = listItems.get(selectedItemPosition).getText();
-
         listItems.get(selectedItemPosition).setText(inputValue);
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.renameItem(this.listName, oldItemTitle, inputValue);
-        }
 
         actionMode.finish();
         clearItemSelection();
@@ -155,11 +143,6 @@ public class MainListsFragment extends Fragment
         TemakiItem item = listItems.get(selectedItemPosition);
 
         item.toggleHighlighted();
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.toggleItemHighlight(listName, item.getText());
-        }
-
         actionMode.finish();
         clearItemSelection();
     }
@@ -168,11 +151,6 @@ public class MainListsFragment extends Fragment
         int selectedItemPosition = indexOfItem(selectedItem);
         TemakiItem item = listItems.get(selectedItemPosition);
         item.toggleFinished();
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.toggleItemFinished(listName, item.getText());
-        }
-
         actionMode.finish();
         clearItemSelection();
     }
@@ -290,6 +268,15 @@ public class MainListsFragment extends Fragment
             listItems.add(newItem);
             itemsListAdapter.notifyDataSetChanged();
             addItemsEditText.setText("");
+
+            // if we added an item successfully, scroll to that item
+            itemsListView.post(new Runnable() {
+                @Override
+                public void run() {
+                    itemsListView.setSelection(itemsListAdapter.getCount() - 1);
+                }
+            });
+
         } else if ((indexOfItem(newItem.getText()) != -1) && (newItem.getText().length() > 0)) {
             Context context = getActivity().getApplicationContext();
             if (toast == null) {
@@ -297,30 +284,21 @@ public class MainListsFragment extends Fragment
                 toast.show();
             }
         }
-
-        if (syncManager != null && syncManager.isSyncAvailable()) {
-            syncManager.createItem(this.listName, newItem);
-        }
     }
 
-    public void loadSyncManager(SyncManager syncManager) {
-        this.syncManager = syncManager;
-    }
+    /**
+     * Deletes all finished items on the currently opened list.
+     */
+    public void clearFinished() {
+        Iterator iter = listItems.iterator();
 
-
-    final Handler updateListViewHandler = new Handler();
-
-    public void updateDataSet(final ArrayList<TemakiItem> newDataSet) {
-        updateListViewHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                listItems.clear();
-                listItems.addAll(newDataSet);
-                itemsListAdapter.notifyDataSetChanged();
+        while (iter.hasNext()) {
+            if (((TemakiItem) iter.next()).isFinished()) {
+                iter.remove();
             }
-        });
+        }
 
-        //getActivity().runOnUiThread(updateListView);
+        itemsListAdapter.notifyDataSetChanged();
     }
 
     /* Private Inner Classes from this point onward */
