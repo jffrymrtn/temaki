@@ -19,7 +19,7 @@
     <string name="ab_menu_delete_list">Удалить список</string>
     <string name="ab_menu_rename_list">Переименовать список</string>
     <string name="search_hint">Найти пункт в списке</string>
-    <string name="ab_menu_clear_finished_items">удалить закончен</string>
+    <string name="ab_menu_clear_finished_items">Удалить завершенные</string>
 
     <string name="item_exists_toast">Такой пункт уже существует!</string>
 
