@@ -6,10 +6,10 @@
     <color name="button_blue_pressed">#ff00baee</color>
     <color name="off_white_background">#ffe7e7e7</color>
 
-    <color name="focus_background">#ff679b00</color>
-    <color name="focus_finished_pressed">#ff5f9000</color>
+    <color name="focus_background">#ff0099cc</color>
+    <color name="focus_finished_pressed">#ff00baee</color>
     <color name="focus_button_face">#ff29292a</color>
-    <color name="focus_button_pressed">#ff5f9000</color>
+    <color name="focus_button_pressed">#ff0099cc</color>
 
     <color name="main_dark_text_color">#ff404040</color>
     <color name="main_light_text_color">#ffefefef</color>
