@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ mailto:opsik.yc@gmail.com, 2013.
+  ~ mailto:
   -->
 
 <resources>
@@ -68,7 +68,7 @@
     </string>
 
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.4\n
         2013\n\n
 
         Temaki is an open source project.\n
