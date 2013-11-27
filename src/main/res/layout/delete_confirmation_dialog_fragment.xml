@@ -3,8 +3,7 @@
               android:orientation="vertical"
               android:gravity="center"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@color/off_white_background">
+              android:layout_height="wrap_content">
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -19,8 +18,7 @@
             android:layout_marginTop="4dip"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="?android:attr/dividerVertical" />
+            android:layout_centerHorizontal="true" />
         <Button
             android:id="@+id/cancel_dialog_button"
             android:layout_width="wrap_content"
@@ -29,10 +27,10 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:text="@android:string/cancel"
-            android:background="?android:attr/selectableItemBackground"
-            style="?android:attr/borderlessButtonStyle" />
+            style="?android:attr/borderlessButtonStyle"
+            android:capitalize="sentences" />
         <Button
             android:id="@+id/ok_dialog_button"
             android:layout_height="wrap_content"
@@ -41,9 +39,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:text="@string/universal_delete_string"
-            android:background="?android:attr/selectableItemBackground"
             style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
 </LinearLayout>
