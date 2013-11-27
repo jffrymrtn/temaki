@@ -6,8 +6,9 @@
         android:gravity="center"
         android:text="@string/focus"
         android:textAllCaps="true"
-        android:textColor="@color/main_light_text_color"
-        android:textSize="24sp"
-        android:background="@drawable/drawer_focus_header_selector"
+        android:textStyle="bold"
         android:focusable="false"
-        android:clickable="false" />
+        android:clickable="false"
+        android:background="@drawable/drawer_header_selector"
+        android:textColor="@color/main_light_text_color"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
