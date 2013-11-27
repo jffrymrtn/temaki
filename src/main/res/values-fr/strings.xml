@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ mailto:opsik.yc@gmail.com, 2013.
+  ~ mailto:
   -->
 
 <!-- String values XML resource file for the French language/locale. -->
@@ -48,7 +48,7 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.4\n
         2013\n\n
 
         Temaki est open source project à:\n
