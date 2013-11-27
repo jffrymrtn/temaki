@@ -11,11 +11,11 @@
     <!-- Drawer -->
     <ListView
         android:id="@+id/lists_drawer"
-        android:layout_width="240dp"
+        android:layout_width="248dp"
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
         android:layout_gravity="start"
         android:divider="@color/off_white_background"
-        android:background="@color/drawer_background">
+        android:background="@color/main_background">
     </ListView>
 </android.support.v4.widget.DrawerLayout>
