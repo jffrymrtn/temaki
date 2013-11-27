@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ mailto:opsik.yc@gmail.com, 2013.
+  -->
+
 <!-- String values XML resource file for the Italian language/locale. -->
 <resources>
     <!-- In App Strings -->
@@ -20,8 +24,8 @@
     <string name="ab_menu_new_list">Nuovo Lista</string>
     <string name="ab_menu_delete_list">Rimuovi Lista</string>
     <string name="ab_menu_rename_list">Rinominare Lista</string>
-    <string name="ab_menu_new_category">Nuovo Categoria</string>
     <string name="search_hint">Cerca lista</string>
+    <string name="ab_menu_clear_finished_items">Chiaro finito</string>
 
     <string name="item_exists_toast">Elemento esiste!</string>
 
@@ -34,6 +38,7 @@
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Aprire ultimo lista aperta all\'avvio</string>
+    <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalizzare prima lettera di voci di lista</string>
     <string name="pref_language">Lingua</string>
     <string name="pref_rate_temaki">Temaki su Google Play Valutare</string>
@@ -46,10 +51,14 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.4\n
+        Temaki v1.41\n
         2013\n\n
 
         Temaki è open source a:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="focus_hint_small">Press text above this one\n
+        to edit FOCUS\n
+        or button below \n
+        to end current focus</string>
 </resources>
