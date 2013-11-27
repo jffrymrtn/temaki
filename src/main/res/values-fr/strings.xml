@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ mailto:opsik.yc@gmail.com, 2013.
+  -->
+
 <!-- String values XML resource file for the French language/locale. -->
 <resources>
     <!-- In App Strings -->
@@ -20,7 +24,7 @@
     <string name="ab_menu_new_list">Nouvelle Liste</string>
     <string name="ab_menu_delete_list">Supprimer La Liste</string>
     <string name="ab_menu_rename_list">Renommer La Liste</string>
-    <string name="ab_menu_new_category">Nouvelle Catégorie</string>
+    <string name="ab_menu_clear_finished_items">Fini Clair</string>
     <string name="search_hint">Recherche</string>
 
     <string name="item_exists_toast">Élément existe!</string>
@@ -44,10 +48,14 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.4\n
+        Temaki v1.41\n
         2013\n\n
 
         Temaki est open source project à:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="focus_hint_small">Press text above this one\n
+        to edit FOCUS\n
+        or button below \n
+        to end current focus</string>
 </resources>
