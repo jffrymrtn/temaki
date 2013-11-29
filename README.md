@@ -5,7 +5,7 @@ Temaki-Lists
 
 Temaki is an Android app for quickly creating simple lists.
 
-Try the app on Google Play: [![GooglePlayImg](http://jeffreymartin.ca/images/project-photos/android-googleplay.png)](https://play.google.com/store/apps/details?id=com.jmartin.temaki)
+Try the app on [Google Play](https://play.google.com/store/apps/details?id=com.jmartin.temaki)
 
 Android Libraries
 ==============
