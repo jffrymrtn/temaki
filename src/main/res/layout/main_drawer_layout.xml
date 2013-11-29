@@ -16,6 +16,6 @@
         android:choiceMode="singleChoice"
         android:layout_gravity="start"
         android:divider="@color/off_white_background"
-        android:background="@color/drawer_background">
+        android:background="@color/main_background">
     </ListView>
 </android.support.v4.widget.DrawerLayout>

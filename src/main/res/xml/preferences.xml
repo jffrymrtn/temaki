@@ -5,6 +5,7 @@
     <CheckBoxPreference
         android:key="@string/pref_startup_option_key"
         android:title="@string/pref_startup_option_title"
+        android:summary="@string/pref_startup_option_summary"
         android:defaultValue="false" />
     <CheckBoxPreference
             android:key="@string/pref_list_items_capitalize_key"

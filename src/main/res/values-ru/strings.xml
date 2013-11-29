@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ mailto:opsik.yc@gmail.com, 2013.
+  -->
+
 <resources>
 
     <!-- In App Strings -->
@@ -11,9 +15,9 @@
     <string name="universal_delete_string">Удалить</string>
 
     <string name="focus_finished">Focus завершен!</string>
-    <string name="focus_finished_hint">Нажмите здесь для создания нового.</string>
-    <string name="focus_hint">Focus на том, что Вы хотите держать в уме.</string>
-    <string name="focus_hint_hint">Нажмите здесь, чтобы редактировать.</string>
+    <string name="focus_hint">Focus на том,\n
+        что Вы хотите\n
+        держать в уме.</string>
 
     <string name="ab_menu_new_list">Создать список</string>
     <string name="ab_menu_delete_list">Удалить список</string>
@@ -24,7 +28,7 @@
     <string name="item_exists_toast">Такой пункт уже существует!</string>
 
     <!-- Dialog Titles -->
-    <string name="list_name_dialog_title">Введите имя этого списка</string>
+    <string name="list_name_dialog_title">Введите имя списка</string>
     <string name="list_delete_confirm_title">Удалить этот список?</string>
     <string name="edit_item_dialog_title">Редактировать пункт</string>
     <string name="item_delete_confirm_title">Удалить этот пункт?</string>
@@ -32,6 +36,7 @@
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Открывать последний</string>
+    <string name="pref_startup_option_summary">Открывать последний использованный список при запуске</string>
     <string name="pref_list_items_capitalize_title">Автоматические заглавные</string>
     <string name="pref_language">Язык</string>
     <string name="pref_rate_temaki">Оценить Temaki в Google Play</string>
@@ -40,7 +45,6 @@
     <string name="pref_about_dialog_title">O Temaki</string>
 
     <string name="pref_language_summary">Изменения будут применены после перезапуска приложения</string>
-    <string name="pref_startup_option_summary">Загружать последний открытый список при запуске</string>
 
     <!-- Long String Content -->
     <string name="credits_string">
@@ -54,7 +58,12 @@
         Temaki v1.41\n
         2013\n\n
 
-        Temaki с открытым исходным кодом на:\n
+        Temaki это проект с открытым исходным кодом на:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="change_focus">Change FOCUS</string>
+    <string name="focus_hint_small">Нажмите на текст выше\n
+        для его редактирования\n
+        или на кнопку ниже —\n
+        для завершения Focus\'а</string>
 </resources>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ mailto:
+  -->
+
 <!-- String values XML resource file for the French language/locale. -->
 <resources>
     <!-- In App Strings -->
@@ -50,4 +54,8 @@
         Temaki est open source project à:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="focus_hint_small">Press text above this one\n
+        to edit FOCUS\n
+        or button below \n
+        to end current focus</string>
 </resources>

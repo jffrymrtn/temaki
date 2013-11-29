@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jmartin.temaki.R;
+import com.jmartin.temaki.model.TemakiItem;
 
 import java.util.LinkedHashMap;
 
@@ -47,6 +50,7 @@ public class DrawerListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         String listName = keys[position];
         int itemsCount = getItem(position);
+        //int itemsCountFinished = 50;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -55,6 +59,9 @@ public class DrawerListAdapter extends BaseAdapter {
         View drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
         TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
         itemsCountTextView.setText(String.valueOf(itemsCount));
+
+        ProgressBar progress = (ProgressBar) drawerRowView.findViewById(R.id.progressBar);
+        progress.setProgress(75);
 
         listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);

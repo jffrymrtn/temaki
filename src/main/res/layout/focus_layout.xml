@@ -4,29 +4,43 @@
               android:orientation="vertical"
               android:focusable="true"
               android:focusableInTouchMode="true"
-              android:background="@color/focus_background">
+    android:weightSum="1"
+    android:background="@color/off_white_background">
 
     <TextView
         android:id="@+id/focus_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center|center"
+        android:layout_weight="0.8"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:maxLength="80"
+        android:maxLength="160"
         android:text="@string/focus_hint"
         android:textSize="32sp"
-        android:textColor="@color/main_light_text_color"
-        android:fontFamily="sans-serif-light" />
+        android:textColor="#222222" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/focus_hint_small"
+        android:id="@id/focus_text_view"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_weight="0.1"
+        android:singleLine="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="italic"
+        android:textColor="#555555" />
+
     <ImageButton
         android:id="@+id/focus_finished_image_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_delete"
         android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
         android:contentDescription="@null"
-        android:src="@drawable/ic_focus_finished"
-        android:background="@drawable/focus_finished_button_selector" />
+        android:layout_weight="0.1"
+        android:background="@android:color/transparent" />
 </LinearLayout>

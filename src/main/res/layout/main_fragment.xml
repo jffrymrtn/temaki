@@ -11,7 +11,7 @@
     <ListView
             android:id="@+id/main_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:divider="@color/main_list_divider"
             android:dividerHeight="1dp"
@@ -34,7 +34,8 @@
             android:hint="@string/add_new_item_edit_text_hint"
             android:background="@drawable/edit_text_style_holo"
             android:textColor ="@color/main_dark_text_color"
-            android:imeOptions="flagNoExtractUi" />
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="text|textNoSuggestions|textCapSentences" />
         <ImageButton
             android:id="@+id/add_item_image_button"
             android:src="@drawable/ic_add_item"

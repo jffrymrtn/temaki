@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ mailto:
+  -->
+
 <!-- String values XML resource file for the Italian language/locale. -->
 <resources>
     <!-- In App Strings -->
@@ -34,6 +38,7 @@
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Aprire ultimo lista aperta all\'avvio</string>
+    <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalizzare prima lettera di voci di lista</string>
     <string name="pref_language">Lingua</string>
     <string name="pref_rate_temaki">Temaki su Google Play Valutare</string>
@@ -52,4 +57,8 @@
         Temaki è open source a:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="focus_hint_small">Press text above this one\n
+        to edit FOCUS\n
+        or button below \n
+        to end current focus</string>
 </resources>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ mailto:
+  -->
+
 <!-- String values XML resource file for the Dutch (nl) language/locale. -->
 <resources>
     <!-- In App Strings -->
@@ -33,6 +37,7 @@
 
     <!-- Preferences Strings -->
     <string name="pref_startup_option_title">Laatste lijst openen bij opstarten app</string>
+    <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Eerste letter van een item een hoodlettter geven</string>
     <string name="pref_language">Taal</string>
     <string name="pref_rate_temaki">Geef Temaki een waardering op Google Play</string>
@@ -58,4 +63,8 @@
         Temaki is an open source project at:\n
         http://github.com/mjeff/Temaki-Lists \n\n
     </string>
+    <string name="focus_hint_small">Press text above this one\n
+        to edit FOCUS\n
+        or button below \n
+        to end current focus</string>
 </resources>
