@@ -40,7 +40,7 @@
     <string name="edit_focus_dialog_title">Edit Focus</string>
 
     <!-- Preferences Strings -->
-    <string name="pref_startup_option_title">Last opened on startup</string>
+    <string name="pref_startup_option_title">Load last opened list on startup</string>
     <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalize first letter of list items</string>
     <string name="pref_list_style_option_title">List Style</string>
@@ -64,16 +64,18 @@
 
         Diederik Bailleul (Dutch translations)\n
         Bert Wijman (Dutch translations)\n
-        0p51k (Russian translation)\n\n
+        0p51k (Russian translations)\n
+        wtuuju (French translations)\n
+        Carlos Solís (Spanish translations)\n\n
     </string>
 
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.45\n
         2013\n\n
 
         Temaki is an open source project.\n
         If you\'re a developer and want to contribute, visit:\n
-        http://github.com/mjeff/Temaki-Lists \n\n
+        http://github.com/jeffxmn/temaki\n\n
     </string>
 
     <string name="attribution_string">
@@ -258,8 +260,6 @@
 
         END OF TERMS AND CONDITIONS\n\n
     </string>
-    <string name="focus_hint_small">Press text above this one\n
-        to edit FOCUS\n
-        or button below \n
-        to end current focus</string>
+
+    <string name="use_as_focus">Use as Focus</string>
 </resources>

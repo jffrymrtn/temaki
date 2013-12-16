@@ -64,16 +64,18 @@
 
         Diederik Bailleul (Traducción al holandés)\n
         Bert Wijman (Traducción al holandés)\n
-        0p51k (Traducción al ruso)\n\n
+        0p51k (Traducción al ruso)\n
+        wtuuju (Traducción al francés)\n
+        Carlos Solís (Traducción al español)\n\n
     </string>
 
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.45\n
         2013\n\n
 
         Temaki es un proyecto libre y de código abierto.\n
         Si eres desarrollador y deseas contribuir, visita:\n
-        http://github.com/mjeff/Temaki-Lists \n\n
+        http://github.com/jeffxmn/temaki \n\n
     </string>
 
     <string name="attribution_string">
@@ -258,8 +260,4 @@
 
         END OF TERMS AND CONDITIONS\n\n
     </string>
-    <string name="focus_hint_small">Pulsa el texto encima de este\n
-        para editar el ENFOQUE\n
-        o el botón debajo\n
-        para terminar el enfoque actual</string>
 </resources>

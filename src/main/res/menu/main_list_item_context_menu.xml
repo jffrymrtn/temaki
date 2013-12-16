@@ -18,4 +18,8 @@
           android:icon="@drawable/ic_delete"
           android:title="@string/universal_delete_string"
           android:showAsAction="withText|ifRoom" />
+
+    <item android:id="@+id/context_menu_focus"
+        android:title="@string/use_as_focus"
+        android:showAsAction="never" />
 </menu>

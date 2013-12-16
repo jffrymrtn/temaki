@@ -52,18 +52,16 @@
 
         Diederik Bailleul (Dutch translations)\n
         Bert Wijman (Dutch translations)\n
-        0p51k (Russian translation)\n\n
+        0p51k (Russian translation)\n
+        wtuuju (French translations)\n
+        Carlos Solís (Spanish translations)\n\n
     </string>
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.45\n
         2013\n\n
 
         Temaki это проект с открытым исходным кодом на:\n
-        http://github.com/mjeff/Temaki-Lists \n\n
+        http://github.com/jeffxmn/temaki \n\n
     </string>
     <string name="change_focus">Change FOCUS</string>
-    <string name="focus_hint_small">Нажмите на текст выше\n
-        для его редактирования\n
-        или на кнопку ниже —\n
-        для завершения Focus\'а</string>
 </resources>

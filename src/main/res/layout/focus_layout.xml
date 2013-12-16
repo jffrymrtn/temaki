@@ -4,8 +4,8 @@
               android:orientation="vertical"
               android:focusable="true"
               android:focusableInTouchMode="true"
-    android:weightSum="1"
-    android:background="@color/off_white_background">
+              android:weightSum="1"
+              android:background="@color/focus_background">
 
     <TextView
         android:id="@+id/focus_text_view"
@@ -19,26 +19,14 @@
         android:maxLength="160"
         android:text="@string/focus_hint"
         android:textSize="32sp"
-        android:textColor="#222222" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/focus_hint_small"
-        android:id="@id/focus_text_view"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_weight="0.1"
-        android:singleLine="false"
-        android:gravity="center_vertical|center_horizontal"
-        android:textStyle="italic"
-        android:textColor="#555555" />
+        android:textColor="@color/main_light_text_color"
+        android:fontFamily="sans-serif-light" />
 
     <ImageButton
         android:id="@+id/focus_finished_image_button"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/ic_focus_finished"
         android:layout_gravity="center"
         android:contentDescription="@null"
         android:layout_weight="0.1"

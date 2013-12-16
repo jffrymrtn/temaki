@@ -5,8 +5,9 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:text="@string/ab_menu_new_list"
-        android:background="@color/button_blue_pressed"
+        android:background="@color/button_blue"
         android:textColor="@color/main_light_text_color"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:focusable="false"
         android:clickable="false"/>

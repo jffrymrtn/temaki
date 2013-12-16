@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -240,6 +241,17 @@ public class MainListsFragment extends Fragment
         alertDialog.show(fragManager, "delete_confirmation_dialog_fragment");
     }
 
+    private void startNewFocus() {
+        String newFocusItem = this.getSelectedItem();
+
+        Intent focusIntent = new Intent(getActivity(), FocusActivity.class);
+        focusIntent.putExtra(Constants.FOCUS_BUNDLE_ID, newFocusItem);
+        focusIntent.putExtra(Constants.SP_NAME_BUNDLE_ID, getActivity().getLocalClassName());
+
+        startActivity(focusIntent);
+        getActivity().overridePendingTransition(R.anim.focus_anim_slide_in_left, R.anim.focus_anim_slide_out_left);
+    }
+
     public void search(CharSequence query) {
         if (query.length() > 0) {
             itemsListAdapter.getFilter().filter(query);
@@ -381,6 +393,8 @@ public class MainListsFragment extends Fragment
                 case R.id.context_menu_delete:
                     showDeleteItemConfirmationDialog();
                     return true;
+                case R.id.context_menu_focus:
+                    startNewFocus();
                 default:
                     return false;
             }

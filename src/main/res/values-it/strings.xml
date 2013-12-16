@@ -51,14 +51,10 @@
 
     <!-- Long String Content -->
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.45\n
         2013\n\n
 
         Temaki è open source a:\n
-        http://github.com/mjeff/Temaki-Lists \n\n
+        http://github.com/jeffxmn/temaki \n\n
     </string>
-    <string name="focus_hint_small">Press text above this one\n
-        to edit FOCUS\n
-        or button below \n
-        to end current focus</string>
 </resources>

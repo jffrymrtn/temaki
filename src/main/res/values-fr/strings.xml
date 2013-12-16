@@ -49,7 +49,7 @@
     <string name="pref_attribution_dialog_title">Attributions</string>
     <string name="pref_about_dialog_title">À propos de Temaki</string>
 
-    <string name="pref_language_summary">La modification de ce paramètre prendra effet après redémarrage de l'application</string>
+    <string name="pref_language_summary">La modification de ce paramètre prendra effet après redémarrage de l\'application</string>
 
     <string name="pref_sync_key">pref_sync_option</string>
     <string name="pref_rate_temaki_key">pref_rate_temaki_option</string>
@@ -63,16 +63,18 @@
 
         Diederik Bailleul (traductions en Néerlandais)\n
         Bert Wijman (traductions en Néerlandais)\n
-        0p51k (traductions en Russe)\n\n
+        0p51k (traductions en Russe)\n
+        wtuuju (traductions en Français)\n
+        Carlos Solís (traductions el espagnol)\n\n
     </string>
 
     <string name="about_string">
-        Temaki v1.41\n
+        Temaki v1.45\n
         2013\n\n
 
         Temaki est un projet open source.\n
         Si vous êtes un développeur et que vous souhaitez contribuer, visitez :\n
-        http://github.com/mjeff/Temaki-Lists \n\n
+        http://github.com/jeffxmn/temaki \n\n
     </string>
 
     <string name="attribution_string">
@@ -257,8 +259,4 @@
 
         END OF TERMS AND CONDITIONS\n\n
     </string>
-    <string name="focus_hint_small">Press text above this one\n
-        to edit FOCUS\n
-        or button below \n
-        to end current focus</string>
 </resources>

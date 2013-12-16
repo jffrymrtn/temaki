@@ -60,8 +60,8 @@ public class DrawerListAdapter extends BaseAdapter {
         TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
         itemsCountTextView.setText(String.valueOf(itemsCount));
 
-        ProgressBar progress = (ProgressBar) drawerRowView.findViewById(R.id.progressBar);
-        progress.setProgress(75);
+//        ProgressBar progress = (ProgressBar) drawerRowView.findViewById(R.id.progressBar);
+//        progress.setProgress(75);
 
         listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);
