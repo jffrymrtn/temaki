@@ -62,6 +62,8 @@ public class MainDrawerActivity extends FragmentActivity
     private MainListsFragment mainListsFragment;
     private SearchView searchView;
 
+    private boolean isFocusEnabled = false;
+
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
     private String selectedListName = "";
@@ -69,9 +71,6 @@ public class MainDrawerActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_drawer_layout);
-
-        // Optimize overdraw on window background
-        getWindow().setBackgroundDrawable(null);
 
         drawerItems = new LinkedHashMap<String, Integer>();
         ArrayList<TemakiItem> loadedList = null;
@@ -99,9 +98,14 @@ public class MainDrawerActivity extends FragmentActivity
 
         // Set the drawer ListView Header
         View drawerListViewHeaderView = getLayoutInflater().inflate(R.layout.drawer_newlist_header, null);
-        View focusHeaderView = getLayoutInflater().inflate(R.layout.drawer_focus_header, null);
         listsDrawerListView.addHeaderView(drawerListViewHeaderView);
-        listsDrawerListView.addHeaderView(focusHeaderView);
+
+        // Set Focus header if focus is enabled
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_PREF_FOCUS, true)) {
+            View focusHeaderView = getLayoutInflater().inflate(R.layout.drawer_focus_header, null);
+            listsDrawerListView.addHeaderView(focusHeaderView);
+            isFocusEnabled = true;
+        }
 
         // Set drawer ListView adapter
         drawerListAdapter = new DrawerListAdapter(this, drawerItems);
@@ -157,9 +161,6 @@ public class MainDrawerActivity extends FragmentActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame_layout, mainListsFragment)
                 .commit();
-
-        // !! Workaround to windowContentOverlay bug in Android API Level 18, REMOVE when Google fixes it
-        windowContentOverlayWorkaround();
 
         super.onCreate(savedInstanceState);
     }
@@ -324,9 +325,12 @@ public class MainDrawerActivity extends FragmentActivity
 
     private void initActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        setActionBarCustomTitle(getTitle().toString());
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            setActionBarCustomTitle(getTitle().toString());
+        }
     }
 
     private String initListsJson(Bundle savedInstanceState) {
@@ -383,23 +387,6 @@ public class MainDrawerActivity extends FragmentActivity
         SpannableString abTitle = new SpannableString(title);
         abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getActionBar().setTitle(abTitle);
-    }
-
-    /**
-     * !IMPORTANT! Workaround to a bug in Android API Level 18. Remove when fixed
-     */
-    private void windowContentOverlayWorkaround() {
-        View contentView = findViewById(android.R.id.content);
-
-        if (contentView instanceof FrameLayout) {
-            TypedValue typedValue = new TypedValue();
-
-            if (getTheme().resolveAttribute(android.R.attr.windowContentOverlay, typedValue, true)) {
-                if (typedValue.resourceId != 0) {
-                    ((FrameLayout) contentView).setForeground(getResources().getDrawable(typedValue.resourceId));
-                }
-            }
-        }
     }
 
     /**
@@ -571,7 +558,7 @@ public class MainDrawerActivity extends FragmentActivity
     }
 
     /**
-     * Show the list name input dialog.
+     * Show the list name input dialog.spName
      */
     private void showInputDialog(int inputType) {
         FragmentManager fragManager = getFragmentManager();
@@ -656,7 +643,16 @@ public class MainDrawerActivity extends FragmentActivity
             saveList(mainListsFragment.getListName(), mainListsFragment.getListItems());
 
             // Offset position by 2 because of the headers (header @ index 0 and 1)
-            position = position - 2;
+
+            if (isFocusEnabled) {
+                position = position - 2;
+            } else {
+                position = position - 1;
+            }
+
+            if (isFocusEnabled) {
+
+            }
             if (position == -2) {
                 showNewListPrompt();
             } else if (position == -1) {

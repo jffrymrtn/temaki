@@ -51,12 +51,6 @@
 
     <string name="pref_language_summary">La modification de ce paramètre prendra effet après redémarrage de l\'application</string>
 
-    <string name="pref_sync_key">pref_sync_option</string>
-    <string name="pref_rate_temaki_key">pref_rate_temaki_option</string>
-    <string name="pref_list_items_capitalize_key">pref_list_items_capitalize_option</string>
-    <string name="pref_startup_option_key">pref_startup_option</string>
-    <string name="pref_locale_key">pref_locale_option</string>
-
     <!-- Long String Content -->
     <string name="credits_string">
         Mille mercis aux contributeurs qui ont aidé à améliorer Temaki !\n\n

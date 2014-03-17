@@ -22,11 +22,10 @@ public class Constants {
     public static final String FOCUS_BUNDLE_ID = "focus_bundle_id";
 
     public static String KEY_PREF_LOCALE = "pref_locale_option";
-    public static String KEY_PREF_DROPBOX_SYNC = "pref_sync_option";
     public static String KEY_PREF_STARTUP_OPTION = "pref_startup_option";
     public static String KEY_PREF_LIST_ITEMS_CAPITALIZE_OPTION = "pref_list_items_capitalize_option";
     public static String KEY_PREF_RATE_TEMAKI = "pref_rate_temaki_option";
-    public static String KEY_PREF_SYNC = "pref_sync";
+    public static String KEY_PREF_FOCUS = "pref_enable_focus";
 
     // 0-49, task IDs
     public static final int CANCEL_RESULT_CODE = 0;

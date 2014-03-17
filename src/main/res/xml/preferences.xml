@@ -3,6 +3,10 @@
                    android:layout_height="match_parent">
 
     <CheckBoxPreference
+        android:key="@string/pref_enable_focus_key"
+        android:title="@string/pref_enable_focus_title"
+        android:defaultValue="true" />
+    <CheckBoxPreference
         android:key="@string/pref_startup_option_key"
         android:title="@string/pref_startup_option_title"
         android:summary="@string/pref_startup_option_summary"

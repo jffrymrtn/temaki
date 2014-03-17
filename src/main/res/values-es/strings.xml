@@ -52,12 +52,6 @@
 
     <string name="pref_language_summary">Los cambios se aplicarán tras reiniciar completamente la aplicación</string>
 
-    <string name="pref_sync_key">pref_sync_option</string>
-    <string name="pref_rate_temaki_key">pref_rate_temaki_option</string>
-    <string name="pref_list_items_capitalize_key">pref_list_items_capitalize_option</string>
-    <string name="pref_startup_option_key">pref_startup_option</string>
-    <string name="pref_locale_key">pref_locale_option</string>
-
     <!-- Long String Content -->
     <string name="credits_string">
         ¡Mil gracias a los siguientes contribuyentes que han ayudado a hacer a Temaki mejor!\n\n
@@ -70,7 +64,7 @@
     </string>
 
     <string name="about_string">
-        Temaki v1.45\n
+        Temaki v1.5\n
         2013\n\n
 
         Temaki es un proyecto libre y de código abierto.\n
