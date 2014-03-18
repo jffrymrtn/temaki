@@ -614,7 +614,7 @@ public class MainDrawerActivity extends FragmentActivity
      */
     private String getDefaultTitle() {
         String defaultListName = getResources().getString(R.string.ab_menu_new_list);
-        return defaultListName + (lists.size() + 1); // Offset index 0
+        return defaultListName + " " + (lists.size() + 1); // Offset index 0
     }
 
     public void closeSearchView() {

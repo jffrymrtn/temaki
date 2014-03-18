@@ -5,6 +5,7 @@
     <CheckBoxPreference
         android:key="@string/pref_enable_focus_key"
         android:title="@string/pref_enable_focus_title"
+        android:summary="@string/pref_language_summary"
         android:defaultValue="true" />
     <CheckBoxPreference
         android:key="@string/pref_startup_option_key"
