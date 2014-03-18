@@ -15,7 +15,6 @@ public class Constants {
     public static final String LIST_ITEMS_BUNDLE_KEY = "ListItems";
     public static final String LIST_NAME_BUNDLE_KEY = "ListName";
 
-    public static final String DEFAULT_LIST_NAME = "NEW LIST ";
     public static final String LISTS_SP_KEY = "MAIN_LISTS";
     public static final String LAST_OPENED_LIST_SP_KEY = "last_opened_list";
     public static final String FOCUS_SP_KEY = "focus_key";
