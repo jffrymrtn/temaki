@@ -20,10 +20,18 @@
         android:key="@string/pref_locale_key"
         android:title="@string/pref_language"
         android:summary="@string/pref_language_summary"
-        android:dialogTitle="@string/pref_list_style_option_title"
+        android:dialogTitle="@string/pref_language"
         android:entries="@array/languages_array"
         android:entryValues="@array/locales_array"
         android:defaultValue="" />
+    <ListPreference
+        android:key="@string/pref_theme_key"
+        android:title="@string/pref_theme"
+        android:summary="@string/pref_language_summary"
+        android:dialogTitle="@string/pref_theme"
+        android:entries="@array/themes_array"
+        android:entryValues="@array/themes_array"
+        android:defaultValue="Default" />
     <Preference
         android:key="@string/pref_rate_temaki_key"
         android:title="@string/pref_rate_temaki" />

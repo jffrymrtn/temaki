@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.jmartin.temaki.R;
 import com.jmartin.temaki.model.Constants;
 import com.jmartin.temaki.model.TemakiItem;
-import com.jmartin.temaki.settings.SettingsFragment;
 
 import java.util.ArrayList;
 
@@ -98,21 +97,21 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
         // Item is marked as finished
         if (item.isFinished()) {
             rowTextView.setPaintFlags(rowTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.main_item_done_text_color));
+            rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
         } else {
             rowTextView.setPaintFlags(rowTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.main_dark_text_color));
+            rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
         }
 
         // Make sure the selection acts properly when scrolling
         if (position == selectedItemPosition) {
             row.setBackgroundResource(R.drawable.main_list_item_selected);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.main_light_text_color));
+            rowTextView.setTextColor(context.getResources().getColor(R.color.light_grey));
         } else {
             row.setBackgroundResource(R.drawable.main_list_item);
 
             if (!item.isFinished()) {
-                rowTextView.setTextColor(context.getResources().getColor(R.color.main_dark_text_color));
+                rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
             }
         }
         return row;

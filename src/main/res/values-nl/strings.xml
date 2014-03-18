@@ -40,6 +40,7 @@
     <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Eerste letter van een item een hoodlettter geven</string>
     <string name="pref_language">Taal</string>
+    <string name="pref_theme">Thema</string>
     <string name="pref_rate_temaki">Geef Temaki een waardering op Google Play</string>
     <string name="pref_credits">Credits</string>
     <string name="pref_attribution_dialog_title">Attributen</string>
@@ -60,9 +61,9 @@
 
     <string name="about_string">
         Temaki v1.5\n
-        2013\n\n
+        2013 - 2014\n\n
 
         Temaki is an open source project at:\n
-        http://github.com/jeffxmn/temaki \n\n
+        http://github.com/jffrymrtn/temaki \n\n
     </string>
 </resources>

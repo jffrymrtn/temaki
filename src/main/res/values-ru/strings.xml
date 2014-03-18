@@ -39,6 +39,7 @@
     <string name="pref_startup_option_summary">Открывать последний использованный список при запуске</string>
     <string name="pref_list_items_capitalize_title">Автоматические заглавные</string>
     <string name="pref_language">Язык</string>
+    <string name="pref_theme">тема</string>
     <string name="pref_rate_temaki">Оценить Temaki в Google Play</string>
     <string name="pref_credits">Благодарности</string>
     <string name="pref_attribution_dialog_title">Полномочия</string>
@@ -58,10 +59,9 @@
     </string>
     <string name="about_string">
         Temaki v1.5\n
-        2013\n\n
+        2013 - 2014\n\n
 
         Temaki это проект с открытым исходным кодом на:\n
-        http://github.com/jeffxmn/temaki \n\n
+        http://github.com/jffrymrtn/temaki \n\n
     </string>
-    <string name="change_focus">Change FOCUS</string>
 </resources>

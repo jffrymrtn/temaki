@@ -5,7 +5,7 @@
               android:focusable="true"
               android:focusableInTouchMode="true"
               android:weightSum="1"
-              android:background="@color/focus_background">
+              android:background="@color/blue">
 
     <TextView
         android:id="@+id/focus_text_view"
@@ -19,7 +19,7 @@
         android:maxLength="160"
         android:text="@string/focus_hint"
         android:textSize="32sp"
-        android:textColor="@color/main_light_text_color"
+        android:textColor="@color/light_grey"
         android:fontFamily="sans-serif-light" />
 
     <ImageButton

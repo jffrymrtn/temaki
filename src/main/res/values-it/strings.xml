@@ -41,8 +41,8 @@
     <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalizzare prima lettera di voci di lista</string>
     <string name="pref_language">Lingua</string>
+    <string name="pref_theme">Tema</string>
     <string name="pref_rate_temaki">Temaki su Google Play Valutare</string>
-    <string name="pref_list_style_option_title">Lista Style</string>
     <string name="pref_credits">Crediti</string>
     <string name="pref_attribution_dialog_title">Attribuzioni</string>
     <string name="pref_about_dialog_title">Informazioni</string>
@@ -52,9 +52,9 @@
     <!-- Long String Content -->
     <string name="about_string">
         Temaki v1.5\n
-        2013\n\n
+        2013 - 2014\n\n
 
         Temaki è open source a:\n
-        http://github.com/jeffxmn/temaki \n\n
+        http://github.com/jffrymrtn/temaki \n\n
     </string>
 </resources>

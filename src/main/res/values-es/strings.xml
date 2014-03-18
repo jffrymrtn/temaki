@@ -43,8 +43,8 @@
     <string name="pref_startup_option_title">Última abierta al inicio</string>
     <string name="pref_startup_option_summary">Cargar la última lista abierta al inicio</string>
     <string name="pref_list_items_capitalize_title">Mayúscula en la primera letra de los elementos de la lista</string>
-    <string name="pref_list_style_option_title">Estilo de Lista</string>
     <string name="pref_language">Idioma</string>
+    <string name="pref_theme">Tema</string>
     <string name="pref_rate_temaki">Valorar Temaki en Google Play</string>
     <string name="pref_credits">Créditos</string>
     <string name="pref_attribution_dialog_title">Atribuciones</string>
@@ -65,11 +65,11 @@
 
     <string name="about_string">
         Temaki v1.5\n
-        2013\n\n
+        2013 - 2014\n\n
 
         Temaki es un proyecto libre y de código abierto.\n
         Si eres desarrollador y deseas contribuir, visita:\n
-        http://github.com/jeffxmn/temaki \n\n
+        http://github.com/jffrymrtn/temaki \n\n
     </string>
 
     <string name="attribution_string">

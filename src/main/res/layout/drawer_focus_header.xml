@@ -11,5 +11,5 @@
         android:focusable="false"
         android:clickable="false"
         android:background="@drawable/drawer_focus_header_selector"
-        android:textColor="@color/main_light_text_color"
+        android:textColor="@color/light_grey"
         android:textAppearance="@android:style/TextAppearance.Medium" />

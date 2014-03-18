@@ -1,28 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_blue_face">#ff0099ff</color>
-    <color name="main_blue_accent">#ff0099cc</color>
-    <color name="button_blue">#ff0099ff</color>
-    <color name="button_blue_pressed">#ff00baee</color>
-    <color name="off_white_background">#ffe7e7e7</color>
 
-    <color name="focus_background">#ff0099cc</color>
-    <color name="focus_finished_pressed">#ff00baee</color>
-    <color name="focus_button_face">#ff29292a</color>
-    <color name="focus_button_pressed">#ff0099cc</color>
+    <!-- Default theme -->
+    <color name="blue">#ff578cc8</color>
+    <color name="light_blue">#ff7da6d5</color>
+    <color name="dark_blue">#ff3c72b0</color>
+    <color name="white">#ffffffff</color>
 
-    <color name="main_dark_text_color">#ff404040</color>
-    <color name="main_light_text_color">#ffefefef</color>
-    <color name="drawer_background">#ff323233</color>
-    <color name="main_background">#ffd2d2d2</color>
+    <color name="dark_grey">#ff434343</color>
+    <color name="light_grey">#ffeeeeee</color>
+    <color name="grey">#ffd2d2d2</color>
 
-    <color name="main_list_divider">#ffafafaf</color>
-
-    <color name="card_face">#fff5f5f5</color>
-    <color name="card_shadow">#ffc1c1c1</color>
-
-    <color name="ab_background">#ffeeeeee</color>
-    <color name="edittext_background">#fff8f8f8</color>
-    <color name="highlights_drawer_header_background">#ff4e4e4f</color>
-    <color name="main_item_done_text_color">#80b8b8b8</color>
 </resources>

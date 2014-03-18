@@ -6,14 +6,14 @@
               tools:context=".MainActivity"
               android:focusable="true"
               android:focusableInTouchMode="true"
-              android:background="@color/main_background">
+              android:background="@color/grey">
 
     <ListView
             android:id="@+id/main_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:divider="@color/main_list_divider"
+            android:divider="@color/grey"
             android:dividerHeight="1dp"
             android:textFilterEnabled="true"
             android:focusable="true"
@@ -33,7 +33,7 @@
             android:singleLine="true"
             android:hint="@string/add_new_item_edit_text_hint"
             android:background="@drawable/edit_text_style_holo"
-            android:textColor ="@color/main_dark_text_color"
+            android:textColor ="@color/dark_grey"
             android:imeOptions="flagNoExtractUi"
             android:inputType="text|textNoSuggestions|textCapSentences" />
         <ImageButton

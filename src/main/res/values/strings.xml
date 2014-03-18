@@ -20,9 +20,11 @@
 
     <string name="focus">Focus</string>
     <string name="focus_finished">Finished!</string>
-    <string name="focus_hint">Focus on any one\n
+    <string name="focus_hint">Focus on one\n
         thing you want\n
-        to keep in mind.</string>
+        to keep in mind.
+    </string>
+    <string name="use_as_focus">Use as Focus</string>
 
     <string name="ab_menu_new_list">New List</string>
     <string name="ab_menu_delete_list">Delete List</string>
@@ -44,8 +46,8 @@
     <string name="pref_startup_option_title">Load last opened list on startup</string>
     <string name="pref_startup_option_summary">Load the last opened list on startup</string>
     <string name="pref_list_items_capitalize_title">Capitalize first letter of list items</string>
-    <string name="pref_list_style_option_title">List Style</string>
     <string name="pref_language">Language</string>
+    <string name="pref_theme">Theme</string>
     <string name="pref_rate_temaki">Rate Temaki on Google Play</string>
     <string name="pref_credits">Credits</string>
     <string name="pref_attribution_dialog_title">Attributions</string>
@@ -58,6 +60,7 @@
     <string name="pref_list_items_capitalize_key">pref_list_items_capitalize_option</string>
     <string name="pref_startup_option_key">pref_startup_option</string>
     <string name="pref_locale_key">pref_locale_option</string>
+    <string name="pref_theme_key">pref_theme_option</string>
 
     <!-- Long String Content -->
     <string name="credits_string">
@@ -72,11 +75,11 @@
 
     <string name="about_string">
         Temaki v1.5\n
-        2013\n\n
+        2013 - 2014\n\n
 
         Temaki is an open source project.\n
         If you\'re a developer and want to contribute, visit:\n
-        http://github.com/jeffxmn/temaki\n\n
+        http://github.com/jffrymrtn/temaki\n\n
     </string>
 
     <string name="attribution_string">
@@ -261,6 +264,4 @@
 
         END OF TERMS AND CONDITIONS\n\n
     </string>
-
-    <string name="use_as_focus">Use as Focus</string>
 </resources>

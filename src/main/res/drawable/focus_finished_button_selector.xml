@@ -3,13 +3,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <solid android:color="@color/focus_finished_pressed" />
+            <solid android:color="@color/light_blue" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/focus_background" />
+            <solid android:color="@color/blue" />
         </shape>
     </item>
 </selector>

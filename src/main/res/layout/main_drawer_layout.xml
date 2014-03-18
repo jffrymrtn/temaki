@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
         android:layout_gravity="start"
-        android:divider="@color/off_white_background"
-        android:background="@color/main_background">
+        android:divider="@color/white"
+        android:background="@color/grey">
     </ListView>
 </android.support.v4.widget.DrawerLayout>
