@@ -1,0 +1,88 @@
+@media (min-height: 800px) {
+  #home {
+    height: 70%;
+  }
+}
+
+@media (max-width: 1350px) {
+  .info-text {
+    font-size: 1.35rem;
+  }
+  
+  .left .info-text {
+    width: 60%;
+    margin-left: 15%;
+  }
+
+  .right .info-text {
+    width: 30%;
+    margin-left: 65%;
+  }
+}
+
+@media (max-width: 1200px) {
+  #device {
+    max-width: 475px;
+  }
+
+  .info-text {
+    font-size: 1.2rem;
+  }
+  
+  .left .info-text {
+    margin-left: 10%;
+  }
+}
+
+@media (max-width: 1070px) {
+  #home {
+    height: 80%;
+  }
+
+  #device {
+    max-width: 450px;
+  }
+
+  .info-text {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  #title {
+    font-size: 4rem;
+  }
+
+  #home {
+    height: 45%;
+    padding-top: 7em;
+  }
+
+  #info {
+    height: 20%;
+  }
+
+  #tagline {
+    font-size: 1.1rem;
+  }
+
+  #device {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 870px) {
+  .info-text {
+    font-size: 1rem;
+  }
+
+  .left .info-text {
+    margin-left: 7%;
+  }
+}
+
+@media (max-width: 800px) {
+  .info-text {
+    display: none;
+  }
+}
