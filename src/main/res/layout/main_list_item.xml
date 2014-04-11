@@ -1,11 +1,11 @@
 <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_list_item"
-        android:minHeight="60dp"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textColor="@color/dark_grey"
-        android:textSize="21sp" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_list_item"
+    android:minHeight="60dp"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:textColor="@color/dark_grey"
+    android:textSize="21sp" />

@@ -1,6 +1,7 @@
 package com.jmartin.temaki.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,13 +54,12 @@ public class DrawerListAdapter extends BaseAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView listNameTextView;
-
         View drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+
         TextView itemsCountTextView = (TextView) drawerRowView.findViewById(R.id.items_count);
         itemsCountTextView.setText(String.valueOf(itemsCount));
 
-        listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
+        TextView listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);
 
         return drawerRowView;

@@ -485,6 +485,7 @@ public class MainDrawerActivity extends FragmentActivity
 
         setActionBarCustomTitle(listName);
         mainListsFragment.loadList(listName, list);
+        mainListsFragment.loadIsFocusEnabled(isFocusEnabled);
 
         if (!mainListsFragment.isVisible()) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -651,17 +652,22 @@ public class MainDrawerActivity extends FragmentActivity
                 position = position - 1;
             }
 
-            if (isFocusEnabled) {
-
-            }
-            if (position == -2) {
-                showNewListPrompt();
-            } else if (position == -1) {
-                showFocusActivity();
-            } else {
+            if (position >= 0) {
                 // Load the list specified by position 'position' on the nav drawer
                 selectedListName = drawerListAdapter.getKeyAtPosition(position);
                 loadListIntoFragment(selectedListName, lists.get(selectedListName));
+            } else {
+                if (isFocusEnabled) {
+                    if (position == -2) {
+                        showNewListPrompt();
+                    } else if (position == -1) {
+                        showFocusActivity();
+                    }
+                } else {
+                    if (position == -1) {
+                        showNewListPrompt();
+                    }
+                }
             }
 
             // Close the nav drawer

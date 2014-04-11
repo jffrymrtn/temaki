@@ -57,6 +57,7 @@ public class MainListsFragment extends Fragment
     * is not working in the click listener below.*/
     private TextView selectedItemView = null;
     private String selectedItem = "";
+    private boolean isFocusEnabled = true;
 
     public MainListsFragment() {
         super();
@@ -313,6 +314,10 @@ public class MainListsFragment extends Fragment
         itemsListAdapter.notifyDataSetChanged();
     }
 
+    public void loadIsFocusEnabled(boolean isFocusEnabled) {
+        this.isFocusEnabled = isFocusEnabled;
+    }
+
     /* Private Inner Classes from this point onward */
 
     private class NewItemsEditTextListener implements TextView.OnEditorActionListener {
@@ -375,6 +380,10 @@ public class MainListsFragment extends Fragment
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            if (!isFocusEnabled) {
+                menu.findItem(R.id.context_menu_focus).setVisible(false);
+            }
+
             return false;
         }
 
