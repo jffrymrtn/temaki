@@ -40,6 +40,7 @@
     <string name="edit_focus_dialog_title">Editar Enfoque</string>
 
     <!-- Preferences Strings -->
+    <string name="pref_enable_focus_title">Habilitar Enfoque</string>
     <string name="pref_startup_option_title">Última abierta al inicio</string>
     <string name="pref_startup_option_summary">Cargar la última lista abierta al inicio</string>
     <string name="pref_list_items_capitalize_title">Mayúscula en la primera letra de los elementos de la lista</string>
