@@ -1,4 +1,4 @@
-Temaki-Lists
+Temaki
 ============
 
 Temaki is an Android app for quickly creating simple lists.
