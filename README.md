@@ -1,8 +1,6 @@
 Temaki-Lists
 ============
 
-![Temaki Screenshot](http://jeffreymartin.ca/temaki/img/device-drawer.png)
-
 Temaki is an Android app for quickly creating simple lists.
 
 Try the app on [Google Play](https://play.google.com/store/apps/details?id=com.jmartin.temaki)
@@ -26,12 +24,14 @@ However, there is still a desire to add Sync to Dropbox, and any help is appreci
 Android Device Support
 ===================
 
-Temaki is supported on all Android devices running Ice Cream Sandwich 4.0 and higher. There are currently no plans to support devices below 4.0, but discussion and support is welcome.
+Temaki is supported on all Android devices running Jelly Bean 4.1 and higher.
+
+Part of the reason for the API 16 requirement is the use of fontFamily (weak excuse, I know), but as Android adoption rates continue to favour the 4.1+ versions, I have no plans to lower the requirement (for now).
 
 Android Tablet Support
 ===================
 
-As of version 1.0, the app is not yet optimized for tablets. There are currently no plans to have it supported for Android tablets at this moment.
+There are currently no plans to have it supported for Android tablets, but I'm always evaluating after each version release.
 
 Contributions
 ===========
