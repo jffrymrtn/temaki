@@ -2,6 +2,7 @@
 <resources>
 
     <!-- Default theme -->
+    <color name="holo_blue">#ff0099cc</color>
     <color name="blue">#ff578cc8</color>
     <color name="light_blue">#ff7da6d5</color>
     <color name="dark_blue">#ff3c72b0</color>
@@ -9,6 +10,7 @@
 
     <color name="dark_grey">#ff434343</color>
     <color name="light_grey">#ffeeeeee</color>
-    <color name="grey">#ffd2d2d2</color>
+    <color name="grey">#ff909090</color>
+    <color name="off_white">#ffd2d2d2</color>
 
 </resources>

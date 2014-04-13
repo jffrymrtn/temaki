@@ -71,6 +71,8 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        String theme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_theme_key), "");
+
         View row = inflater.inflate(R.layout.main_list_item, parent, false);
         TextView rowTextView = (TextView) row.findViewById(R.id.main_list_item);
 
@@ -103,17 +105,27 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
             rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
         }
 
+        // Set colours according to app theme
+        if (!theme.equals("")) {
+            if (theme.equals(context.getString(R.string.theme_dark))) {
+                rowTextView.setTextColor(context.getResources().getColor(android.R.color.white));
+                row.setBackgroundResource(R.drawable.main_list_item_dark);
+            } else {
+                rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
+                row.setBackgroundResource(R.drawable.main_list_item);
+            }
+        }
+
         // Make sure the selection acts properly when scrolling
         if (position == selectedItemPosition) {
             row.setBackgroundResource(R.drawable.main_list_item_selected);
             rowTextView.setTextColor(context.getResources().getColor(R.color.light_grey));
         } else {
-            row.setBackgroundResource(R.drawable.main_list_item);
-
-            if (!item.isFinished()) {
-                rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
-            }
+//            if (!item.isFinished()) {
+//                rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
+//            }
         }
+
         return row;
     }
 

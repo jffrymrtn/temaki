@@ -34,13 +34,19 @@
     </style>
 
     <!-- ActionBar Style -->
-    <style name="TemakiActionBarStyle" parent="android:Widget.Holo.ActionBar">
+    <style name="TemakiActionBarStyle" parent="android:Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/ab_style_holo</item>
+        <item name="android:titleTextStyle">@style/ActionBarStyle.Text</item>
         <item name="android:icon">@drawable/ic_logo</item>
     </style>
 
     <style name="TemakiActionBarFocusStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_style_focus</item>
         <item name="android:icon">@drawable/ic_logo</item>
+    </style>
+
+    <style name="ActionBarStyle.Text" parent="android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">19sp</item>
     </style>
 </resources>

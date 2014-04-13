@@ -13,16 +13,11 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -120,16 +115,16 @@ public class MainDrawerActivity extends FragmentActivity
                                                       R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
                 if (mainListsFragment.isVisible()) {
-                    setActionBarCustomTitle(mainListsFragment.getCapitalizedListName());
+                    getActionBar().setTitle(mainListsFragment.getCapitalizedListName());
                 } else {
-                    setActionBarCustomTitle(Constants.FOCUS_TITLE);
+                    getActionBar().setTitle(Constants.FOCUS_TITLE);
                 }
 
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View view) {
-                setActionBarCustomTitle(getTitle().toString());
+                getActionBar().setTitle(getTitle().toString());
 
                 hideKeyboard();
                 searchView.clearFocus();
@@ -155,12 +150,14 @@ public class MainDrawerActivity extends FragmentActivity
         focusActivity = new FocusActivity();
 
         // Load the main fragment with an empty list
-        mainListsFragment = new MainListsFragment();
+        mainListsFragment = new MainListsFragment(this);
         loadListIntoFragment(loadedListName, loadedList);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame_layout, mainListsFragment)
                 .commit();
+
+        setupAppearancePreferences();
 
         super.onCreate(savedInstanceState);
     }
@@ -329,7 +326,7 @@ public class MainDrawerActivity extends FragmentActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
-            setActionBarCustomTitle(getTitle().toString());
+            getActionBar().setTitle(getTitle().toString());
         }
     }
 
@@ -378,15 +375,6 @@ public class MainDrawerActivity extends FragmentActivity
             updatedConfig.locale = locale;
             getBaseContext().getResources().updateConfiguration(updatedConfig, getBaseContext().getResources().getDisplayMetrics());
         }
-    }
-
-    /**
-     * Sets the ActionBar title to the parameter 'title'.
-     */
-    private void setActionBarCustomTitle(String title) {
-        SpannableString abTitle = new SpannableString(title);
-        abTitle.setSpan(new TypefaceSpan("sans-serif-light"), 0, abTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        getActionBar().setTitle(abTitle);
     }
 
     /**
@@ -483,7 +471,7 @@ public class MainDrawerActivity extends FragmentActivity
             list = new ArrayList<TemakiItem>();
         }
 
-        setActionBarCustomTitle(listName);
+        getActionBar().setTitle(listName);
         mainListsFragment.loadList(listName, list);
         mainListsFragment.loadIsFocusEnabled(isFocusEnabled);
 
@@ -634,6 +622,20 @@ public class MainDrawerActivity extends FragmentActivity
 
         startActivity(focusIntent);
         overridePendingTransition(R.anim.focus_anim_slide_in_left, R.anim.focus_anim_slide_out_left);
+    }
+
+    private void setupAppearancePreferences() {
+        String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.pref_theme_key), "");
+
+        if (!theme.equals("")) {
+            if (theme.equals(getString(R.string.theme_dark))) {
+//                setTheme(R.style.DarkAppTheme);
+                listsDrawerListView.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+            } else {
+//                setTheme(R.style.AppTheme);
+                listsDrawerListView.setBackgroundColor(getResources().getColor(android.R.color.white));
+            }
+        }
     }
 
     /* Private Inner Classes from this point onward */

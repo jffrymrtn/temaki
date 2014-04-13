@@ -5,24 +5,25 @@
               android:orientation="vertical"
               tools:context=".MainActivity"
               android:focusable="true"
-              android:focusableInTouchMode="true"
-              android:background="@color/grey">
+              android:focusableInTouchMode="true">
 
     <ListView
-            android:id="@+id/main_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:divider="@color/grey"
-            android:dividerHeight="1dp"
-            android:textFilterEnabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
+        android:id="@+id/main_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@color/grey"
+        android:dividerHeight="1dp"
+        android:textFilterEnabled="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/grey" />
 
     <LinearLayout
         android:id="@+id/add_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:background="@color/light_grey">
         <EditText
             android:id="@+id/add_item_edit_text"
             android:layout_width="0dip"

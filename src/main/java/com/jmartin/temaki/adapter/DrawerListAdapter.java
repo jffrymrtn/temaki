@@ -2,6 +2,7 @@ package com.jmartin.temaki.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,8 @@ public class DrawerListAdapter extends BaseAdapter {
         String listName = keys[position];
         int itemsCount = getItem(position);
 
+        String theme = PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_theme_key), "");
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View drawerRowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
@@ -61,6 +64,16 @@ public class DrawerListAdapter extends BaseAdapter {
 
         TextView listNameTextView = (TextView) drawerRowView.findViewById(R.id.list_name);
         listNameTextView.setText(listName);
+
+        if (!theme.equals("")) {
+            if (theme.equals(context.getString(R.string.theme_dark))) {
+                itemsCountTextView.setTextColor(context.getResources().getColor(android.R.color.white));
+                listNameTextView.setTextColor(context.getResources().getColor(android.R.color.white));
+            } else {
+                itemsCountTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
+                listNameTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
+            }
+        }
 
         return drawerRowView;
     }

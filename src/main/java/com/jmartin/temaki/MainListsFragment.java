@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.test.suitebuilder.TestMethod;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -46,12 +47,14 @@ public class MainListsFragment extends Fragment
     private ListView itemsListView;
     private EditText addItemsEditText;
     private ListItemsAdapter itemsListAdapter;
+    private ImageButton addItemImageButton;
 
     private String listName;
     private ArrayList<TemakiItem> listItems;
     private ActionMode actionMode;
 
     private Toast toast;
+    private Context context;
 
     /* Used for keeping track of selected item. Ideally don't want to do it this way but isSelected
     * is not working in the click listener below.*/
@@ -61,6 +64,10 @@ public class MainListsFragment extends Fragment
 
     public MainListsFragment() {
         super();
+    }
+
+    public MainListsFragment(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -81,13 +88,15 @@ public class MainListsFragment extends Fragment
         addItemsEditText.setOnKeyListener(new EditTextKeyListener());
         addItemsEditText.setOnEditorActionListener(new NewItemsEditTextListener());
 
-        ImageButton addItemImageButton = (ImageButton) view.findViewById(R.id.add_item_image_button);
+        addItemImageButton = (ImageButton) view.findViewById(R.id.add_item_image_button);
         addItemImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addListItem();
             }
         });
+
+        setupAppearancePreferences();
 
         return view;
     }
@@ -130,6 +139,26 @@ public class MainListsFragment extends Fragment
             clearItemSelection();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setupAppearancePreferences() {
+        String theme = PreferenceManager.getDefaultSharedPreferences(context).getString(getString(R.string.pref_theme_key), "");
+
+        if (!theme.equals("")) {
+            if (theme.equals(getString(R.string.theme_dark))) {
+                addItemsEditText.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+                addItemsEditText.setTextColor(getResources().getColor(android.R.color.white));
+                addItemImageButton.setImageResource(R.drawable.ic_add_item_light);
+                addItemImageButton.setBackgroundResource(R.drawable.add_item_image_button_dark_selector);
+                itemsListView.setBackgroundColor(getResources().getColor(R.color.grey));
+            } else {
+                addItemsEditText.setBackgroundColor(getResources().getColor(android.R.color.white));
+                addItemsEditText.setTextColor(getResources().getColor(R.color.dark_grey));
+                addItemImageButton.setImageResource(R.drawable.ic_add_item);
+                addItemImageButton.setBackgroundResource(R.drawable.add_item_image_button_selector);
+                itemsListView.setBackgroundColor(getResources().getColor(R.color.off_white));
+            }
+        }
     }
 
     private void renameListItem(String inputValue) {

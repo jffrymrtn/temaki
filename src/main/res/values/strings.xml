@@ -42,6 +42,9 @@
     <string name="edit_focus_dialog_title">Edit Focus</string>
 
     <!-- Preferences Strings -->
+    <string name="theme_default">Default</string>
+    <string name="theme_dark">Dark</string>
+
     <string name="pref_enable_focus_title">Enable Focus</string>
     <string name="pref_startup_option_title">Load last opened list on startup</string>
     <string name="pref_startup_option_summary">Load the last opened list on startup</string>
@@ -74,7 +77,7 @@
     </string>
 
     <string name="about_string">
-        Temaki v1.46\n
+        Temaki v1.5\n
         2013 - 2014\n\n
 
         Temaki is an open source project.\n
