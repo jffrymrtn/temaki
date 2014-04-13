@@ -13,6 +13,7 @@
         android:paddingLeft="8dp"
         android:maxWidth="90dp"
         android:maxLines="1"
+        android:fontFamily="sans-serif-light"
         android:textSize="21sp"
         android:layout_gravity="center_vertical" />
 
@@ -26,5 +27,6 @@
         android:singleLine="true"
         android:textSize="21sp"
         android:maxLines="1"
+        android:fontFamily="sans-serif-light"
         android:layout_gravity="center_vertical" />
 </LinearLayout>

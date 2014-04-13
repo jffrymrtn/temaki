@@ -157,8 +157,6 @@ public class MainDrawerActivity extends FragmentActivity
                 .replace(R.id.content_frame_layout, mainListsFragment)
                 .commit();
 
-        setupAppearancePreferences();
-
         super.onCreate(savedInstanceState);
     }
 
@@ -168,15 +166,14 @@ public class MainDrawerActivity extends FragmentActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem renameListItem = menu.findItem(R.id.action_rename_list);
-        MenuItem deleteListItem = menu.findItem(R.id.action_delete_list);
 
         searchView = (SearchView) searchItem.getActionView();
 
         // Configure SearchView TextView font stuff
         int textViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView searchViewTextView = (TextView) searchView.findViewById(textViewId);
-        searchViewTextView.setTypeface(Typeface.create("sans-serif-thin", Typeface.NORMAL));
+        searchViewTextView.setTextColor(getResources().getColor(R.color.light_grey));
+        searchViewTextView.setHintTextColor(getResources().getColor(R.color.light_grey));
 
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -543,6 +540,7 @@ public class MainDrawerActivity extends FragmentActivity
     protected void onResume() {
         // Set the locale in case the user changed it
         setLocale();
+        setupAppearancePreferences();
         super.onResume();
     }
 

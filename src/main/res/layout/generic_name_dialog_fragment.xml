@@ -18,7 +18,7 @@
         android:singleLine="true"
         android:imeOptions="actionDone"
         android:paddingLeft ="15dp"
-        style="@style/TemakiEditTextStyle" />
+        android:fontFamily="sans-serif-light" />
 
     <RelativeLayout
         android:orientation="horizontal"

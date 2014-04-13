@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Default theme -->
-    <color name="holo_blue">#ff0099cc</color>
-    <color name="blue">#ff578cc8</color>
-    <color name="light_blue">#ff7da6d5</color>
-    <color name="dark_blue">#ff3c72b0</color>
+    <color name="blue">#ff0099cc</color>
+    <color name="light_blue">#ff0099ee</color>
+    <color name="dark_blue">#ff0099aa</color>
     <color name="white">#ffffffff</color>
 
     <color name="dark_grey">#ff434343</color>

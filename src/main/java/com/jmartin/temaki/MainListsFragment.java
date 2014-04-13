@@ -96,8 +96,6 @@ public class MainListsFragment extends Fragment
             }
         });
 
-        setupAppearancePreferences();
-
         return view;
     }
 
@@ -117,6 +115,8 @@ public class MainListsFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+        setupAppearancePreferences();
+
         // Only important if coming from SettingsActivity, make sure any settings styles are applied
         itemsListAdapter.notifyDataSetChanged();
     }
