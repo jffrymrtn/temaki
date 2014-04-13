@@ -48,6 +48,7 @@ public class MainListsFragment extends Fragment
     private EditText addItemsEditText;
     private ListItemsAdapter itemsListAdapter;
     private ImageButton addItemImageButton;
+    private View addItemsView;
 
     private String listName;
     private ArrayList<TemakiItem> listItems;
@@ -78,6 +79,7 @@ public class MainListsFragment extends Fragment
 
         itemsListView = (ListView) view.findViewById(R.id.main_list_view);
 
+        addItemsView = (View) view.findViewById(R.id.add_item_layout);
         addItemsEditText = (EditText) view.findViewById(R.id.add_item_edit_text);
 
         itemsListAdapter = new ListItemsAdapter(getActivity().getApplicationContext(), listItems);
@@ -146,16 +148,16 @@ public class MainListsFragment extends Fragment
 
         if (!theme.equals("")) {
             if (theme.equals(getString(R.string.theme_dark))) {
-                addItemsEditText.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+                addItemsView.setBackgroundResource(R.drawable.edit_text_style_dark);
                 addItemsEditText.setTextColor(getResources().getColor(android.R.color.white));
+
                 addItemImageButton.setImageResource(R.drawable.ic_add_item_light);
-                addItemImageButton.setBackgroundResource(R.drawable.add_item_image_button_dark_selector);
                 itemsListView.setBackgroundColor(getResources().getColor(R.color.grey));
             } else {
-                addItemsEditText.setBackgroundColor(getResources().getColor(android.R.color.white));
+                addItemsView.setBackgroundResource(R.drawable.edit_text_style_light);
                 addItemsEditText.setTextColor(getResources().getColor(R.color.dark_grey));
+
                 addItemImageButton.setImageResource(R.drawable.ic_add_item);
-                addItemImageButton.setBackgroundResource(R.drawable.add_item_image_button_selector);
                 itemsListView.setBackgroundColor(getResources().getColor(R.color.off_white));
             }
         }

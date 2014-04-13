@@ -23,7 +23,7 @@
         android:id="@+id/add_item_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/light_grey">
+        android:background="@drawable/edit_text_style_light">
         <EditText
             android:id="@+id/add_item_edit_text"
             android:layout_width="0dip"
@@ -33,7 +33,7 @@
             android:paddingRight="10dp"
             android:singleLine="true"
             android:hint="@string/add_new_item_edit_text_hint"
-            android:background="@drawable/edit_text_style_holo"
+            android:background="@android:color/transparent"
             android:textColor ="@color/dark_grey"
             android:imeOptions="flagNoExtractUi"
             android:inputType="text|textNoSuggestions|textCapSentences" />
