@@ -96,15 +96,6 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
             rowTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 
-        // Item is marked as finished
-        if (item.isFinished()) {
-            rowTextView.setPaintFlags(rowTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
-        } else {
-            rowTextView.setPaintFlags(rowTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-            rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
-        }
-
         // Set colours according to app theme
         if (!theme.equals("")) {
             if (theme.equals(context.getString(R.string.theme_dark))) {
@@ -116,14 +107,18 @@ public class ListItemsAdapter extends BaseAdapter implements Filterable {
             }
         }
 
+        // Item is marked as finished
+        if (item.isFinished()) {
+            rowTextView.setPaintFlags(rowTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            rowTextView.setTextColor(context.getResources().getColor(R.color.light_grey));
+        } else {
+            rowTextView.setPaintFlags(rowTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         // Make sure the selection acts properly when scrolling
         if (position == selectedItemPosition) {
             row.setBackgroundResource(R.drawable.main_list_item_selected);
             rowTextView.setTextColor(context.getResources().getColor(R.color.light_grey));
-        } else {
-//            if (!item.isFinished()) {
-//                rowTextView.setTextColor(context.getResources().getColor(R.color.dark_grey));
-//            }
         }
 
         return row;

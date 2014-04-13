@@ -627,13 +627,13 @@ public class MainDrawerActivity extends FragmentActivity
 
         if (!theme.equals("")) {
             if (theme.equals(getString(R.string.theme_dark))) {
-//                setTheme(R.style.DarkAppTheme);
                 listsDrawerListView.setBackgroundColor(getResources().getColor(R.color.dark_grey));
             } else {
-//                setTheme(R.style.AppTheme);
                 listsDrawerListView.setBackgroundColor(getResources().getColor(android.R.color.white));
             }
         }
+
+        drawerListAdapter.notifyDataSetChanged();
     }
 
     /* Private Inner Classes from this point onward */
