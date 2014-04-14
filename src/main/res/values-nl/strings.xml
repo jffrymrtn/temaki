@@ -24,7 +24,7 @@
     <string name="ab_menu_delete_list">Lijst verwijderen</string>
     <string name="ab_menu_rename_list">Lijst hernoemen</string>
     <string name="search_hint">Zoeken in lijst</string>
-    <string name="ab_menu_clear_finished_items">Verwijderen afgewerkt</string>
+    <string name="ab_menu_clear_finished_items">Verwijderen klaar</string>
 
     <string name="item_exists_toast">Dit item bestaat al!</string>
 
@@ -36,8 +36,9 @@
     <string name="edit_focus_dialog_title">Bewerk Focus</string>
 
     <!-- Preferences Strings -->
+    <string name="pref_enable_focus_title">Focus aan</string>
     <string name="pref_startup_option_title">Laatste lijst openen bij opstarten app</string>
-    <string name="pref_startup_option_summary">Load the last opened list on startup</string>
+    <string name="pref_startup_option_summary">Open de laatstgebruikte lijst bij opstarten</string>
     <string name="pref_list_items_capitalize_title">Eerste letter van een item een hoodlettter geven</string>
     <string name="pref_language">Taal</string>
     <string name="pref_theme">Thema</string>
